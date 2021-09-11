@@ -4,9 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".WelcomeActivity"
     android:background="@color/background_theme"
-    >
+    tools:context=".WelcomeActivity">
 
 
     <ImageView
@@ -24,11 +23,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="50dp"
-        android:textSize="@dimen/welcome_label_size"
-        android:text="@string/welcome_activity_label"
-        android:textColor="@color/white"
         android:fontFamily="@font/moon_bold"
         android:letterSpacing="@dimen/label_letter_spacing"
+        android:text="@string/welcome_activity_label"
+        android:textColor="@color/white"
+        android:textSize="@dimen/welcome_label_size"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView2" />
@@ -38,15 +37,15 @@
         android:layout_width="@dimen/button_width"
         android:layout_height="@dimen/button_height"
         android:layout_marginTop="@dimen/button_margin_top_inputAbove"
+        android:background="@drawable/button_radius"
+        android:fontFamily="@font/trenda_regular"
+        android:letterSpacing="@dimen/button_letter_spacing"
         android:text="@string/button_signin"
         android:textSize="@dimen/button_text_size"
-        android:fontFamily="@font/trenda_regular"
-        android:background="@drawable/button_radius"
-        android:letterSpacing="@dimen/button_letter_spacing"
         app:layout_constraintEnd_toEndOf="@+id/txtWelcomeLabel"
         app:layout_constraintStart_toStartOf="@+id/txtWelcomeLabel"
         app:layout_constraintTop_toBottomOf="@+id/txtWelcomeLabel"
-        android:onClick="btnSignInClick"
+
         />
 
     <android.widget.Button
@@ -61,7 +60,6 @@
         android:textSize="@dimen/button_text_size"
         app:layout_constraintEnd_toEndOf="@+id/btnSignIn"
         app:layout_constraintStart_toStartOf="@+id/btnSignIn"
-        app:layout_constraintTop_toBottomOf="@+id/btnSignIn"
-        android:onClick="btnSignUpClick"/>
+        app:layout_constraintTop_toBottomOf="@+id/btnSignIn" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

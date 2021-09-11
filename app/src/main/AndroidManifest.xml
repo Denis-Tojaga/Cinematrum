@@ -12,14 +12,16 @@
         <activity
             android:name=".SignInActivity"
             android:exported="true"
-            android:parentActivityName=".WelcomeActivity"/>
+            android:parentActivityName=".WelcomeActivity"
+            />
         <activity
             android:name=".MainActivity"
             android:exported="true" />
         <activity
             android:name=".SignUpActivity"
             android:exported="true"
-            android:parentActivityName=".WelcomeActivity" />
+            android:parentActivityName=".WelcomeActivity"
+            />
         <activity
             android:name=".WelcomeActivity"
             android:exported="true"
