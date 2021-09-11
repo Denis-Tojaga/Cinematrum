@@ -1,8 +1,37 @@
 <resources>
     <!-- Default screen margins, per the Android Design guidelines. -->
+    <!-- logo imgView dimensions-->
+    <dimen name ="logo_welcome_width">346dp</dimen>
+    <dimen name ="logo_welcome_height">290dp</dimen>
+    <dimen name ="logo_registration_width">280dp</dimen>
+    <dimen name ="logo_registration_height">195dp</dimen>
+
+
+
+    <!-- input field dimensions-->
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
-    <dimen name="input_field_width">250dp</dimen>
-    <dimen name ="input_field_height">48dp</dimen>
-    <dimen name ="input_field_padding">10dp</dimen>
+    <dimen name="input_field_width">280dp</dimen>
+    <dimen name ="input_field_height">55dp</dimen>
+    <dimen name ="input_field_padding">12dp</dimen>
+    <dimen name ="margin_top_inputs">25dp</dimen>
+    <dimen name="margin_top_logo">55dp</dimen>
+    <dimen name ="input_hint_size">20sp</dimen>
+
+
+    <!-- Button dimensions -->
+    <dimen name="button_width">250dp</dimen>
+    <dimen name="button_height">55dp</dimen>
+    <dimen name ="button_padding">12dp</dimen>
+    <dimen name ="button_text_size">25sp</dimen>
+    <dimen name ="button_margin_top_inputAbove">45dp</dimen>
+    <dimen name ="button_margin_top_buttonAbove">25dp</dimen>
+    <dimen name ="button_radius">45dp</dimen>
+    <dimen name="button_letter_spacing">.1</dimen>
+
+
+
+    <!-- welcome label dimensions -->
+    <dimen name ="welcome_label_size">25dp</dimen>
+    <dimen name ="label_letter_spacing">.2</dimen>
 </resources>
