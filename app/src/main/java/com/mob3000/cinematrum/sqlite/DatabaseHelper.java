@@ -177,7 +177,7 @@ public static final String INSERT_USERLOGGEDIN_TABLE = "INSERT INTO " + TABLENAM
 
     /**/
     public DatabaseHelper(Context context) {
-        //super(context, DATABASE_NAME, null, DATABASE_VERSION);
+       // super(context, DATABASE_NAME, null, DATABASE_VERSION);
        super(context, null, null, DATABASE_VERSION);
         // Passing no name => Database wont be saved as a file after closing. Good for testing, no need to upgrade db everytimg. TODO: Fix for final imlementation
     }
@@ -203,7 +203,7 @@ public static final String INSERT_USERLOGGEDIN_TABLE = "INSERT INTO " + TABLENAM
         db.execSQL(INSERT_USER_TABLE);
         db.execSQL(INSERT_CATEGORIESMOVIES_TABLE);
         db.execSQL(INSERT_HALL_TABLE);
-        db.execSQL(INSERT_WISHLIST_TABLE);
+        //db.execSQL(INSERT_WISHLIST_TABLE);
         db.execSQL(INSERT_MOVIESCINEMAS_TABLE);
         db.execSQL(INSERT_TICKET_TABLE);
         db.execSQL(INSERT_USERLOGGEDIN_TABLE);

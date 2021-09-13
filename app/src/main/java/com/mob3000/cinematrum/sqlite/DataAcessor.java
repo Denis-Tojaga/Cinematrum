@@ -1,6 +1,7 @@
 package com.mob3000.cinematrum.sqlite;
 
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -66,12 +67,11 @@ public class DataAcessor {
             String sql = "";
             Cursor cursor;
 
-            if (selectColumn != ""){
+            if (selectColumn != "") {
                 sql = "SELECT * FROM " + DatabaseHelper.TABLENAME_USER + " where " + selectColumn + "=?;";
                 String[] sqlArgs = new String[]{selectValue};
-                 cursor = db.rawQuery(sql, sqlArgs);
-            }
-            else {
+                cursor = db.rawQuery(sql, sqlArgs);
+            } else {
                 sql = "SELECT * FROM " + DatabaseHelper.TABLENAME_USER + " ;";
                 cursor = db.rawQuery(sql, null);
             }
@@ -313,6 +313,77 @@ public class DataAcessor {
         } catch (Exception ex) {
             Log.e(LOG_TAG, ex.getMessage());
             return null;
+        }
+    }
+
+    public static boolean addMovieToWishlist(Context ctx, int userId, int movieId) {
+        try {
+            DatabaseHelper dbhelper = new DatabaseHelper(ctx);
+            SQLiteDatabase db = dbhelper.getReadableDatabase();
+
+            ContentValues values = new ContentValues();
+            values.put(DatabaseHelper.COLUMN_WISHLIST_userId, userId);
+            values.put(DatabaseHelper.COLUMN_WISHLIST_movieId, movieId);
+
+            long rowIndex = db.insert(DatabaseHelper.TABLENAME_WISHLIST, null, values);
+            db.close();
+
+            if (rowIndex == -1) return false;
+
+            return true;
+        } catch (Exception ex) {
+            Log.e(LOG_TAG, ex.getMessage());
+            return false;
+        }
+    }
+
+    public static boolean removeMovieFromWishlist(Context ctx, int userId, int movieId) {
+        try {
+            DatabaseHelper dbhelper = new DatabaseHelper(ctx);
+            SQLiteDatabase db = dbhelper.getReadableDatabase();
+
+            ContentValues values = new ContentValues();
+            values.put(DatabaseHelper.COLUMN_WISHLIST_userId, userId);
+            values.put(DatabaseHelper.COLUMN_WISHLIST_movieId, movieId);
+
+            String deleteCondition = DatabaseHelper.COLUMN_WISHLIST_movieId + " = ? and " + DatabaseHelper.COLUMN_WISHLIST_userId + " = ? ";
+            String[] deleteArgs = new String[]{String.valueOf(movieId), String.valueOf(userId)};
+
+            int rowsDeleted = db.delete(DatabaseHelper.TABLENAME_WISHLIST, deleteCondition, deleteArgs);
+
+            db.close();
+            if (rowsDeleted > 0) return true;
+
+            return false;
+
+        } catch (Exception ex) {
+            Log.e(LOG_TAG, ex.getMessage());
+            return false;
+        }
+    }
+
+    public static boolean insertTicket(Context ctx, Ticket ticket) {
+        try {
+            DatabaseHelper dbhelper = new DatabaseHelper(ctx);
+            SQLiteDatabase db = dbhelper.getReadableDatabase();
+
+            ContentValues values = new ContentValues();
+            values.put(DatabaseHelper.COLUMN_TICKET_userID, ticket.getUser_id());
+            values.put(DatabaseHelper.COLUMN_TICKET_moviesCinemaID, ticket.getMoviesCinemas_id());
+
+            long currentUnixTime = System.currentTimeMillis();
+
+            values.put(DatabaseHelper.COLUMN_TICKET_reservedAt, (long) currentUnixTime / 1000);
+            values.put(DatabaseHelper.COLUMN_TICKET_rowNumber, ticket.getRowNumber());
+            values.put(DatabaseHelper.COLUMN_TICKET_seatNumber, ticket.getSeatNumber());
+
+            long rowInserted = db.insert(DatabaseHelper.TABLENAME_TICKET, null, values);
+            if (rowInserted == -1) return false;
+
+            return true;
+        } catch (Exception ex) {
+            Log.e(LOG_TAG, ex.getMessage());
+            return false;
         }
     }
 }

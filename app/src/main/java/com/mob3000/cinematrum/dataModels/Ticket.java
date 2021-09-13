@@ -11,6 +11,17 @@ public class Ticket {
     private int seatNumber;
     private int user_id;
 
+
+    public Ticket() {
+    }
+
+    public Ticket(int moviesCinemas_id, int rowNumber, int seatNumber, int user_id) {
+        this.moviesCinemas_id = moviesCinemas_id;
+        this.rowNumber = rowNumber;
+        this.seatNumber = seatNumber;
+        this.user_id = user_id;
+    }
+
     public int getUser_id() {
         return user_id;
     }
