@@ -7,7 +7,7 @@ public class Hall {
     private int hall_id;
     private int cinema_id;
     private int rows;
-    private int seatRows;
+    private int seatsPerRows;
     private List<MoviesCinemas> moviesCinemas;
 
     public int getHall_id() {
@@ -34,12 +34,12 @@ public class Hall {
         this.rows = rows;
     }
 
-    public int getSeatRows() {
-        return seatRows;
+    public int getSeatsPerRow() {
+        return seatsPerRows;
     }
 
-    public void setSeatRows(int seatRows) {
-        this.seatRows = seatRows;
+    public void setSeatsPerRow(int seatsPerRows) {
+        this.seatsPerRows = seatsPerRows;
     }
 
     public List<MoviesCinemas> getMoviesCinemas() {

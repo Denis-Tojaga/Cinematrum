@@ -9,6 +9,15 @@ public class Ticket {
     private Date reservedAt;
     private int rowNumber;
     private int seatNumber;
+    private int user_id;
+
+    public int getUser_id() {
+        return user_id;
+    }
+
+    public void setUser_id(int user_id) {
+        this.user_id = user_id;
+    }
 
     public int getTicket_id() {
         return ticket_id;

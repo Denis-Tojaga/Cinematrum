@@ -1,6 +1,6 @@
 package com.mob3000.cinematrum.dataModels;
 
-import java.util.List;
+import java.util.ArrayList;
 
 public class User {
 
@@ -9,8 +9,8 @@ public class User {
     private String password;
     private String telephone;
     private String userType;
-    private List<Ticket> tickets;
-    private List<Wishlist> wishlist;
+    private ArrayList<Ticket> tickets;
+    private ArrayList<Wishlist> wishlist;
 
     public int getUser_id() {
         return user_id;
@@ -52,19 +52,19 @@ public class User {
         this.userType = userType;
     }
 
-    public List<Ticket> getTickets() {
+    public ArrayList<Ticket> getTickets() {
         return tickets;
     }
 
-    public void setTickets(List<Ticket> tickets) {
+    public void setTickets(ArrayList<Ticket> tickets) {
         this.tickets = tickets;
     }
 
-    public List<Wishlist> getWishlist() {
+    public ArrayList<Wishlist> getWishlist() {
         return wishlist;
     }
 
-    public void setWishlist(List<Wishlist> wishlist) {
+    public void setWishlist(ArrayList<Wishlist> wishlist) {
         this.wishlist = wishlist;
     }
 }
