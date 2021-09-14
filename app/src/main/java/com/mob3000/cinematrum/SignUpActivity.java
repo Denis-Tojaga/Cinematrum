@@ -2,6 +2,7 @@ package com.mob3000.cinematrum;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.View;
@@ -34,7 +35,6 @@ public class SignUpActivity extends AppCompatActivity {
         }else{
             Toast.makeText(this, "Something went wrong try again", Toast.LENGTH_SHORT).show();
         }
-
     }
 
     private boolean ValidateInputFields() {
@@ -45,5 +45,12 @@ public class SignUpActivity extends AppCompatActivity {
                 && validPassword == Validator.VALID_FIELD)
             return true;
         return false;
+    }
+
+
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(SignUpActivity.this,WelcomeActivity.class);
+        startActivity(intent);
     }
 }
