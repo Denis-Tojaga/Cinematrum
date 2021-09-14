@@ -91,5 +91,29 @@
         android:onClick="btnSignUpClick"
         />
 
+    <TextView
+        android:id="@+id/txtUsernameWarning"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Textview"
+        app:layout_constraintStart_toStartOf="@+id/etxtUsername"
+        app:layout_constraintTop_toBottomOf="@+id/etxtUsername" />
+
+    <TextView
+        android:id="@+id/txtEmailWarning"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TextView"
+        app:layout_constraintStart_toStartOf="@+id/etxtEmail"
+        app:layout_constraintTop_toBottomOf="@+id/etxtEmail" />
+
+    <TextView
+        android:id="@+id/txtPasswordWarning"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TextView"
+        app:layout_constraintStart_toStartOf="@+id/etxtPassword"
+        app:layout_constraintTop_toBottomOf="@+id/etxtPassword" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

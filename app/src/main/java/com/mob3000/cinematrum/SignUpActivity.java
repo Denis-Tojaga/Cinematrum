@@ -13,6 +13,11 @@ import com.mob3000.cinematrum.helpers.Validator;
 
 public class SignUpActivity extends AppCompatActivity {
 
+    private String USERNAME_INPUT_FIELD_MESSAGE="";
+    private String EMAIL_INPUT_FIELD_MESSAGE="";
+    private String PASSWORD_INPUT_FIELD_MESSAGE = "";
+    private String PASSWORD_LENGTH_MESSAGE = "";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,18 +36,32 @@ public class SignUpActivity extends AppCompatActivity {
 
         if (ValidateInputFields()) {
             //if all the fields are filled then we can create a user and save it
+            ClearWarningLabels();
             Toast.makeText(this, "all fields are valid", Toast.LENGTH_SHORT).show();
         }else{
-            Toast.makeText(this, "Something went wrong try again", Toast.LENGTH_SHORT).show();
+            SetWarningLabels();
         }
     }
 
+    private void ClearWarningLabels() {
+        //TODO clear warining labels
+    }
+
+    private void SetWarningLabels() {
+        //TODO set the logic for these labels
+    }
+
+
+
     private boolean ValidateInputFields() {
-        String validUsername = Validator.ValidateInputField(findViewById(R.id.etxtUsername));
-        String validEmail = Validator.ValidateInputField(findViewById(R.id.etxtEmail));
-        String validPassword = Validator.ValidatePasswordField(findViewById(R.id.etxtPassword));
-        if (validUsername == Validator.VALID_FIELD && validEmail == Validator.VALID_FIELD
-                && validPassword == Validator.VALID_FIELD)
+
+        //TODO implement the validation warining message
+        USERNAME_INPUT_FIELD_MESSAGE = Validator.ValidateInputField(findViewById(R.id.etxtUsername));
+        EMAIL_INPUT_FIELD_MESSAGE = Validator.ValidateInputField(findViewById(R.id.etxtEmail));
+        PASSWORD_INPUT_FIELD_MESSAGE = Validator.ValidatePasswordField(findViewById(R.id.etxtPassword));
+        PASSWORD_LENGTH_MESSAGE = Validator.ValidatePasswordLength(findViewById(R.id.etxtPassword));
+        if (USERNAME_INPUT_FIELD_MESSAGE == Validator.VALID_FIELD && EMAIL_INPUT_FIELD_MESSAGE == Validator.VALID_FIELD
+                && PASSWORD_INPUT_FIELD_MESSAGE == Validator.VALID_FIELD && PASSWORD_LENGTH_MESSAGE == Validator.VALID_FIELD)
             return true;
         return false;
     }

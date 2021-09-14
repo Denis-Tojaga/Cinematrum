@@ -7,8 +7,8 @@ import android.widget.EditText;
 import java.util.ArrayList;
 
 public class Validator {
-    public static final String INPUT_NOT_VALID_MESSAGE ="This field is required!";
-    public static final String PASSWORD_NOT_VALID_MESSAGE ="This field is required!";
+    public static final String INPUT_NOT_VALID_MESSAGE = "This field is required!";
+    public static final String PASSWORD_NOT_VALID_MESSAGE = "This field is required!";
     public static final String PASSWORD_LENGTH_NOT_VAlID = "Password must be at least 6 characters!";
     public static final String VALID_FIELD = "Valid";
 
@@ -23,12 +23,15 @@ public class Validator {
     }
 
 
-    public static String ValidatePasswordField(View view){
-        if(view instanceof EditText && ((EditText) view).getText() == null)
+    public static String ValidatePasswordField(View view) {
+        if (view instanceof EditText && ((EditText) view).getText() == null)
             return PASSWORD_NOT_VALID_MESSAGE;
-        else if(view instanceof EditText && ((EditText) view).getText().length() < 6)
+        return VALID_FIELD;
+    }
+
+    public static String ValidatePasswordLength(View view) {
+        if (view instanceof EditText && ((EditText) view).getText().length() < 6)
             return PASSWORD_LENGTH_NOT_VAlID;
-        else
-            return VALID_FIELD;
+        return VALID_FIELD;
     }
 }
