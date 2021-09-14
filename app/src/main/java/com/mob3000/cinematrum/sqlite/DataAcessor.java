@@ -72,7 +72,7 @@ public class DataAcessor {
                 String[] sqlArgs = new String[]{selectValue};
                 cursor = db.rawQuery(sql, sqlArgs);
             } else {
-                sql = "SELECT * FROM " + DatabaseHelper.TABLENAME_USER + " ;";
+                sql = "SELECT * FROM " + DatabaseHelper.TABLENAME_USER + ";";
                 cursor = db.rawQuery(sql, null);
             }
 
@@ -319,7 +319,7 @@ public class DataAcessor {
     public static boolean addMovieToWishlist(Context ctx, int userId, int movieId) {
         try {
             DatabaseHelper dbhelper = new DatabaseHelper(ctx);
-            SQLiteDatabase db = dbhelper.getReadableDatabase();
+            SQLiteDatabase db = dbhelper.getWritableDatabase();
 
             ContentValues values = new ContentValues();
             values.put(DatabaseHelper.COLUMN_WISHLIST_userId, userId);
@@ -340,7 +340,7 @@ public class DataAcessor {
     public static boolean removeMovieFromWishlist(Context ctx, int userId, int movieId) {
         try {
             DatabaseHelper dbhelper = new DatabaseHelper(ctx);
-            SQLiteDatabase db = dbhelper.getReadableDatabase();
+            SQLiteDatabase db = dbhelper.getWritableDatabase();
 
             ContentValues values = new ContentValues();
             values.put(DatabaseHelper.COLUMN_WISHLIST_userId, userId);
@@ -365,7 +365,7 @@ public class DataAcessor {
     public static boolean insertTicket(Context ctx, Ticket ticket) {
         try {
             DatabaseHelper dbhelper = new DatabaseHelper(ctx);
-            SQLiteDatabase db = dbhelper.getReadableDatabase();
+            SQLiteDatabase db = dbhelper.getWritableDatabase();
 
             ContentValues values = new ContentValues();
             values.put(DatabaseHelper.COLUMN_TICKET_userID, ticket.getUser_id());
@@ -380,6 +380,65 @@ public class DataAcessor {
             long rowInserted = db.insert(DatabaseHelper.TABLENAME_TICKET, null, values);
             if (rowInserted == -1) return false;
 
+            return true;
+        } catch (Exception ex) {
+            Log.e(LOG_TAG, ex.getMessage());
+            return false;
+        }
+    }
+
+    public static boolean insertUser(Context ctx, User u) throws UserNameTakenException{
+        try {
+
+            ArrayList<User> userWithSameName = DataAcessor.getUser(ctx, DatabaseHelper.COLUMN_USER_name, u.getName());
+            if (userWithSameName.size() > 0 )
+                throw new UserNameTakenException("Username " + u.getName() + " is already taken");
+
+
+            // TODO: DONT SAVE PASSWORD BUT CREATE HASH VALUE!
+
+            ContentValues values = new ContentValues();
+            values.put(DatabaseHelper.COLUMN_USER_name, u.getName());
+            values.put(DatabaseHelper.COLUMN_USER_password, u.getPassword());
+            values.put(DatabaseHelper.COLUMN_USER_telephon, u.getTelephone());
+            values.put(DatabaseHelper.COLUMN_USER_userType, u.getUserType());
+
+            return insertData(ctx, values, DatabaseHelper.TABLENAME_USER);
+
+        } catch (Exception ex) {
+            Log.e(LOG_TAG, ex.getMessage());
+            return false;
+        }
+    }
+
+    public static boolean checkUserCredentials(Context ctx, User u){
+        try {
+
+            // TODO CHECK HASH VALUE NOT PASSWORD STRING
+
+            // Get user by userId from Database
+            ArrayList<User> dbUsers = getUser(ctx, DatabaseHelper.COLUMN_USER_name, u.getName());
+            if (dbUsers.size() != 1) return false;
+
+            if (dbUsers.get(0).getPassword() != u.getPassword()) return false;
+
+            return true;
+        }
+        catch(Exception ex){
+            Log.e(LOG_TAG, ex.getMessage());
+            return false;
+        }
+    }
+
+    private static boolean insertData(Context ctx, ContentValues values, String tableName) {
+        try {
+            DatabaseHelper dbhelper = new DatabaseHelper(ctx);
+            SQLiteDatabase db = dbhelper.getWritableDatabase();
+
+            long rowInserted = db.insert(tableName, null, values);
+            db.close();
+
+            if (rowInserted == -1) return false;
             return true;
         } catch (Exception ex) {
             Log.e(LOG_TAG, ex.getMessage());

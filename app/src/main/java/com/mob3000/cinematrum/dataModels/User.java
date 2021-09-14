@@ -12,6 +12,14 @@ public class User {
     private ArrayList<Ticket> tickets;
     private ArrayList<Wishlist> wishlist;
 
+    public User() {
+    }
+
+    public User(String name, String password) {
+        this.name = name;
+        this.password = password;
+    }
+
     public int getUser_id() {
         return user_id;
     }
