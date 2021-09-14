@@ -77,8 +77,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String COLUMN_LOGGEDINUSER_userId = "user_id";
     // INSERT DATA
     public static final String INSERT_MOVIE_TABLE = "INSERT INTO " + TABLENAME_MOVIE + " (" + COLUMN_MOVIE_name  + ", " + COLUMN_MOVIE_picture + ", " + COLUMN_MOVIE_video + ", " + COLUMN_MOVIE_duration + ", " + COLUMN_MOVIE_description + ", " + COLUMN_MOVIE_publishedDate + ") "
-            + "VALUES (\"James Bond\",\"\", \"\", 1.25, \"The hero James Bond likes to fight all the evil people all over the world\", 1631451990),"
-            + "(\"IT\",\"\", \"\", 1.9, \"It is back. The clown who comes back every 25 years. Already two kids have been missing until the group of young children find out the truth\",1631451990)";
+            + "VALUES (\"James Bond\",\"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQy7G06j-HhGeHCUAiOwZU-gUcpvjlKnODkAJ4ZZPsaYVrAx8SKnuuQcsCboqU-WaDppNI&usqp=CAU\", \"\", 1.25, \"The hero James Bond likes to fight all the evil people all over the world\", 1631451990),"
+            + "(\"IT\",\"https://akamai.vgc.no/v2/images/f2d2f165-41ec-4cbc-9fa7-01b69dbaf4e9?fit=crop&h=1267&w=1900&s=ca937e54cedd2e14493af218e2b695de02aae573\", \"\", 1.9, \"It is back. The clown who comes back every 25 years. Already two kids have been missing until the group of young children find out the truth\",1631451990)";
     public static final String INSERT_USER_TABLE = "INSERT INTO " + TABLENAME_USER + " (" + COLUMN_USER_name + ", " + COLUMN_USER_password + ", " + COLUMN_USER_userType + ", " + COLUMN_USER_telephon + ") "
             + "VALUES (\"user1\", \"password1\", \"admin\", 01234),"
             + "(\"user3\", \"password3\", \"user\", 012348790809),"
@@ -96,7 +96,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             + "(2,1,20.99,20,100,1631451990),"
             + "(1,2,10.99,20,100,1631451990);";
     public static final String INSERT_CATEGORIES_TABLE = "INSERT INTO " + TABLENAME_CATEGORIE + " (" + COLUMN_CATEGORY_name + ", " + COLUMN_CATEGORY_unicodeIcon + ") "
-            + "VALUES (\"Comedy\", \"\"),(\"Horror\", \"\"),(\"Action\", \"\"),(\"Super Hero\",\"\");";
+            + "VALUES (\"Comedy\", \"U+1F600\"),(\"Horror\", \"U+1F636\"),(\"Action\", \"U+1F920\"),(\"Super Hero\",\"U+1F9BE\");";
     public static final String INSERT_CATEGORIESMOVIES_TABLE = "INSERT INTO " + TABLENAME_CATEGORIE_MOVIE + " (" + COLUMN_CATEGORIESMOVIES_categoryId + ", " + COLUMN_CATEGORIESMOVIES_movieId + ") "
             + "VALUES (1,1),(1,2);";
 public static final String INSERT_USERLOGGEDIN_TABLE = "INSERT INTO " + TABLENAME_LOGGEDINUSER + " ( " + COLUMN_LOGGEDINUSER_userId + ")"
