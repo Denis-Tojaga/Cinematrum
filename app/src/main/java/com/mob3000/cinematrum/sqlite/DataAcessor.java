@@ -37,9 +37,9 @@ public class DataAcessor {
 
                 User tmpUser = new User();
                 int idIndex = cursor.getColumnIndex(DatabaseHelper.COLUMN_USER_userID);
-                int nameIndex = cursor.getColumnIndex(DatabaseHelper.COLUMN_USER_name);
+                int nameIndex = cursor.getColumnIndex(DatabaseHelper.COLUMN_USER_username);
                 int passwordIndex = cursor.getColumnIndex(DatabaseHelper.COLUMN_USER_password);
-                int telephoneIndex = cursor.getColumnIndex(DatabaseHelper.COLUMN_USER_telephon);
+                int telephoneIndex = cursor.getColumnIndex(DatabaseHelper.COLUMN_USER_telephone);
                 int userTypeIndex = cursor.getColumnIndex(DatabaseHelper.COLUMN_USER_userType);
                 tmpUser.setUser_id(cursor.getInt((idIndex)));
                 tmpUser.setUserType(cursor.getString(userTypeIndex));
@@ -77,9 +77,9 @@ public class DataAcessor {
             }
 
             int idIndex = cursor.getColumnIndex(DatabaseHelper.COLUMN_USER_userID);
-            int nameIndex = cursor.getColumnIndex(DatabaseHelper.COLUMN_USER_name);
+            int nameIndex = cursor.getColumnIndex(DatabaseHelper.COLUMN_USER_username);
             int passwordIndex = cursor.getColumnIndex(DatabaseHelper.COLUMN_USER_password);
-            int telephoneIndex = cursor.getColumnIndex(DatabaseHelper.COLUMN_USER_telephon);
+            int telephoneIndex = cursor.getColumnIndex(DatabaseHelper.COLUMN_USER_telephone);
             int userTypeIndex = cursor.getColumnIndex(DatabaseHelper.COLUMN_USER_userType);
 
             if (cursor.moveToFirst()) {
@@ -390,7 +390,7 @@ public class DataAcessor {
     public static boolean insertUser(Context ctx, User u) throws UserNameTakenException{
         try {
 
-            ArrayList<User> userWithSameName = DataAcessor.getUser(ctx, DatabaseHelper.COLUMN_USER_name, u.getName());
+            ArrayList<User> userWithSameName = DataAcessor.getUser(ctx, DatabaseHelper.COLUMN_USER_username, u.getName());
             if (userWithSameName.size() > 0 )
                 throw new UserNameTakenException("Username " + u.getName() + " is already taken");
 
@@ -398,9 +398,9 @@ public class DataAcessor {
             // TODO: DONT SAVE PASSWORD BUT CREATE HASH VALUE!
 
             ContentValues values = new ContentValues();
-            values.put(DatabaseHelper.COLUMN_USER_name, u.getName());
+            values.put(DatabaseHelper.COLUMN_USER_username, u.getName());
             values.put(DatabaseHelper.COLUMN_USER_password, u.getPassword());
-            values.put(DatabaseHelper.COLUMN_USER_telephon, u.getTelephone());
+            values.put(DatabaseHelper.COLUMN_USER_telephone, u.getTelephone());
             values.put(DatabaseHelper.COLUMN_USER_userType, u.getUserType());
 
             return insertData(ctx, values, DatabaseHelper.TABLENAME_USER);
@@ -417,7 +417,7 @@ public class DataAcessor {
             // TODO CHECK HASH VALUE NOT PASSWORD STRING
 
             // Get user by userId from Database
-            ArrayList<User> dbUsers = getUser(ctx, DatabaseHelper.COLUMN_USER_name, u.getName());
+            ArrayList<User> dbUsers = getUser(ctx, DatabaseHelper.COLUMN_USER_username, u.getName());
             if (dbUsers.size() != 1) return false;
 
             if (dbUsers.get(0).getPassword() != u.getPassword()) return false;

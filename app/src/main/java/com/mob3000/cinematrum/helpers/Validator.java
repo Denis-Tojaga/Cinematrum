@@ -1,5 +1,6 @@
 package com.mob3000.cinematrum.helpers;
 
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -10,27 +11,33 @@ public class Validator {
     public static final String INPUT_NOT_VALID_MESSAGE = "This field is required!";
     public static final String PASSWORD_NOT_VALID_MESSAGE = "This field is required!";
     public static final String PASSWORD_LENGTH_NOT_VAlID = "Password must be at least 6 characters!";
-    public static final String VALID_FIELD = "Valid";
+    public static final String VALID_FIELD = "VALID";
 
     private Validator() {
     }
 
+
+    //validating regular input field
     public static String ValidateInputField(View view) {
-        //method for examinating which view is validated and regarding that showing the right message
-        if (view instanceof EditText && ((EditText) view).getText() == null)
+        //method for checking which view is validated and regarding that showing the right message
+        EditText object = (EditText) view;
+        if (view instanceof EditText && TextUtils.isEmpty(object.getText()))
             return INPUT_NOT_VALID_MESSAGE;
         return VALID_FIELD;
     }
 
-
+    //validating password field
     public static String ValidatePasswordField(View view) {
-        if (view instanceof EditText && ((EditText) view).getText() == null)
+        EditText object = (EditText) view;
+        if (view instanceof EditText && TextUtils.isEmpty(object.getText()))
             return PASSWORD_NOT_VALID_MESSAGE;
         return VALID_FIELD;
     }
 
+    //validating password length only
     public static String ValidatePasswordLength(View view) {
-        if (view instanceof EditText && ((EditText) view).getText().length() < 6)
+        EditText object = (EditText) view;
+        if (view instanceof EditText && object.getText().toString().length() < 6)
             return PASSWORD_LENGTH_NOT_VAlID;
         return VALID_FIELD;
     }
