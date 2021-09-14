@@ -22,6 +22,18 @@ public class Ticket {
         this.user_id = user_id;
     }
 
+    @Override
+    public String toString() {
+        return "Ticket{" +
+                "ticket_id=" + ticket_id +
+                ", moviesCinemas_id=" + moviesCinemas_id +
+                ", reservedAt=" + reservedAt +
+                ", rowNumber=" + rowNumber +
+                ", seatNumber=" + seatNumber +
+                ", user_id=" + user_id +
+                '}';
+    }
+
     public int getUser_id() {
         return user_id;
     }

@@ -6,7 +6,8 @@ public class User {
 
     private int user_id;
     private String name;
-    private String password;
+    private String passwordHash;
+    private String salt;
     private String telephone;
     private String userType;
     private ArrayList<Ticket> tickets;
@@ -17,7 +18,7 @@ public class User {
 
     public User(String name, String password) {
         this.name = name;
-        this.password = password;
+        this.passwordHash = password;
     }
 
     public int getUser_id() {
@@ -36,12 +37,12 @@ public class User {
         this.name = name;
     }
 
-    public String getPassword() {
-        return password;
+    public String getPasswordHash() {
+        return passwordHash;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public void setPasswordHash(String passwordHash) {
+        this.passwordHash = passwordHash;
     }
 
     public String getTelephone() {
@@ -66,6 +67,14 @@ public class User {
 
     public void setTickets(ArrayList<Ticket> tickets) {
         this.tickets = tickets;
+    }
+
+    public String getSalt() {
+        return salt;
+    }
+
+    public void setSalt(String salt) {
+        this.salt = salt;
     }
 
     public ArrayList<Wishlist> getWishlist() {

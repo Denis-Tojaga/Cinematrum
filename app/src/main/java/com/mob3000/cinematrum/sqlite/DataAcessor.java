@@ -8,7 +8,9 @@ import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.mob3000.cinematrum.dataModels.Category;
 import com.mob3000.cinematrum.dataModels.Hall;
+import com.mob3000.cinematrum.dataModels.Movie;
 import com.mob3000.cinematrum.dataModels.MoviesCinemas;
 import com.mob3000.cinematrum.dataModels.Ticket;
 import com.mob3000.cinematrum.dataModels.User;
@@ -44,7 +46,7 @@ public class DataAcessor {
                 tmpUser.setUser_id(cursor.getInt((idIndex)));
                 tmpUser.setUserType(cursor.getString(userTypeIndex));
                 tmpUser.setName(cursor.getString(nameIndex));
-                tmpUser.setPassword(cursor.getString(passwordIndex));
+                tmpUser.setPasswordHash(cursor.getString(passwordIndex));
                 tmpUser.setTelephone(cursor.getString(telephoneIndex));
                 user = tmpUser;
 
@@ -64,7 +66,7 @@ public class DataAcessor {
         DatabaseHelper dbhelper = new DatabaseHelper(ctx);
         try {
             SQLiteDatabase db = dbhelper.getReadableDatabase();
-            String sql = "";
+            String sql;
             Cursor cursor;
 
             if (selectColumn != "") {
@@ -89,7 +91,7 @@ public class DataAcessor {
                     tmpUser.setUser_id(cursor.getInt((idIndex)));
                     tmpUser.setUserType(cursor.getString(userTypeIndex));
                     tmpUser.setName(cursor.getString(nameIndex));
-                    tmpUser.setPassword(cursor.getString(passwordIndex));
+                    tmpUser.setPasswordHash(cursor.getString(passwordIndex)); // TODO Update for Salt and hash
                     tmpUser.setTelephone(cursor.getString(telephoneIndex));
                     tmpUser.setTickets(getTickets(ctx, DatabaseHelper.COLUMN_TICKET_userID, String.valueOf(tmpUser.getUser_id())));
                     tmpUser.setWishlist(getWishlists(ctx, DatabaseHelper.COLUMN_WISHLIST_userId, String.valueOf(tmpUser.getUser_id())));
@@ -113,7 +115,7 @@ public class DataAcessor {
 
         try {
             SQLiteDatabase db = dbhelper.getReadableDatabase();
-            String sql = "";
+            String sql;
             Cursor c;
 
             if (selectColumn != "") {
@@ -164,7 +166,7 @@ public class DataAcessor {
         try {
             SQLiteDatabase db = dbhelper.getReadableDatabase();
 
-            String sql = "";
+            String sql;
             Cursor c;
 
             if (selectColumn != "") {
@@ -208,7 +210,7 @@ public class DataAcessor {
         try {
             SQLiteDatabase db = dbhelper.getReadableDatabase();
 
-            String sql = "";
+            String sql;
             Cursor c;
 
             if (selectColumn != "") {
@@ -251,7 +253,7 @@ public class DataAcessor {
         try {
             SQLiteDatabase db = dbhelper.getReadableDatabase();
 
-            String sql = "";
+            String sql;
             Cursor c;
             if (selectColumn != "") {
                 sql = "SELECT * FROM " + DatabaseHelper.TABLENAME_MOVIES_CINEMAS + " where " + selectColumn + "=?";
@@ -308,6 +310,10 @@ public class DataAcessor {
             ArrayList<User> userList = getUser(ctx, DatabaseHelper.COLUMN_USER_userID, String.valueOf(userID));
             if (userList.size() == 1) return userList.get(0);
 
+
+            c.close();
+            db.close();
+
             return null;
 
         } catch (Exception ex) {
@@ -328,9 +334,7 @@ public class DataAcessor {
             long rowIndex = db.insert(DatabaseHelper.TABLENAME_WISHLIST, null, values);
             db.close();
 
-            if (rowIndex == -1) return false;
-
-            return true;
+            return rowIndex != -1;
         } catch (Exception ex) {
             Log.e(LOG_TAG, ex.getMessage());
             return false;
@@ -352,9 +356,7 @@ public class DataAcessor {
             int rowsDeleted = db.delete(DatabaseHelper.TABLENAME_WISHLIST, deleteCondition, deleteArgs);
 
             db.close();
-            if (rowsDeleted > 0) return true;
-
-            return false;
+            return rowsDeleted > 0;
 
         } catch (Exception ex) {
             Log.e(LOG_TAG, ex.getMessage());
@@ -378,20 +380,18 @@ public class DataAcessor {
             values.put(DatabaseHelper.COLUMN_TICKET_seatNumber, ticket.getSeatNumber());
 
             long rowInserted = db.insert(DatabaseHelper.TABLENAME_TICKET, null, values);
-            if (rowInserted == -1) return false;
-
-            return true;
+            return rowInserted != -1;
         } catch (Exception ex) {
             Log.e(LOG_TAG, ex.getMessage());
             return false;
         }
     }
 
-    public static boolean insertUser(Context ctx, User u) throws UserNameTakenException{
+    public static boolean insertUser(Context ctx, User u) throws UserNameTakenException {
         try {
 
             ArrayList<User> userWithSameName = DataAcessor.getUser(ctx, DatabaseHelper.COLUMN_USER_name, u.getName());
-            if (userWithSameName.size() > 0 )
+            if (userWithSameName.size() > 0)
                 throw new UserNameTakenException("Username " + u.getName() + " is already taken");
 
 
@@ -399,7 +399,7 @@ public class DataAcessor {
 
             ContentValues values = new ContentValues();
             values.put(DatabaseHelper.COLUMN_USER_name, u.getName());
-            values.put(DatabaseHelper.COLUMN_USER_password, u.getPassword());
+            values.put(DatabaseHelper.COLUMN_USER_password, u.getPasswordHash()); // TODO: Update for Salt and Hash
             values.put(DatabaseHelper.COLUMN_USER_telephon, u.getTelephone());
             values.put(DatabaseHelper.COLUMN_USER_userType, u.getUserType());
 
@@ -411,7 +411,7 @@ public class DataAcessor {
         }
     }
 
-    public static boolean checkUserCredentials(Context ctx, User u){
+    public static boolean checkUserCredentials(Context ctx, User u) {
         try {
 
             // TODO CHECK HASH VALUE NOT PASSWORD STRING
@@ -420,11 +420,8 @@ public class DataAcessor {
             ArrayList<User> dbUsers = getUser(ctx, DatabaseHelper.COLUMN_USER_name, u.getName());
             if (dbUsers.size() != 1) return false;
 
-            if (dbUsers.get(0).getPassword() != u.getPassword()) return false;
-
-            return true;
-        }
-        catch(Exception ex){
+            return dbUsers.get(0).getPasswordHash() == u.getPasswordHash();
+        } catch (Exception ex) {
             Log.e(LOG_TAG, ex.getMessage());
             return false;
         }
@@ -438,11 +435,167 @@ public class DataAcessor {
             long rowInserted = db.insert(tableName, null, values);
             db.close();
 
-            if (rowInserted == -1) return false;
-            return true;
+            return rowInserted != -1;
         } catch (Exception ex) {
             Log.e(LOG_TAG, ex.getMessage());
             return false;
         }
     }
+
+
+    // TODO: FINISH
+    public static boolean updateUser(Context ctx, User u) {
+        try {
+            DatabaseHelper dbhelper = new DatabaseHelper(ctx);
+            SQLiteDatabase db = dbhelper.getWritableDatabase();
+
+            ContentValues values = new ContentValues();
+            values.put(DatabaseHelper.COLUMN_USER_name, u.getName());
+            values.put(DatabaseHelper.COLUMN_USER_telephon, u.getTelephone());
+            values.put(DatabaseHelper.COLUMN_USER_userType, u.getUserType());
+
+            long rowsUpdated = db.update(DatabaseHelper.TABLENAME_USER, values, DatabaseHelper.COLUMN_USER_userID + "=?", new String[]{String.valueOf(u.getUser_id())});
+            return rowsUpdated == 1;
+
+        } catch (Exception ex) {
+            Log.e(LOG_TAG, ex.getMessage());
+            return false;
+        }
+    }
+
+    // TODO: FINISH;
+    public static ArrayList<Movie> getMovies(Context ctx, String selectColumn, String selectValue) {
+        ArrayList<Movie> movies = new ArrayList<>();
+
+        try {
+            DatabaseHelper dbhelper = new DatabaseHelper(ctx);
+            SQLiteDatabase db = dbhelper.getWritableDatabase();
+
+            String sql;
+            Cursor c;
+
+            if (selectColumn != "") {
+                sql = "SELECT * FROM " + DatabaseHelper.TABLENAME_MOVIE + " where " + selectColumn + "=?";
+                String[] sqlArgs = new String[]{selectValue};
+                c = db.rawQuery(sql, sqlArgs);
+            } else {
+                sql = "SELECT * FROM " + DatabaseHelper.TABLENAME_MOVIE + ";";
+                c = db.rawQuery(sql, null);
+            }
+
+            if (c.moveToFirst()) {
+                int indexMovieId = c.getColumnIndex(DatabaseHelper.COLUMN_MOVIE_movieId);
+                int indexName = c.getColumnIndex(DatabaseHelper.COLUMN_MOVIE_name);
+                int indexPicture = c.getColumnIndex(DatabaseHelper.COLUMN_MOVIE_picture);
+                int indexPlublishedDate = c.getColumnIndex(DatabaseHelper.COLUMN_MOVIE_publishedDate);
+
+                do {
+                    Movie tmpMovie = new Movie();
+                    tmpMovie.setMovie_id(c.getInt(indexMovieId));
+                    tmpMovie.setName(c.getString(indexName));
+                    tmpMovie.setPicture(c.getString(indexPicture));
+                    int unixTimestamp = c.getInt(indexPlublishedDate);
+                    tmpMovie.setPublishedDate((new java.util.Date((long) unixTimestamp * 1000)));
+                    tmpMovie.setMoviesCinemas(getMoviesCinemas(ctx, DatabaseHelper.COLUMN_MOVIESCINEMAS_movieID, String.valueOf(tmpMovie.getMovie_id())));
+                    tmpMovie.setCategories(getCategoriesForMovie(ctx, tmpMovie.getMovie_id()));
+                    movies.add(tmpMovie);
+                }
+                while (c.moveToNext());
+            }
+
+            c.close();
+            db.close();
+            return movies;
+        } catch (Exception ex) {
+            Log.e(LOG_TAG, ex.getMessage());
+            return movies;
+        }
+    }
+
+    // TODO FINISH!!
+    public static ArrayList<Category> getCategories(Context ctx, String selectColumn, String selectValue) {
+
+        ArrayList<Category> categories = new ArrayList<>();
+        try {
+            DatabaseHelper dbhelper = new DatabaseHelper(ctx);
+            SQLiteDatabase db = dbhelper.getWritableDatabase();
+
+            String sql;
+            Cursor c;
+
+            if (selectColumn != "") {
+                sql = "SELECT * FROM " + DatabaseHelper.TABLENAME_CATEGORIE + " where " + selectColumn + "=?;";
+                String[] sqlArgs = new String[]{selectValue};
+                c = db.rawQuery(sql, sqlArgs);
+            } else {
+                sql = "SELECT * FROM " + DatabaseHelper.TABLENAME_CATEGORIE + ";";
+                c = db.rawQuery(sql, null);
+            }
+
+            if (c.moveToFirst()) {
+                int indexCategorieId = c.getColumnIndex(DatabaseHelper.COLUMN_CATEGORY_categoryId);
+                int indexName = c.getColumnIndex(DatabaseHelper.COLUMN_CATEGORY_name);
+
+                do {
+                    Category tmpCat = new Category();
+                    tmpCat.setName(c.getString(indexName));
+                    tmpCat.setCategorie_id(c.getInt(indexCategorieId));
+                    // TODO: Load Movies with own function (like getMovies)
+                    categories.add(tmpCat);
+
+                } while (c.moveToNext());
+            }
+
+            c.close();
+            db.close();
+
+            return categories;
+        } catch (Exception ex) {
+            Log.e(LOG_TAG, ex.getMessage());
+            return categories;
+        }
+    }
+
+
+    // TODO : FINISH!!!
+    public static ArrayList<Category> getCategoriesForMovie(Context ctx, int movie_id) {
+        ArrayList<Category> categories = new ArrayList<>();
+        try {
+            DatabaseHelper dbhelper = new DatabaseHelper(ctx);
+            SQLiteDatabase db = dbhelper.getWritableDatabase();
+
+            String sql = "SELECT * FROM " + DatabaseHelper.TABLENAME_CATEGORIE_MOVIE
+                    + " LEFT JOIN " + DatabaseHelper.TABLENAME_CATEGORIE + " on " + DatabaseHelper.TABLENAME_CATEGORIE_MOVIE + "." + DatabaseHelper.COLUMN_CATEGORIESMOVIES_movieId
+                    + " = " + DatabaseHelper.TABLENAME_CATEGORIE + "." + DatabaseHelper.COLUMN_CATEGORY_categoryId
+                    + " where " + DatabaseHelper.COLUMN_CATEGORIESMOVIES_movieId + "=?;";
+            String[] sqlArgs = new String[]{String.valueOf(movie_id)};
+
+            Cursor c = db.rawQuery(sql, sqlArgs);
+
+            if (c.moveToFirst()) {
+
+                int indexCategoryId = c.getColumnIndex(DatabaseHelper.COLUMN_CATEGORY_categoryId);
+                int indexCategoryName = c.getColumnIndex(DatabaseHelper.COLUMN_CATEGORY_name);
+
+                do {
+                    Category tmpCat = new Category();
+                    tmpCat.setCategorie_id(c.getInt(indexCategoryId));
+                    tmpCat.setName(c.getString(indexCategoryName));
+                    // TODO: LOAD ALL MOVIES FROM ONE CATEGORIE (Needs one function!!)
+                    categories.add(tmpCat);
+                }
+                while (c.moveToNext());
+            }
+
+            c.close();
+            db.close();
+
+            return categories;
+        } catch (Exception ex) {
+            Log.e(LOG_TAG, ex.getMessage());
+            return categories;
+        }
+    }
+
+
 }

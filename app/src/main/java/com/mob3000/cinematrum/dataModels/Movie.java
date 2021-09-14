@@ -1,6 +1,7 @@
 package com.mob3000.cinematrum.dataModels;
 
 import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 
 public class Movie {
@@ -8,7 +9,7 @@ public class Movie {
     private int movie_id;
     private String name;
     private String picture;
-    private LocalDate publishedDate;
+    private Date publishedDate;
     private List<MoviesCinemas> moviesCinemas;
     private List<Category> categories;
 
@@ -36,11 +37,11 @@ public class Movie {
         this.picture = picture;
     }
 
-    public LocalDate getPublishedDate() {
+    public Date getPublishedDate() {
         return publishedDate;
     }
 
-    public void setPublishedDate(LocalDate publishedDate) {
+    public void setPublishedDate(Date publishedDate) {
         this.publishedDate = publishedDate;
     }
 
