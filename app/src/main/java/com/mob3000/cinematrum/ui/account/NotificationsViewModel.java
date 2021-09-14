@@ -1,4 +1,4 @@
-package com.mob3000.cinematrum.ui.notifications;
+package com.mob3000.cinematrum.ui.account;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
