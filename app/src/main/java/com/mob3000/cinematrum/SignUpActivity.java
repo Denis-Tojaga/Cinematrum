@@ -67,9 +67,7 @@ public class SignUpActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 try {
-                    //TODO fix decrypting bug
-                    decryptedPassword = decrypt(encryptedPassword);
-                    Toast.makeText(SignUpActivity.this, "Decrypted value -> " + decryptedPassword, Toast.LENGTH_SHORT).show();
+                    //TODO add salt and check the value
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -77,7 +75,7 @@ public class SignUpActivity extends AppCompatActivity {
         });
     }
 
-    private String decrypt(String password) throws Exception {
+   /* private String decrypt(String password) throws Exception {
         SecretKeySpec key = generateKey(password);
         Cipher c = Cipher.getInstance(AES);
         c.init(Cipher.DECRYPT_MODE, key);
@@ -86,8 +84,10 @@ public class SignUpActivity extends AppCompatActivity {
 
         String decryptedValue = new String(decValue);
         return decryptedValue;
-    }
+    }*/
 
+
+    //initializing all views in this activity
     private void InitViews() {
         etxtUsername = findViewById(R.id.etxtUsername);
         etxtEmail = findViewById(R.id.etxtEmail);
@@ -134,8 +134,6 @@ public class SignUpActivity extends AppCompatActivity {
         String encValue = Base64.encodeToString(encryptedValue, Base64.DEFAULT);
         return encValue;
     }
-
-    //used to generate an algorithm key with a given password for encrypting to work
     private SecretKeySpec generateKey(String text) throws Exception {
         //we use MessageDigest insance to get SHA-256 algorithm
         final MessageDigest digest = MessageDigest.getInstance("SHA-256");
@@ -152,6 +150,9 @@ public class SignUpActivity extends AppCompatActivity {
         //now we return this
         return secretKeySpec;
     }
+
+
+
 
 
     //initializing warning TextView messages
