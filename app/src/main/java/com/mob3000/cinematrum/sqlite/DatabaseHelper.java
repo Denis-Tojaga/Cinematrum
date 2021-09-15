@@ -29,7 +29,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     // Columns - USER
     public static final String COLUMN_USER_userID = "user_id";
     public static final String COLUMN_USER_username = "name";
+    public static final String COLUMN_USER_email = "email";
     public static final String COLUMN_USER_password = "password";
+    public static final String COLUMN_USER_salt = "salt";
     public static final String COLUMN_USER_telephone = "telephon";
     public static final String COLUMN_USER_userType = "userType";
 
@@ -80,10 +82,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
             + "VALUES (\"James Bond\",\"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQy7G06j-HhGeHCUAiOwZU-gUcpvjlKnODkAJ4ZZPsaYVrAx8SKnuuQcsCboqU-WaDppNI&usqp=CAU\", \"\", 1.25, \"The hero James Bond likes to fight all the evil people all over the world\", 1631451990),"
             + "(\"IT\",\"https://akamai.vgc.no/v2/images/f2d2f165-41ec-4cbc-9fa7-01b69dbaf4e9?fit=crop&h=1267&w=1900&s=ca937e54cedd2e14493af218e2b695de02aae573\", \"\", 1.9, \"It is back. The clown who comes back every 25 years. Already two kids have been missing until the group of young children find out the truth\",1631451990)";
-    public static final String INSERT_USER_TABLE = "INSERT INTO " + TABLENAME_USER + " (" + COLUMN_USER_name + ", " + COLUMN_USER_password + ", " + COLUMN_USER_userType + ", " + COLUMN_USER_telephon + ") "
-            + "VALUES (\"user1\", \"password1\", \"admin\", 01234),"
-            + "(\"user3\", \"password3\", \"user\", 012348790809),"
-            + "(\"user2\", \"password2\", \"user\", 012348790809);";
+    public static final String INSERT_USER_TABLE = "INSERT INTO " + TABLENAME_USER + " (" + COLUMN_USER_username + ", " + COLUMN_USER_email + ", " + COLUMN_USER_password + ", " + COLUMN_USER_salt + ", " + COLUMN_USER_userType + ", " + COLUMN_USER_telephone + ") "
+            + "VALUES (\"user1\",\"email1\",\"password1\",\"salt1\",01234, \"admin\"),"
+            + "(\"user3\",\"email2\",\"password3\",\"salt2\",012348790809, \"user\"),"
+            + "(\"user2\",\"email3\",\"password2\",\"salt3\",012348790809, \"user\");";
     public static final String INSERT_TICKET_TABLE = "INSERT INTO " + TABLENAME_TICKET + " (" + COLUMN_TICKET_userID + ", " + COLUMN_TICKET_moviesCinemaID + ", " + COLUMN_TICKET_reservedAt + ", " + COLUMN_TICKET_rowNumber + ", " + COLUMN_TICKET_seatNumber + ") "
             + "VALUES (1,1,1631451997,1,1),(1,1,1631451997,1,1);";
     public static final String INSERT_CINEMA_TABLE = "INSERT INTO " + TABLENAME_CINEMA + " (" + COLUMN_CINEMA_name + ", " + COLUMN_CINEMA_location + ") "
@@ -116,7 +118,9 @@ public static final String INSERT_USERLOGGEDIN_TABLE = "INSERT INTO " + TABLENAM
     private static final String CREATE_USER_TABLE = "CREATE TABLE " + TABLENAME_USER
             + " ( " + COLUMN_USER_userID + " INTEGER NOT NULL, "
             + COLUMN_USER_username + " TEXT, "
+            + COLUMN_USER_email + " TEXT, "
             + COLUMN_USER_password + " TEXT NOT NULL, "
+            + COLUMN_USER_salt + " TEXT, "
             + COLUMN_USER_telephone + " TEXT, "
             + COLUMN_USER_userType + " TEXT, "
             + "PRIMARY KEY(" + COLUMN_USER_userID + " AUTOINCREMENT));";

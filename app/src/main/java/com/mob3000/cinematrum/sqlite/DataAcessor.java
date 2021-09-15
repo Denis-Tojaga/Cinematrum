@@ -40,13 +40,17 @@ public class DataAcessor {
                 User tmpUser = new User();
                 int idIndex = cursor.getColumnIndex(DatabaseHelper.COLUMN_USER_userID);
                 int nameIndex = cursor.getColumnIndex(DatabaseHelper.COLUMN_USER_username);
+                int emailIndex = cursor.getColumnIndex(DatabaseHelper.COLUMN_USER_email);
                 int passwordIndex = cursor.getColumnIndex(DatabaseHelper.COLUMN_USER_password);
+                int saltIndex = cursor.getColumnIndex(DatabaseHelper.COLUMN_USER_salt);
                 int telephoneIndex = cursor.getColumnIndex(DatabaseHelper.COLUMN_USER_telephone);
                 int userTypeIndex = cursor.getColumnIndex(DatabaseHelper.COLUMN_USER_userType);
                 tmpUser.setUser_id(cursor.getInt((idIndex)));
                 tmpUser.setUserType(cursor.getString(userTypeIndex));
                 tmpUser.setName(cursor.getString(nameIndex));
+                tmpUser.setEmail(cursor.getString(emailIndex));
                 tmpUser.setPasswordHash(cursor.getString(passwordIndex));
+                tmpUser.setSalt(cursor.getString(saltIndex));
                 tmpUser.setTelephone(cursor.getString(telephoneIndex));
                 user = tmpUser;
 
@@ -80,7 +84,9 @@ public class DataAcessor {
 
             int idIndex = cursor.getColumnIndex(DatabaseHelper.COLUMN_USER_userID);
             int nameIndex = cursor.getColumnIndex(DatabaseHelper.COLUMN_USER_username);
+            int emailIndex = cursor.getColumnIndex(DatabaseHelper.COLUMN_USER_email);
             int passwordIndex = cursor.getColumnIndex(DatabaseHelper.COLUMN_USER_password);
+            int saltIndex = cursor.getColumnIndex(DatabaseHelper.COLUMN_USER_salt);
             int telephoneIndex = cursor.getColumnIndex(DatabaseHelper.COLUMN_USER_telephone);
             int userTypeIndex = cursor.getColumnIndex(DatabaseHelper.COLUMN_USER_userType);
 
@@ -91,7 +97,9 @@ public class DataAcessor {
                     tmpUser.setUser_id(cursor.getInt((idIndex)));
                     tmpUser.setUserType(cursor.getString(userTypeIndex));
                     tmpUser.setName(cursor.getString(nameIndex));
-                    tmpUser.setPasswordHash(cursor.getString(passwordIndex)); // TODO Update for Salt and hash
+                    tmpUser.setEmail(cursor.getString(emailIndex));
+                    tmpUser.setPasswordHash(cursor.getString(passwordIndex));
+                    tmpUser.setSalt(cursor.getString(saltIndex));// TODO Update for Salt and hash
                     tmpUser.setTelephone(cursor.getString(telephoneIndex));
                     tmpUser.setTickets(getTickets(ctx, DatabaseHelper.COLUMN_TICKET_userID, String.valueOf(tmpUser.getUser_id())));
                     tmpUser.setWishlist(getWishlists(ctx, DatabaseHelper.COLUMN_WISHLIST_userId, String.valueOf(tmpUser.getUser_id())));
@@ -390,8 +398,7 @@ public class DataAcessor {
     public static boolean insertUser(Context ctx, User u) throws UserNameTakenException {
         try {
 
-
-            ArrayList<User> userWithSameName = DataAcessor.getUser(ctx, DatabaseHelper.COLUMN_USER_name, u.getName());
+            ArrayList<User> userWithSameName = DataAcessor.getUser(ctx, DatabaseHelper.COLUMN_USER_username, u.getName());
             if (userWithSameName.size() > 0)
                 throw new UserNameTakenException("Username " + u.getName() + " is already taken");
 
@@ -400,13 +407,15 @@ public class DataAcessor {
 
             ContentValues values = new ContentValues();
 
-            values.put(DatabaseHelper.COLUMN_USER_name, u.getName());
-            values.put(DatabaseHelper.COLUMN_USER_password, u.getPasswordHash()); // TODO: Update for Salt and Hash
-            values.put(DatabaseHelper.COLUMN_USER_telephon, u.getTelephone());
+            // Salt and HashPassword added
+            values.put(DatabaseHelper.COLUMN_USER_username, u.getName());
+            values.put(DatabaseHelper.COLUMN_USER_email, u.getEmail());
+            values.put(DatabaseHelper.COLUMN_USER_password, u.getPasswordHash());
+            values.put(DatabaseHelper.COLUMN_USER_salt, u.getSalt());
             values.put(DatabaseHelper.COLUMN_USER_userType, u.getUserType());
+            values.put(DatabaseHelper.COLUMN_USER_telephone, u.getTelephone());
 
             return insertData(ctx, values, DatabaseHelper.TABLENAME_USER);
-
         } catch (Exception ex) {
             Log.e(LOG_TAG, ex.getMessage());
             return false;
@@ -452,8 +461,9 @@ public class DataAcessor {
             SQLiteDatabase db = dbhelper.getWritableDatabase();
 
             ContentValues values = new ContentValues();
-            values.put(DatabaseHelper.COLUMN_USER_name, u.getName());
-            values.put(DatabaseHelper.COLUMN_USER_telephon, u.getTelephone());
+            values.put(DatabaseHelper.COLUMN_USER_username, u.getName());
+            values.put(DatabaseHelper.COLUMN_USER_email, u.getName());
+            values.put(DatabaseHelper.COLUMN_USER_telephone, u.getTelephone());
             values.put(DatabaseHelper.COLUMN_USER_userType, u.getUserType());
 
             long rowsUpdated = db.update(DatabaseHelper.TABLENAME_USER, values, DatabaseHelper.COLUMN_USER_userID + "=?", new String[]{String.valueOf(u.getUser_id())});

@@ -14,9 +14,11 @@ import android.widget.Toast;
 
 import com.mob3000.cinematrum.dataModels.User;
 import com.mob3000.cinematrum.helpers.Validator;
+import com.mob3000.cinematrum.sqlite.DataAcessor;
 
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
+import java.security.SecureRandom;
 
 import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
@@ -43,11 +45,6 @@ public class SignUpActivity extends AppCompatActivity {
     private EditText etxtPassword;
 
 
-    //string testring decrypting of a password
-    public String decryptedPassword = "nothing";
-    private String encryptedPassword;
-    private Button btnDecrypt;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,30 +58,8 @@ public class SignUpActivity extends AppCompatActivity {
 
         ColorDrawable color = new ColorDrawable(getResources().getColor(R.color.background_theme));
         getSupportActionBar().setBackgroundDrawable(color);
-
-
-        btnDecrypt.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                try {
-                    //TODO add salt and check the value
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
     }
 
-   /* private String decrypt(String password) throws Exception {
-        SecretKeySpec key = generateKey(password);
-        Cipher c = Cipher.getInstance(AES);
-        c.init(Cipher.DECRYPT_MODE, key);
-        byte[] decodedValue = Base64.decode(password, Base64.DEFAULT);
-        byte[] decValue = c.doFinal(decodedValue);
-
-        String decryptedValue = new String(decValue);
-        return decryptedValue;
-    }*/
 
 
     //initializing all views in this activity
@@ -92,7 +67,6 @@ public class SignUpActivity extends AppCompatActivity {
         etxtUsername = findViewById(R.id.etxtUsername);
         etxtEmail = findViewById(R.id.etxtEmail);
         etxtPassword = findViewById(R.id.etxtPassword);
-        btnDecrypt = findViewById(R.id.btnDecrypt);
     }
 
 
@@ -101,11 +75,28 @@ public class SignUpActivity extends AppCompatActivity {
 
         if (ValidateInputFields()) {
             ClearWarningLabels();
-            User newUser = new User();
 
             try {
-                encryptedPassword = encrypt(etxtPassword.getText().toString());
-                Toast.makeText(this, "This is encrypted password -> " + encryptedPassword, Toast.LENGTH_SHORT).show();
+                User newUser = new User();
+                newUser.setName(etxtUsername.getText().toString());
+                newUser.setEmail(etxtEmail.getText().toString());
+                //encrypting password
+                String saltValue = GenerateSalt();
+                String encryptPassword = encrypt(etxtPassword.getText().toString());
+                String hashedPasswordWithSalt = saltValue + encryptPassword;
+                newUser.setSalt(saltValue);
+                newUser.setPasswordHash(hashedPasswordWithSalt);
+
+
+                if (DataAcessor.insertUser(this, newUser)) {
+                    Toast.makeText(SignUpActivity.this, "You logged in successfully", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(SignUpActivity.this, MainActivity.class);
+                    intent.putExtra("username", newUser.getName());
+                    startActivity(intent);
+                } else {
+                    Toast.makeText(SignUpActivity.this, "Sorry something went wrong please try again!", Toast.LENGTH_SHORT).show();
+                }
+
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -116,6 +107,13 @@ public class SignUpActivity extends AppCompatActivity {
     }
 
 
+    //method for generating salt string of 10 characters
+    private String GenerateSalt() {
+        SecureRandom random = new SecureRandom();
+        byte bytes[] = new byte[10];
+        random.nextBytes(bytes);
+        return Base64.encodeToString(bytes, Base64.DEFAULT);
+    }
     //password encryption
     private String encrypt(String text) throws Exception {
         //we generated this key using the generateKeyMethod
@@ -150,6 +148,7 @@ public class SignUpActivity extends AppCompatActivity {
         //now we return this
         return secretKeySpec;
     }
+
 
 
 

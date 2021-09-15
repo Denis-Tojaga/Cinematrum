@@ -1,6 +1,7 @@
 package com.mob3000.cinematrum;
 
 import android.os.Bundle;
+import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -34,7 +35,9 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupWithNavController(binding.navView, navController);
 
 
+        String loggeduser = getIntent().getStringExtra("username");
 
+        Toast.makeText(this, "Logged user -> " + loggeduser, Toast.LENGTH_SHORT).show();
 
         /*
         * Denis 10.9.2021
