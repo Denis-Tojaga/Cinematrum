@@ -28,9 +28,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String COLUMN_TICKET_seatNumber = "seatNumber";
     // Columns - USER
     public static final String COLUMN_USER_userID = "user_id";
-    public static final String COLUMN_USER_name = "name";
+    public static final String COLUMN_USER_username = "name";
     public static final String COLUMN_USER_password = "password";
-    public static final String COLUMN_USER_telephon = "telephon";
+    public static final String COLUMN_USER_telephone = "telephon";
     public static final String COLUMN_USER_userType = "userType";
 
     public static final String DATABASE_NAME = "cinematrumDb.db";
@@ -77,6 +77,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String COLUMN_LOGGEDINUSER_userId = "user_id";
     // INSERT DATA
     public static final String INSERT_MOVIE_TABLE = "INSERT INTO " + TABLENAME_MOVIE + " (" + COLUMN_MOVIE_name  + ", " + COLUMN_MOVIE_picture + ", " + COLUMN_MOVIE_video + ", " + COLUMN_MOVIE_duration + ", " + COLUMN_MOVIE_description + ", " + COLUMN_MOVIE_publishedDate + ") "
+
             + "VALUES (\"James Bond\",\"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQy7G06j-HhGeHCUAiOwZU-gUcpvjlKnODkAJ4ZZPsaYVrAx8SKnuuQcsCboqU-WaDppNI&usqp=CAU\", \"\", 1.25, \"The hero James Bond likes to fight all the evil people all over the world\", 1631451990),"
             + "(\"IT\",\"https://akamai.vgc.no/v2/images/f2d2f165-41ec-4cbc-9fa7-01b69dbaf4e9?fit=crop&h=1267&w=1900&s=ca937e54cedd2e14493af218e2b695de02aae573\", \"\", 1.9, \"It is back. The clown who comes back every 25 years. Already two kids have been missing until the group of young children find out the truth\",1631451990)";
     public static final String INSERT_USER_TABLE = "INSERT INTO " + TABLENAME_USER + " (" + COLUMN_USER_name + ", " + COLUMN_USER_password + ", " + COLUMN_USER_userType + ", " + COLUMN_USER_telephon + ") "
@@ -114,9 +115,9 @@ public static final String INSERT_USERLOGGEDIN_TABLE = "INSERT INTO " + TABLENAM
             + "FOREIGN KEY(" + COLUMN_TICKET_moviesCinemaID + ") REFERENCES " + TABLENAME_MOVIES_CINEMAS + "(" + COLUMN_MOVIESCINEMAS_moviesCinemasID + "));";
     private static final String CREATE_USER_TABLE = "CREATE TABLE " + TABLENAME_USER
             + " ( " + COLUMN_USER_userID + " INTEGER NOT NULL, "
-            + COLUMN_USER_name + " TEXT, "
+            + COLUMN_USER_username + " TEXT, "
             + COLUMN_USER_password + " TEXT NOT NULL, "
-            + COLUMN_USER_telephon + " TEXT, "
+            + COLUMN_USER_telephone + " TEXT, "
             + COLUMN_USER_userType + " TEXT, "
             + "PRIMARY KEY(" + COLUMN_USER_userID + " AUTOINCREMENT));";
     private static final String CREATE_MOVIESCIENEMAS_TABLE = "CREATE TABLE " + TABLENAME_MOVIES_CINEMAS
@@ -178,8 +179,9 @@ public static final String INSERT_USERLOGGEDIN_TABLE = "INSERT INTO " + TABLENAM
     /**/
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
-     //  super(context, null, null, DATABASE_VERSION);
-        // Passing no name => Database wont be saved as a file after closing. Good for testing, no need to upgrade db everytimg. TODO: Fix for final imlementation
+        // super(context, null, null, DATABASE_VERSION);
+        // Passing no name => Database wont be saved as a file after closing. Good for testing, no need to upgrade db everytime.
+        // TODO: Fix for final imlementation
     }
 
     @Override

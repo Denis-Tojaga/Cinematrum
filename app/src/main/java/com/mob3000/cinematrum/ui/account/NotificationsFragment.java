@@ -1,4 +1,4 @@
-package com.mob3000.cinematrum.ui.notifications;
+package com.mob3000.cinematrum.ui.account;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -12,7 +12,6 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.mob3000.cinematrum.R;
 import com.mob3000.cinematrum.databinding.FragmentNotificationsBinding;
 
 public class NotificationsFragment extends Fragment {

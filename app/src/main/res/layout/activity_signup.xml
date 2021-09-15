@@ -88,7 +88,40 @@
         app:layout_constraintTop_toBottomOf="@+id/etxtPassword"
         android:background="@drawable/button_radius"
         android:letterSpacing="@dimen/button_letter_spacing"
+        android:onClick="btnSignUpClick"
         />
+
+    <TextView
+        android:id="@+id/txtUsernameWarning"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Textview"
+        app:layout_constraintStart_toStartOf="@+id/etxtUsername"
+        app:layout_constraintTop_toBottomOf="@+id/etxtUsername" />
+
+    <TextView
+        android:id="@+id/txtEmailWarning"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TextView"
+        app:layout_constraintStart_toStartOf="@+id/etxtEmail"
+        app:layout_constraintTop_toBottomOf="@+id/etxtEmail" />
+
+    <TextView
+        android:id="@+id/txtPasswordWarning"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TextView"
+        app:layout_constraintStart_toStartOf="@+id/etxtPassword"
+        app:layout_constraintTop_toBottomOf="@+id/etxtPassword" />
+
+    <Button
+        android:id="@+id/btnDecrypt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Decrypt"
+        tools:layout_editor_absoluteX="118dp"
+        tools:layout_editor_absoluteY="640dp" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
