@@ -7,8 +7,6 @@ public class User {
     private int user_id;
     private String name;
     private String email;
-
-
     private String passwordHash;
     private String salt;
     private String telephone;
