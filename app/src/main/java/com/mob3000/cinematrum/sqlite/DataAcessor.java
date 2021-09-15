@@ -391,7 +391,7 @@ public class DataAcessor {
         try {
 
 
-            ArrayList<User> userWithSameName = DataAcessor.getUser(ctx, DatabaseHelper.COLUMN_USER_name, u.getName());
+            ArrayList<User> userWithSameName = DataAcessor.getUser(ctx, DatabaseHelper.COLUMN_USER_username, u.getName());
             if (userWithSameName.size() > 0)
                 throw new UserNameTakenException("Username " + u.getName() + " is already taken");
 
@@ -400,9 +400,9 @@ public class DataAcessor {
 
             ContentValues values = new ContentValues();
 
-            values.put(DatabaseHelper.COLUMN_USER_name, u.getName());
+            values.put(DatabaseHelper.COLUMN_USER_username, u.getName());
             values.put(DatabaseHelper.COLUMN_USER_password, u.getPasswordHash()); // TODO: Update for Salt and Hash
-            values.put(DatabaseHelper.COLUMN_USER_telephon, u.getTelephone());
+            values.put(DatabaseHelper.COLUMN_USER_telephone, u.getTelephone());
             values.put(DatabaseHelper.COLUMN_USER_userType, u.getUserType());
 
             return insertData(ctx, values, DatabaseHelper.TABLENAME_USER);
@@ -452,8 +452,8 @@ public class DataAcessor {
             SQLiteDatabase db = dbhelper.getWritableDatabase();
 
             ContentValues values = new ContentValues();
-            values.put(DatabaseHelper.COLUMN_USER_name, u.getName());
-            values.put(DatabaseHelper.COLUMN_USER_telephon, u.getTelephone());
+            values.put(DatabaseHelper.COLUMN_USER_username, u.getName());
+            values.put(DatabaseHelper.COLUMN_USER_telephone, u.getTelephone());
             values.put(DatabaseHelper.COLUMN_USER_userType, u.getUserType());
 
             long rowsUpdated = db.update(DatabaseHelper.TABLENAME_USER, values, DatabaseHelper.COLUMN_USER_userID + "=?", new String[]{String.valueOf(u.getUser_id())});
