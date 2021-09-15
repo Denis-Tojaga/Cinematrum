@@ -40,12 +40,14 @@ public class DataAcessor {
                 User tmpUser = new User();
                 int idIndex = cursor.getColumnIndex(DatabaseHelper.COLUMN_USER_userID);
                 int nameIndex = cursor.getColumnIndex(DatabaseHelper.COLUMN_USER_username);
+                int emailIndex = cursor.getColumnIndex(DatabaseHelper.COLUMN_USER_email);
                 int passwordIndex = cursor.getColumnIndex(DatabaseHelper.COLUMN_USER_password);
                 int telephoneIndex = cursor.getColumnIndex(DatabaseHelper.COLUMN_USER_telephone);
                 int userTypeIndex = cursor.getColumnIndex(DatabaseHelper.COLUMN_USER_userType);
                 tmpUser.setUser_id(cursor.getInt((idIndex)));
                 tmpUser.setUserType(cursor.getString(userTypeIndex));
                 tmpUser.setName(cursor.getString(nameIndex));
+                tmpUser.setEmail(cursor.getString(emailIndex));
                 tmpUser.setPasswordHash(cursor.getString(passwordIndex));
                 tmpUser.setTelephone(cursor.getString(telephoneIndex));
                 user = tmpUser;
@@ -80,6 +82,7 @@ public class DataAcessor {
 
             int idIndex = cursor.getColumnIndex(DatabaseHelper.COLUMN_USER_userID);
             int nameIndex = cursor.getColumnIndex(DatabaseHelper.COLUMN_USER_username);
+            int emailIndex = cursor.getColumnIndex(DatabaseHelper.COLUMN_USER_email);
             int passwordIndex = cursor.getColumnIndex(DatabaseHelper.COLUMN_USER_password);
             int telephoneIndex = cursor.getColumnIndex(DatabaseHelper.COLUMN_USER_telephone);
             int userTypeIndex = cursor.getColumnIndex(DatabaseHelper.COLUMN_USER_userType);
@@ -91,6 +94,7 @@ public class DataAcessor {
                     tmpUser.setUser_id(cursor.getInt((idIndex)));
                     tmpUser.setUserType(cursor.getString(userTypeIndex));
                     tmpUser.setName(cursor.getString(nameIndex));
+                    tmpUser.setEmail(cursor.getString(emailIndex));
                     tmpUser.setPasswordHash(cursor.getString(passwordIndex)); // TODO Update for Salt and hash
                     tmpUser.setTelephone(cursor.getString(telephoneIndex));
                     tmpUser.setTickets(getTickets(ctx, DatabaseHelper.COLUMN_TICKET_userID, String.valueOf(tmpUser.getUser_id())));
@@ -401,6 +405,7 @@ public class DataAcessor {
             ContentValues values = new ContentValues();
 
             values.put(DatabaseHelper.COLUMN_USER_username, u.getName());
+            values.put(DatabaseHelper.COLUMN_USER_email, u.getName());
             values.put(DatabaseHelper.COLUMN_USER_password, u.getPasswordHash()); // TODO: Update for Salt and Hash
             values.put(DatabaseHelper.COLUMN_USER_telephone, u.getTelephone());
             values.put(DatabaseHelper.COLUMN_USER_userType, u.getUserType());
@@ -453,6 +458,7 @@ public class DataAcessor {
 
             ContentValues values = new ContentValues();
             values.put(DatabaseHelper.COLUMN_USER_username, u.getName());
+            values.put(DatabaseHelper.COLUMN_USER_email, u.getName());
             values.put(DatabaseHelper.COLUMN_USER_telephone, u.getTelephone());
             values.put(DatabaseHelper.COLUMN_USER_userType, u.getUserType());
 
