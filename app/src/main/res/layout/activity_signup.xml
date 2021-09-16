@@ -115,13 +115,5 @@
         app:layout_constraintStart_toStartOf="@+id/etxtPassword"
         app:layout_constraintTop_toBottomOf="@+id/etxtPassword" />
 
-    <Button
-        android:id="@+id/btnDecrypt"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Decrypt"
-        tools:layout_editor_absoluteX="118dp"
-        tools:layout_editor_absoluteY="640dp" />
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

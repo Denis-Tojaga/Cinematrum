@@ -91,7 +91,7 @@ public class SignUpActivity extends AppCompatActivity {
                 if (DataAcessor.insertUser(this, newUser)) {
                     Toast.makeText(SignUpActivity.this, "You logged in successfully", Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(SignUpActivity.this, MainActivity.class);
-                    intent.putExtra("username", newUser.getName());
+                    intent.putExtra("User", newUser);
                     startActivity(intent);
                 } else {
                     Toast.makeText(SignUpActivity.this, "Sorry something went wrong please try again!", Toast.LENGTH_SHORT).show();
