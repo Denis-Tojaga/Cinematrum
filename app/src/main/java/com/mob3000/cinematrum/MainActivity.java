@@ -51,8 +51,9 @@ public class MainActivity extends AppCompatActivity {
 
     //method for retrieving the logged user
     private void LoadLoggedUser() {
-        User loggedUser = (User)getIntent().getSerializableExtra("User");
-        Toast.makeText(MainActivity.this, loggedUser.getName(), Toast.LENGTH_SHORT).show();
+        //TODO this has to be fixed, we should retrieve the logged user from getLoggedUserMethod which is not implemented when inserting user
+        /*User loggedUser = (User)getIntent().getSerializableExtra("User");
+        Toast.makeText(MainActivity.this, loggedUser.getName(), Toast.LENGTH_SHORT).show();*/
     }
 
 }

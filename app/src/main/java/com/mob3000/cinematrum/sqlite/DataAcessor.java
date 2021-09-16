@@ -15,6 +15,7 @@ import com.mob3000.cinematrum.dataModels.MoviesCinemas;
 import com.mob3000.cinematrum.dataModels.Ticket;
 import com.mob3000.cinematrum.dataModels.User;
 import com.mob3000.cinematrum.dataModels.Wishlist;
+import com.mob3000.cinematrum.helpers.Validator;
 
 import java.util.ArrayList;
 
@@ -402,9 +403,6 @@ public class DataAcessor {
             if (userWithSameName.size() > 0)
                 throw new UserNameTakenException("Username " + u.getName() + " is already taken");
 
-
-            // TODO: DONT SAVE PASSWORD BUT CREATE HASH VALUE!
-
             ContentValues values = new ContentValues();
 
             // Salt and HashPassword added
@@ -424,14 +422,14 @@ public class DataAcessor {
 
     public static boolean checkUserCredentials(Context ctx, User u) {
         try {
-
-            // TODO CHECK HASH VALUE NOT PASSWORD STRING
-
             // Get user by userId from Database
-            ArrayList<User> dbUsers = getUser(ctx, DatabaseHelper.COLUMN_USER_username, u.getName());
+            ArrayList<User> dbUsers = getUser(ctx, DatabaseHelper.COLUMN_USER_email, u.getEmail());
             if (dbUsers.size() != 1) return false;
 
-            return dbUsers.get(0).getPasswordHash() == u.getPasswordHash();
+            //TODO passwordWithoutSalt and password are the same but the method keeps returning false
+            String hashedPasswordWithoutSalt = Validator.ExtractPasswordPart(dbUsers.get(0).getPasswordHash());
+
+            return hashedPasswordWithoutSalt.equals(u.getPasswordHash());
         } catch (Exception ex) {
             Log.e(LOG_TAG, ex.getMessage());
             return false;

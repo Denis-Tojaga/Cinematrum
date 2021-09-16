@@ -40,7 +40,7 @@
         />
 
     <EditText
-        android:id="@+id/etxtEmail"
+        android:id="@+id/etxtEmailSignIn"
         android:layout_width="@dimen/input_field_width"
         android:layout_height="@dimen/input_field_height"
         android:autofillHints="emailAddress"
@@ -58,7 +58,7 @@
         app:layout_constraintTop_toBottomOf="@+id/etxtUsername" />
 
     <EditText
-        android:id="@+id/etxtPassword"
+        android:id="@+id/etxtPasswordSignIn"
         android:layout_width="@dimen/input_field_width"
         android:layout_height="@dimen/input_field_height"
         android:autofillHints="password"
@@ -71,9 +71,9 @@
         android:textColorHint="@color/black"
         android:fontFamily="@font/trenda_regular"
         android:textSize="@dimen/input_hint_size"
-        app:layout_constraintEnd_toEndOf="@+id/etxtEmail"
-        app:layout_constraintStart_toStartOf="@+id/etxtEmail"
-        app:layout_constraintTop_toBottomOf="@+id/etxtEmail" />
+        app:layout_constraintEnd_toEndOf="@+id/etxtEmailSignIn"
+        app:layout_constraintStart_toStartOf="@+id/etxtEmailSignIn"
+        app:layout_constraintTop_toBottomOf="@+id/etxtEmailSignIn" />
 
     <android.widget.Button
         android:id="@+id/btnSignUp"
@@ -83,9 +83,9 @@
         android:text="@string/button_signup"
         android:fontFamily="@font/moon_light"
         android:textSize="@dimen/button_text_size"
-        app:layout_constraintEnd_toEndOf="@+id/etxtPassword"
-        app:layout_constraintStart_toStartOf="@+id/etxtPassword"
-        app:layout_constraintTop_toBottomOf="@+id/etxtPassword"
+        app:layout_constraintEnd_toEndOf="@+id/etxtPasswordSignIn"
+        app:layout_constraintStart_toStartOf="@+id/etxtPasswordSignIn"
+        app:layout_constraintTop_toBottomOf="@+id/etxtPasswordSignIn"
         android:background="@drawable/button_radius"
         android:letterSpacing="@dimen/button_letter_spacing"
         android:onClick="btnSignUpClick"
@@ -96,6 +96,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Textview"
+        android:textColor="@color/warning_message"
+        android:fontFamily="@font/trenda_semibold"
         app:layout_constraintStart_toStartOf="@+id/etxtUsername"
         app:layout_constraintTop_toBottomOf="@+id/etxtUsername" />
 
@@ -104,16 +106,20 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="TextView"
-        app:layout_constraintStart_toStartOf="@+id/etxtEmail"
-        app:layout_constraintTop_toBottomOf="@+id/etxtEmail" />
+        android:textColor="@color/warning_message"
+        android:fontFamily="@font/trenda_semibold"
+        app:layout_constraintStart_toStartOf="@+id/etxtEmailSignIn"
+        app:layout_constraintTop_toBottomOf="@+id/etxtEmailSignIn" />
 
     <TextView
         android:id="@+id/txtPasswordWarning"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="TextView"
-        app:layout_constraintStart_toStartOf="@+id/etxtPassword"
-        app:layout_constraintTop_toBottomOf="@+id/etxtPassword" />
+        android:textColor="@color/warning_message"
+        android:fontFamily="@font/trenda_semibold"
+        app:layout_constraintStart_toStartOf="@+id/etxtPasswordSignIn"
+        app:layout_constraintTop_toBottomOf="@+id/etxtPasswordSignIn" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
