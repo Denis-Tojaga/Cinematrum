@@ -11,11 +11,13 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
+import com.mob3000.cinematrum.dataModels.User;
 import com.mob3000.cinematrum.databinding.ActivityMainBinding;
 
 public class MainActivity extends AppCompatActivity {
 
     private ActivityMainBinding binding;
+    private User loggedUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,19 +37,23 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupWithNavController(binding.navView, navController);
 
 
-        String loggeduser = getIntent().getStringExtra("username");
+        LoadLoggedUser();
 
-        Toast.makeText(this, "Logged user -> " + loggeduser, Toast.LENGTH_SHORT).show();
 
-        /*
-        * Denis 10.9.2021
-        * */
         //setting the background color of the fragment
         findViewById(R.id.nav_host_fragment_activity_main).getRootView().setBackgroundColor(getResources().getColor(R.color.background_theme));
 
         //removes the UI actionBar at the top of the screen
         getSupportActionBar().hide();
 
+    }
+
+
+    //method for retrieving the logged user
+    private void LoadLoggedUser() {
+        //TODO this has to be fixed, we should retrieve the logged user from getLoggedUserMethod which is not implemented when inserting user
+        /*User loggedUser = (User)getIntent().getSerializableExtra("User");
+        Toast.makeText(MainActivity.this, loggedUser.getName(), Toast.LENGTH_SHORT).show();*/
     }
 
 }
