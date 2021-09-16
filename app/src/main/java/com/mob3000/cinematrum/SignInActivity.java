@@ -3,6 +3,7 @@ package com.mob3000.cinematrum;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.View;
@@ -16,6 +17,8 @@ import com.mob3000.cinematrum.helpers.Validator;
 import com.mob3000.cinematrum.sqlite.DataAcessor;
 
 public class SignInActivity extends AppCompatActivity {
+
+    SharedPreferences sp;
 
     //initializing warning messages
     private String EMAIL_INPUT_FIELD_MESSAGE = "";
@@ -35,6 +38,7 @@ public class SignInActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_in);
+        sp = getSharedPreferences("login",MODE_PRIVATE);
 
         //if we are using an Activity that is extending from AppCompatActivity we need to use getSupportActionBar()
         getSupportActionBar().setTitle(R.string.signin_action_title);
@@ -72,6 +76,7 @@ public class SignInActivity extends AppCompatActivity {
 
                 if (DataAcessor.checkUserCredentials(this, user)) {
                     Intent intent = new Intent(SignInActivity.this, MainActivity.class);
+                    FillSharedPreferences("logged",true,"email",user.getEmail(),"password",user.getPasswordHash());
                     startActivity(intent);
                     Toast.makeText(SignInActivity.this, "User is logged in -> " + user.getEmail(), Toast.LENGTH_SHORT).show();
                 } else
@@ -84,6 +89,13 @@ public class SignInActivity extends AppCompatActivity {
             ex.printStackTrace();
         }
 
+    }
+
+
+    private void FillSharedPreferences(String logged,boolean loggedValue,String email,String emailValue,String password,String passwordValue) {
+        sp.edit().putBoolean(logged,loggedValue).apply();
+        sp.edit().putString(email,emailValue).apply();
+        sp.edit().putString(password,passwordValue).apply();
     }
 
 

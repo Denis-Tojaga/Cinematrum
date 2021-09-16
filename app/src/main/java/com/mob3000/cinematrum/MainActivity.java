@@ -13,6 +13,7 @@ import androidx.navigation.ui.NavigationUI;
 
 import com.mob3000.cinematrum.dataModels.User;
 import com.mob3000.cinematrum.databinding.ActivityMainBinding;
+import com.mob3000.cinematrum.sqlite.DataAcessor;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -52,8 +53,7 @@ public class MainActivity extends AppCompatActivity {
 
     //method for retrieving the logged user
     private void LoadLoggedUser() {
-        //TODO this has to be fixed, we should retrieve the logged user from getLoggedUserMethod which is not implemented when inserting user
-
+        //TODO method for retrieving the user for given credentials (email and password) has to be implemented
     }
 
 }
