@@ -316,14 +316,15 @@ public class DataAcessor {
             int indexUserIndex = c.getColumnIndex(DatabaseHelper.COLUMN_LOGGEDINUSER_userId);
             int userID = c.getInt(indexUserIndex);
 
-            ArrayList<User> userList = getUser(ctx, DatabaseHelper.COLUMN_USER_userID, String.valueOf(userID));
-            if (userList.size() == 1) return userList.get(0);
+            User user = getSingleUser(ctx, userID);
+            //if (userList.size() == 1) return userList.get(0);
 
 
             c.close();
             db.close();
 
-            return null;
+            return user;
+
 
         } catch (Exception ex) {
             Log.e(LOG_TAG, ex.getMessage());
@@ -473,6 +474,51 @@ public class DataAcessor {
         }
     }
 
+    public static boolean logInUser(Context ctx, User u){
+        try {
+            DatabaseHelper dbhelper = new DatabaseHelper(ctx);
+            SQLiteDatabase db = dbhelper.getWritableDatabase();
+
+            // delete User if log out was not succesful
+
+            int rowsDeleted = db.delete(DatabaseHelper.TABLENAME_LOGGEDINUSER, null, null);
+
+            ContentValues values = new ContentValues();
+            values.put(DatabaseHelper.COLUMN_LOGGEDINUSER_userId, u.getUser_id());
+
+            long insertedRow = db.insert(DatabaseHelper.TABLENAME_LOGGEDINUSER, null, values);
+
+            db.close();
+            return insertedRow != -1;
+
+        } catch (Exception ex) {
+            Log.e(LOG_TAG, ex.getMessage());
+            return false;
+        }
+    }
+
+    public static boolean  logOutUser(Context ctx, User u){
+        try {
+            DatabaseHelper dbhelper = new DatabaseHelper(ctx);
+            SQLiteDatabase db = dbhelper.getWritableDatabase();
+
+            ContentValues values = new ContentValues();
+            values.put(DatabaseHelper.COLUMN_LOGGEDINUSER_userId, u.getUser_id());
+
+            String deleteCondition = DatabaseHelper.COLUMN_LOGGEDINUSER_userId + " = ?";
+            String[] deleteArgs = new String[]{String.valueOf(u.getUser_id())};
+
+            int rowsDeleted = db.delete(DatabaseHelper.TABLENAME_LOGGEDINUSER, deleteCondition, deleteArgs);
+
+            db.close();
+            return rowsDeleted > 0;
+
+        } catch (Exception ex) {
+            Log.e(LOG_TAG, ex.getMessage());
+            return false;
+        }
+    }
+
     // TODO: FINISH;
     public static ArrayList<Movie> getMovies(Context ctx, String selectColumn, String selectValue) {
         ArrayList<Movie> movies = new ArrayList<>();
@@ -606,6 +652,8 @@ public class DataAcessor {
             return categories;
         }
     }
+
+
 
 
 }
