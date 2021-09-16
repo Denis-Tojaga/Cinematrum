@@ -7,7 +7,9 @@ import android.content.SharedPreferences;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Base64;
+import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -59,6 +61,9 @@ public class SignUpActivity extends AppCompatActivity {
         ColorDrawable color = new ColorDrawable(getResources().getColor(R.color.background_theme));
         getSupportActionBar().setBackgroundDrawable(color);
     }
+
+
+
 
 
     //registration of a new user
@@ -175,4 +180,5 @@ public class SignUpActivity extends AppCompatActivity {
         Intent intent = new Intent(SignUpActivity.this, WelcomeActivity.class);
         startActivity(intent);
     }
+
 }
