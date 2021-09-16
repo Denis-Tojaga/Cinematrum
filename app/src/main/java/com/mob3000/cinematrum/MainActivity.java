@@ -37,6 +37,7 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupWithNavController(binding.navView, navController);
 
 
+        //save an instance of currently logged user inside this private object User
         LoadLoggedUser();
 
 
@@ -52,8 +53,7 @@ public class MainActivity extends AppCompatActivity {
     //method for retrieving the logged user
     private void LoadLoggedUser() {
         //TODO this has to be fixed, we should retrieve the logged user from getLoggedUserMethod which is not implemented when inserting user
-        /*User loggedUser = (User)getIntent().getSerializableExtra("User");
-        Toast.makeText(MainActivity.this, loggedUser.getName(), Toast.LENGTH_SHORT).show();*/
+
     }
 
 }
