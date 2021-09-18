@@ -34,4 +34,29 @@
     <!-- welcome label dimensions -->
     <dimen name ="welcome_label_size">25dp</dimen>
     <dimen name ="label_letter_spacing">.2</dimen>
+
+
+    <!-- account screen dimensions -->
+    <dimen name="welcome_label">30sp</dimen>
+    <dimen name="subheading_label_size">20sp</dimen>
+    <dimen name="input_field_label_size">15sp</dimen>
+    <dimen name="logout_text_size">25sp</dimen>
+    <dimen name="ticket_history_size">35sp</dimen>
+    <dimen name="ticket_button_width">300dp</dimen>
+    <dimen name="ticket_button_height">90dp</dimen>
+    <dimen name="logout_button_width">245dp</dimen>
+    <dimen name="logout_button_height">50dp</dimen>
+    <dimen name="subheading_margin_top">55dp</dimen>
+    <dimen name="account_screen_labels_letter_spacing">.2</dimen>
+    <dimen name="first_label_margin_top">35dp</dimen>
+    <dimen name="label_margin_top">10dp</dimen>
+    <dimen name="account_screen_input_field_margin_top">5dp</dimen>
+    <dimen name="welcome_label_margin_top">20dp</dimen>
+    <dimen name="ticket_button_margin_top">30dp</dimen>
+    <dimen name="ticket_button_text_size">25dp</dimen>
+    <dimen name="ticket_button_padding">15dp</dimen>
+
+
+
+
 </resources>

@@ -39,6 +39,8 @@ public class WelcomeActivity extends AppCompatActivity {
         SetOnTouchListeners();
     }
 
+
+    //method that will try to auto login a user if he is already signed in
     private void TryAutoLogin() {
         if(GetIsLogged())
             GoToMainActivity();
@@ -48,6 +50,8 @@ public class WelcomeActivity extends AppCompatActivity {
         return sharedPreferences.getBoolean("logged",true);
     }
 
+
+    //navigates to main activity
     private void GoToMainActivity() {
         Intent intent = new Intent(WelcomeActivity.this,MainActivity.class);
         startActivity(intent);

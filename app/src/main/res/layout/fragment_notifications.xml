@@ -4,21 +4,147 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.account.NotificationsFragment">
+    tools:context=".ui.account.NotificationsFragment"
+    android:background="@color/background_theme"
+    >
 
     <TextView
         android:id="@+id/text_notifications"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
+        android:layout_marginTop="@dimen/welcome_label_margin_top"
+        android:fontFamily="@font/trenda_semibold"
+        android:letterSpacing="@dimen/account_screen_labels_letter_spacing"
+        android:text="@string/account_screen_title"
         android:textAlignment="center"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:textColor="@color/white"
+        android:textSize="@dimen/welcome_label_size"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/txtSubHeading"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/subheading_margin_top"
+        android:text="@string/account_screen_subheading"
+        android:fontFamily="@font/trenda_semibold"
+        android:textColor="@color/white"
+        android:textSize="@dimen/subheading_label_size"
+        android:letterSpacing="@dimen/account_screen_labels_letter_spacing"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.13"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/text_notifications" />
+
+    <TextView
+        android:id="@+id/txtUsernameLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/first_label_margin_top"
+        android:fontFamily="@font/trenda_semibold"
+        android:letterSpacing="@dimen/account_screen_labels_letter_spacing"
+        android:text="@string/username_input_hint"
+        android:textColor="@color/account_screen_label"
+        android:textSize="@dimen/input_field_label_size"
+        app:layout_constraintStart_toStartOf="@+id/txtSubHeading"
+        app:layout_constraintTop_toBottomOf="@+id/txtSubHeading" />
+
+
+    <EditText
+        android:id="@+id/etxtAccountUsername"
+        android:layout_width="@dimen/input_field_width"
+        android:layout_height="@dimen/input_field_height"
+        android:layout_marginTop="5dp"
+        android:autofillHints="username"
+        android:background="@drawable/input_radius"
+        android:ems="10"
+        android:fontFamily="@font/trenda_regular"
+        android:inputType="textPersonName"
+        android:padding="@dimen/input_field_padding"
+        android:textColorHint="@color/black"
+        android:textSize="@dimen/input_hint_size"
+        app:layout_constraintStart_toStartOf="@+id/txtUsernameLabel"
+        app:layout_constraintTop_toBottomOf="@+id/txtUsernameLabel"
+        tools:ignore="SpeakableTextPresentCheck" />
+
+    <TextView
+        android:id="@+id/txtEmailLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:fontFamily="@font/trenda_semibold"
+        android:letterSpacing="@dimen/account_screen_labels_letter_spacing"
+        android:text="@string/email_input_hint"
+        android:textColor="@color/account_screen_label"
+        android:textSize="@dimen/input_field_label_size"
+        app:layout_constraintStart_toStartOf="@+id/etxtAccountUsername"
+        app:layout_constraintTop_toBottomOf="@+id/etxtAccountUsername" />
+
+    <EditText
+        android:id="@+id/etxtAccountEmail"
+        android:layout_width="@dimen/input_field_width"
+        android:layout_height="@dimen/input_field_height"
+        android:layout_marginTop="5dp"
+        android:autofillHints="username"
+        android:background="@drawable/input_radius"
+        android:ems="10"
+        android:fontFamily="@font/trenda_regular"
+        android:inputType="textPersonName"
+        android:padding="@dimen/input_field_padding"
+        android:textColorHint="@color/black"
+        android:textSize="@dimen/input_hint_size"
+        app:layout_constraintStart_toStartOf="@+id/txtEmailLabel"
+        app:layout_constraintTop_toBottomOf="@+id/txtEmailLabel"
+        tools:ignore="SpeakableTextPresentCheck" />
+
+    <TextView
+        android:id="@+id/txtPasswordLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:fontFamily="@font/trenda_semibold"
+        android:letterSpacing="@dimen/account_screen_labels_letter_spacing"
+        android:text="@string/password_input_hint"
+        android:textColor="@color/account_screen_label"
+        android:textSize="@dimen/input_field_label_size"
+        app:layout_constraintStart_toStartOf="@+id/etxtAccountEmail"
+        app:layout_constraintTop_toBottomOf="@+id/etxtAccountEmail" />
+
+    <EditText
+        android:id="@+id/etxtAccountPassword"
+        android:layout_width="@dimen/input_field_width"
+        android:layout_height="@dimen/input_field_height"
+        android:layout_marginTop="5dp"
+        android:autofillHints="username"
+        android:background="@drawable/input_radius"
+        android:ems="10"
+        android:fontFamily="@font/trenda_regular"
+        android:inputType="textPersonName"
+        android:padding="@dimen/input_field_padding"
+        android:textColorHint="@color/black"
+        android:textSize="@dimen/input_hint_size"
+        app:layout_constraintStart_toStartOf="@+id/txtPasswordLabel"
+        app:layout_constraintTop_toBottomOf="@+id/txtPasswordLabel"
+        tools:ignore="SpeakableTextPresentCheck" />
+
+    <android.widget.Button
+        android:id="@+id/btnTicketHistory"
+        android:layout_width="@dimen/ticket_button_width"
+        android:layout_height="@dimen/ticket_button_height"
+        android:layout_marginTop="@dimen/ticket_button_margin_top"
+        android:text="@string/ticket_button_text"
+        android:background="@drawable/button_radius"
+        android:textSize="@dimen/ticket_button_text_size"
+        android:fontFamily="@font/trenda_light"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/etxtAccountPassword"
+        android:drawableLeft="@drawable/ticket_icon"
+        android:padding="@dimen/ticket_button_padding"
+        android:drawableRight="@drawable/chevron_smaller"
+        />
 
     <Button
         android:id="@+id/btnLogOut"
@@ -27,8 +153,8 @@
         android:text="Log out"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/text_notifications"
-        />
+        app:layout_constraintTop_toBottomOf="@+id/btnTicketHistory" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
