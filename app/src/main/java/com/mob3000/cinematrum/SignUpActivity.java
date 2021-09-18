@@ -104,9 +104,9 @@ public class SignUpActivity extends AppCompatActivity {
     //email = user's email
     //password = user's hashedPassword(without salt)
     private void FillSharedPreferences(String logged,boolean loggedValue,String email,String emailValue,String password,String passwordValue) {
-        sp.edit().putBoolean(logged,loggedValue).apply();
-        sp.edit().putString(email,emailValue).apply();
-        sp.edit().putString(password,passwordValue).apply();
+        sp.edit().putBoolean(logged,loggedValue).commit();
+        sp.edit().putString(email,emailValue).commit();
+        sp.edit().putString(password,passwordValue).commit();
     }
 
 

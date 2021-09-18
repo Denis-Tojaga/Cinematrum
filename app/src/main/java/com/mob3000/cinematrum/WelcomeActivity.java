@@ -40,8 +40,12 @@ public class WelcomeActivity extends AppCompatActivity {
     }
 
     private void TryAutoLogin() {
-        if(sharedPreferences.getBoolean("logged",false))
+        if(GetIsLogged())
             GoToMainActivity();
+    }
+
+    private boolean GetIsLogged() {
+        return sharedPreferences.getBoolean("logged",true);
     }
 
     private void GoToMainActivity() {
