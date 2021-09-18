@@ -414,6 +414,8 @@ public class DataAcessor {
             values.put(DatabaseHelper.COLUMN_USER_userType, u.getUserType());
             values.put(DatabaseHelper.COLUMN_USER_telephone, u.getTelephone());
 
+            //TODO new user should be inserted inside LoggedInUser table, so next time we open the app
+
             return insertData(ctx, values, DatabaseHelper.TABLENAME_USER);
         } catch (Exception ex) {
             Log.e(LOG_TAG, ex.getMessage());

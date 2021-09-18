@@ -3,10 +3,13 @@ package com.mob3000.cinematrum;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Base64;
+import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -22,6 +25,8 @@ import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
 
 public class SignUpActivity extends AppCompatActivity {
+
+    private SharedPreferences sp;
 
     private String USERNAME_INPUT_FIELD_MESSAGE = "";
     private String EMAIL_INPUT_FIELD_MESSAGE = "";
@@ -45,6 +50,7 @@ public class SignUpActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
+        sp = getSharedPreferences("login",MODE_PRIVATE);
 
         InitViews();
         InitWarningMessages();
@@ -55,6 +61,9 @@ public class SignUpActivity extends AppCompatActivity {
         ColorDrawable color = new ColorDrawable(getResources().getColor(R.color.background_theme));
         getSupportActionBar().setBackgroundDrawable(color);
     }
+
+
+
 
 
     //registration of a new user
@@ -77,7 +86,7 @@ public class SignUpActivity extends AppCompatActivity {
                 if (DataAcessor.insertUser(this, newUser)) {
                     Toast.makeText(SignUpActivity.this, "You logged in successfully", Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(SignUpActivity.this, MainActivity.class);
-                    intent.putExtra("User", newUser);
+                    FillSharedPreferences("logged",true,"email",newUser.getEmail(),"password",newUser.getPasswordHash());
                     startActivity(intent);
                 } else
                     Toast.makeText(SignUpActivity.this, "Sorry something went wrong please try again!", Toast.LENGTH_SHORT).show();
@@ -90,8 +99,15 @@ public class SignUpActivity extends AppCompatActivity {
     }
 
 
-
-
+    //fills shared preferences with three params
+    //logged = true
+    //email = user's email
+    //password = user's hashedPassword(without salt)
+    private void FillSharedPreferences(String logged,boolean loggedValue,String email,String emailValue,String password,String passwordValue) {
+        sp.edit().putBoolean(logged,loggedValue).commit();
+        sp.edit().putString(email,emailValue).commit();
+        sp.edit().putString(password,passwordValue).commit();
+    }
 
 
     //initializing all views in this activity
@@ -164,4 +180,5 @@ public class SignUpActivity extends AppCompatActivity {
         Intent intent = new Intent(SignUpActivity.this, WelcomeActivity.class);
         startActivity(intent);
     }
+
 }

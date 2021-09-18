@@ -3,6 +3,7 @@ package com.mob3000.cinematrum;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
@@ -15,12 +16,17 @@ public class WelcomeActivity extends AppCompatActivity {
     //custom animations for button click because it isn't from MaterialDesign (it's from android.widget.button)
     Animation scale_up_animation,scale_down_animation;
     Button btnSignIn,btnSignUp;
+    SharedPreferences sharedPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome);
 
+        sharedPreferences = getSharedPreferences("login",MODE_PRIVATE);
+
+        //checks if the user is already logged in
+        TryAutoLogin();
 
         //removes the UI actionBar at the top of the screen
         getSupportActionBar().hide();
@@ -33,6 +39,19 @@ public class WelcomeActivity extends AppCompatActivity {
         SetOnTouchListeners();
     }
 
+    private void TryAutoLogin() {
+        if(GetIsLogged())
+            GoToMainActivity();
+    }
+
+    private boolean GetIsLogged() {
+        return sharedPreferences.getBoolean("logged",true);
+    }
+
+    private void GoToMainActivity() {
+        Intent intent = new Intent(WelcomeActivity.this,MainActivity.class);
+        startActivity(intent);
+    }
 
 
     //loading all the views from activity

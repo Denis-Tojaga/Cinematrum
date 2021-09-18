@@ -3,6 +3,7 @@ package com.mob3000.cinematrum;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.View;
@@ -16,6 +17,8 @@ import com.mob3000.cinematrum.helpers.Validator;
 import com.mob3000.cinematrum.sqlite.DataAcessor;
 
 public class SignInActivity extends AppCompatActivity {
+
+    SharedPreferences sp;
 
     //initializing warning messages
     private String EMAIL_INPUT_FIELD_MESSAGE = "";
@@ -35,6 +38,7 @@ public class SignInActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_in);
+        sp = getSharedPreferences("login", MODE_PRIVATE);
 
         //if we are using an Activity that is extending from AppCompatActivity we need to use getSupportActionBar()
         getSupportActionBar().setTitle(R.string.signin_action_title);
@@ -44,10 +48,9 @@ public class SignInActivity extends AppCompatActivity {
 
         InitViews();
 
-        //TODO on loading of this screen we should to auto-login if the user is already logged in
-
     }
 
+    //initializing all views from this activity
     private void InitViews() {
         etxtEmailSignIn = findViewById(R.id.etxtEmailSignIn);
         etxtPasswordSignIn = findViewById(R.id.etxtPasswordSignIn);
@@ -63,7 +66,6 @@ public class SignInActivity extends AppCompatActivity {
 
             if (ValidateFields()) {
                 ClearWarningLabels();
-                //TODO sign in user
                 //we need salt here in order to hash password and set it as hashPassword so we can check with the one inside database
                 User user = new User();
                 user.setEmail(etxtEmailSignIn.getText().toString());
@@ -72,6 +74,7 @@ public class SignInActivity extends AppCompatActivity {
 
                 if (DataAcessor.checkUserCredentials(this, user)) {
                     Intent intent = new Intent(SignInActivity.this, MainActivity.class);
+                    FillSharedPreferences("logged", true, "email", user.getEmail(), "password", user.getPasswordHash());
                     startActivity(intent);
                     Toast.makeText(SignInActivity.this, "User is logged in -> " + user.getEmail(), Toast.LENGTH_SHORT).show();
                 } else
@@ -87,11 +90,21 @@ public class SignInActivity extends AppCompatActivity {
     }
 
 
+    //fills the sharedPreferences with data needed to auto-login
+    private void FillSharedPreferences(String logged, boolean loggedValue, String email, String emailValue, String password, String passwordValue) {
+        sp.edit().putBoolean(logged, loggedValue).apply();
+        sp.edit().putString(email, emailValue).apply();
+        sp.edit().putString(password, passwordValue).apply();
+    }
+
+
+    //clears the text of all warningLabels
     private void ClearWarningLabels() {
         txtEmailWarningMessage.setVisibility(View.GONE);
         txtPasswordWarningMessage.setVisibility(View.GONE);
     }
 
+    //sets the text for warningLabels
     private void SetWarningLabels() {
         //if the current warning message is not valid we will show the message only then
         if (txtEmailWarningMessage.getText() != VALID_FIELD)
@@ -104,6 +117,7 @@ public class SignInActivity extends AppCompatActivity {
             txtPasswordWarningMessage.setVisibility(View.GONE);
     }
 
+    //validating input fields
     private boolean ValidateFields() {
         //if all fields are good the messages value will be VALID and we wont show the warning message
         EMAIL_INPUT_FIELD_MESSAGE = Validator.ValidateInputField(etxtEmailSignIn);
