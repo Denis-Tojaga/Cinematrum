@@ -9,6 +9,8 @@ import android.os.Bundle;
 import android.util.Base64;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -38,12 +40,18 @@ public class SignUpActivity extends AppCompatActivity {
     private TextView txtUsernameWarningMessage;
     private TextView txtEmailWarningMessage;
     private TextView txtPasswordWarningMessage;
+    private Button btnSignUp;
 
 
     //instantiating editText views
     private EditText etxtUsername;
     private EditText etxtEmail;
     private EditText etxtPassword;
+
+
+    //instatiating Animations
+    private Animation scale_up;
+    private Animation scale_down;
 
 
     @Override
@@ -54,20 +62,39 @@ public class SignUpActivity extends AppCompatActivity {
 
         InitViews();
         InitWarningMessages();
+        LoadAnimations();
 
         //if we are using an Activity that is extending from AppCompatActivity we need to use getSupportActionBar()
         getSupportActionBar().setTitle(R.string.signup_action_title);
 
         ColorDrawable color = new ColorDrawable(getResources().getColor(R.color.background_theme));
         getSupportActionBar().setBackgroundDrawable(color);
+
+
+
+        btnSignUp.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                if(motionEvent.getAction()==MotionEvent.ACTION_DOWN)
+                    btnSignUp.startAnimation(scale_up);
+                else if(motionEvent.getAction() == MotionEvent.ACTION_UP)
+                    btnSignUp.startAnimation(scale_down);
+
+                SignUpClick();
+                return true;
+            }
+        });
+
+    }
+
+    private void LoadAnimations() {
+        scale_up = AnimationUtils.loadAnimation(this,R.anim.scale_up);
+        scale_down = AnimationUtils.loadAnimation(this,R.anim.scale_down);
     }
 
 
-
-
-
     //registration of a new user
-    public void btnSignUpClick(View view) {
+    public void SignUpClick() {
 
         if (ValidateInputFields()) {
             ClearWarningLabels();
@@ -115,6 +142,7 @@ public class SignUpActivity extends AppCompatActivity {
         etxtUsername = findViewById(R.id.etxtUsername);
         etxtEmail = findViewById(R.id.etxtEmailSignIn);
         etxtPassword = findViewById(R.id.etxtPasswordSignIn);
+        btnSignUp = findViewById(R.id.btnSignUp);
     }
 
     //initializing warning TextView messages
