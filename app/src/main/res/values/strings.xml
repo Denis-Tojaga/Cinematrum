@@ -14,5 +14,6 @@
     <string name="account_screen_title">Welcome</string>
     <string name="account_screen_subheading">Information</string>
     <string name="ticket_button_text">Ticket history</string>
+    <string name="logout_button_text">Log out</string>
 
 </resources>
