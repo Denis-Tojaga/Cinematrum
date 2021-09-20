@@ -9,6 +9,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
@@ -45,6 +46,7 @@ public class NotificationsFragment extends Fragment {
     private User loggedUser;
     private int _btnEditIcon1ClickCounter = 1;
     private int _btnEditIcon2ClickCounter = 1;
+    private AlphaAnimation buttonClick = new AlphaAnimation(0.5F, 0.1F);
 
     //initializing Views inside this fragment
     private TextView txtWelcomeAccountLabel;
@@ -104,6 +106,7 @@ public class NotificationsFragment extends Fragment {
     //setting onClick listener on two edit icons
     View.OnClickListener icon1ButtonHandler = new View.OnClickListener() {
         public void onClick(View v) {
+            v.startAnimation(buttonClick);
             if (_btnEditIcon1ClickCounter % 2 != 0)
                 UnlockInputField(etxtAccountUsername);
             else
@@ -113,6 +116,7 @@ public class NotificationsFragment extends Fragment {
     };
     View.OnClickListener icon2ButtonHandler = new View.OnClickListener() {
         public void onClick(View v) {
+            v.startAnimation(buttonClick);
             if (_btnEditIcon2ClickCounter % 2 != 0)
                 UnlockInputField(etxtAccountEmail);
             else
@@ -140,6 +144,9 @@ public class NotificationsFragment extends Fragment {
         view.setTextColor(getResources().getColor(R.color.black));
         view.requestFocus();
     }
+
+
+
 
 
     //method for loading all data of currently logged user
@@ -192,6 +199,10 @@ public class NotificationsFragment extends Fragment {
         Intent intent = new Intent(getActivity(), WelcomeActivity.class);
         startActivity(intent);
     }
+
+
+
+
 
     @Override
     public void onDestroyView() {
