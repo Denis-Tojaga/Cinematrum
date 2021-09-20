@@ -40,4 +40,14 @@ public class Cinema {
     public void setHalls(List<Hall> halls) {
         this.halls = halls;
     }
+
+    @Override
+    public String toString() {
+        return "Cinema{" +
+                "cinema_id=" + cinema_id +
+                ", name='" + name + '\'' +
+                ", location='" + location + '\'' +
+                ", halls=" + halls +
+                '}';
+    }
 }

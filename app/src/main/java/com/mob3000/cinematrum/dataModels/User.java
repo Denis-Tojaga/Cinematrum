@@ -96,4 +96,19 @@ public class User implements Serializable {
     public void setWishlist(ArrayList<Wishlist> wishlist) {
         this.wishlist = wishlist;
     }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "user_id=" + user_id +
+                ", name='" + name + '\'' +
+                ", email='" + email + '\'' +
+                ", passwordHash='" + passwordHash + '\'' +
+                ", salt='" + salt + '\'' +
+                ", telephone='" + telephone + '\'' +
+                ", userType='" + userType + '\'' +
+                ", tickets=" + tickets +
+                ", wishlist=" + wishlist +
+                '}';
+    }
 }
