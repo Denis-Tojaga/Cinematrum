@@ -53,6 +53,7 @@ public class DataAcessor {
                 tmpUser.setPasswordHash(cursor.getString(passwordIndex));
                 tmpUser.setSalt(cursor.getString(saltIndex));
                 tmpUser.setTelephone(cursor.getString(telephoneIndex));
+                tmpUser.setWishlist(getWishlists(ctx, DatabaseHelper.COLUMN_WISHLIST_userId, String.valueOf(tmpUser.getUser_id())));
                 user = tmpUser;
 
             }
@@ -198,6 +199,13 @@ public class DataAcessor {
                     tmpWishlist.setWishlist_id(c.getInt(indexWishlistId));
                     tmpWishlist.setUser_id(c.getInt(indexUserId));
                     tmpWishlist.setMovie_id(c.getInt(indexMovieId));
+
+                    ArrayList<Movie> wishlistMovies = getMovies(ctx, DatabaseHelper.COLUMN_MOVIE_movieId, String.valueOf(tmpWishlist.getMovie_id()));
+                    if (wishlistMovies.size() == 1)
+                        tmpWishlist.set_movie(wishlistMovies.get(0));
+                    else
+                        tmpWishlist.set_movie(new Movie());
+
                     wishlists.add(tmpWishlist);
                 }
                 while (c.moveToNext());
@@ -546,11 +554,13 @@ public class DataAcessor {
                 int indexName = c.getColumnIndex(DatabaseHelper.COLUMN_MOVIE_name);
                 int indexPicture = c.getColumnIndex(DatabaseHelper.COLUMN_MOVIE_picture);
                 int indexPlublishedDate = c.getColumnIndex(DatabaseHelper.COLUMN_MOVIE_publishedDate);
+                int indexDescription = c.getColumnIndex(DatabaseHelper.COLUMN_MOVIE_description);
 
                 do {
                     Movie tmpMovie = new Movie();
                     tmpMovie.setMovie_id(c.getInt(indexMovieId));
                     tmpMovie.setName(c.getString(indexName));
+                    tmpMovie.setDescription(c.getString(indexDescription));
                     tmpMovie.setPicture(c.getString(indexPicture));
                     int unixTimestamp = c.getInt(indexPlublishedDate);
                     tmpMovie.setPublishedDate((new java.util.Date((long) unixTimestamp * 1000)));

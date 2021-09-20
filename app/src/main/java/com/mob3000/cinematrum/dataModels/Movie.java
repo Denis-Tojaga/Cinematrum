@@ -8,6 +8,7 @@ public class Movie {
 
     private int movie_id;
     private String name;
+    private String description;
     private String picture;
     private Date publishedDate;
     private List<MoviesCinemas> moviesCinemas;
@@ -51,6 +52,14 @@ public class Movie {
 
     public void setMoviesCinemas(List<MoviesCinemas> moviesCinemas) {
         this.moviesCinemas = moviesCinemas;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public List<Category> getCategories() {

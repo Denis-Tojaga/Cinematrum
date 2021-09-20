@@ -13,7 +13,9 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.mob3000.cinematrum.R;
+import com.mob3000.cinematrum.dataModels.User;
 import com.mob3000.cinematrum.databinding.FragmentHomeBinding;
+import com.mob3000.cinematrum.sqlite.DataAcessor;
 
 public class HomeFragment extends Fragment {
 
@@ -36,6 +38,16 @@ public class HomeFragment extends Fragment {
             }
         });
         return root;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        // TEST
+        // Login in user
+        User u = DataAcessor.getSingleUser(getActivity().getApplicationContext(), 1);
+        DataAcessor.logInUser(getActivity().getApplicationContext(), u);
     }
 
     @Override
