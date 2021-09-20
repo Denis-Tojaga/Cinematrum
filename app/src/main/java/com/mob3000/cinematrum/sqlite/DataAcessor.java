@@ -195,7 +195,7 @@ public class DataAcessor {
                 int indexHallId = c.getColumnIndex(DatabaseHelper.COLUMN_WISHLIST_hallId); // TODO Do we need this?
                 do {
                     Wishlist tmpWishlist = new Wishlist();
-                    tmpWishlist.setWishilst_id(c.getInt(indexWishlistId));
+                    tmpWishlist.setWishlist_id(c.getInt(indexWishlistId));
                     tmpWishlist.setUser_id(c.getInt(indexUserId));
                     tmpWishlist.setMovie_id(c.getInt(indexMovieId));
                     wishlists.add(tmpWishlist);
@@ -597,7 +597,7 @@ public class DataAcessor {
                 do {
                     Category tmpCat = new Category();
                     tmpCat.setName(c.getString(indexName));
-                    tmpCat.setCategorie_id(c.getInt(indexCategorieId));
+                    tmpCat.setCategory_id(c.getInt(indexCategorieId));
                     // TODO: Load Movies with own function (like getMovies)
                     categories.add(tmpCat);
 
@@ -637,7 +637,7 @@ public class DataAcessor {
 
                 do {
                     Category tmpCat = new Category();
-                    tmpCat.setCategorie_id(c.getInt(indexCategoryId));
+                    tmpCat.setCategory_id(c.getInt(indexCategoryId));
                     tmpCat.setName(c.getString(indexCategoryName));
                     // TODO: LOAD ALL MOVIES FROM ONE CATEGORIE (Needs one function!!)
                     categories.add(tmpCat);
