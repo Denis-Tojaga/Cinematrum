@@ -13,6 +13,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -42,16 +43,16 @@ public class NotificationsFragment extends Fragment {
     private Animation scale_down;
     private View root;
     private User loggedUser;
+    private int _btnEditIcon1ClickCounter = 1;
+    private int _btnEditIcon2ClickCounter = 1;
 
     //initializing Views inside this fragment
     private TextView txtWelcomeAccountLabel;
     private TextView txtSubHeading;
     private EditText etxtAccountUsername;
     private EditText etxtAccountEmail;
-    private EditText etxtAccountPassword;
-    private ImageView imgEditIcon1;
-    private ImageView imgEditIcon2;
-    private ImageView imgEditIcon3;
+    private ImageButton editIcon1;
+    private ImageButton editIcon2;
     private Button btnTicketHistory;
     private Button btnLogOut;
 
@@ -75,6 +76,11 @@ public class NotificationsFragment extends Fragment {
         InitViews();
         LoadLoggedUserData();
         LoadAnimations();
+        LockAllInputFields();
+
+        editIcon1.setOnClickListener(icon1ButtonHandler);
+        editIcon2.setOnClickListener(icon2ButtonHandler);
+
 
         //defining a logOut button and setting onTouchListener
         btnLogOut.setOnTouchListener(new View.OnTouchListener() {
@@ -90,7 +96,49 @@ public class NotificationsFragment extends Fragment {
             }
         });
 
+
         return root;
+    }
+
+
+    //setting onClick listener on two edit icons
+    View.OnClickListener icon1ButtonHandler = new View.OnClickListener() {
+        public void onClick(View v) {
+            if (_btnEditIcon1ClickCounter % 2 != 0)
+                UnlockInputField(etxtAccountUsername);
+            else
+                LockInputField(etxtAccountUsername);
+            _btnEditIcon1ClickCounter++;
+        }
+    };
+    View.OnClickListener icon2ButtonHandler = new View.OnClickListener() {
+        public void onClick(View v) {
+            if (_btnEditIcon2ClickCounter % 2 != 0)
+                UnlockInputField(etxtAccountEmail);
+            else
+                LockInputField(etxtAccountEmail);
+            _btnEditIcon2ClickCounter++;
+        }
+    };
+
+
+    //lock or unlocks given editText view
+    private void LockAllInputFields() {
+        etxtAccountUsername.setEnabled(false);
+        etxtAccountUsername.setTextColor(getResources().getColor(R.color.hint_color));
+        etxtAccountEmail.setEnabled(false);
+        etxtAccountEmail.setTextColor(getResources().getColor(R.color.hint_color));
+    }
+
+    private void LockInputField(EditText view) {
+        view.setEnabled(false);
+        view.setTextColor(getResources().getColor(R.color.hint_color));
+    }
+
+    private void UnlockInputField(EditText view) {
+        view.setEnabled(true);
+        view.setTextColor(getResources().getColor(R.color.black));
+        view.requestFocus();
     }
 
 
@@ -124,10 +172,8 @@ public class NotificationsFragment extends Fragment {
         txtSubHeading = root.findViewById(R.id.txtSubHeading);
         etxtAccountUsername = root.findViewById(R.id.etxtAccountUsername);
         etxtAccountEmail = root.findViewById(R.id.etxtAccountEmail);
-        etxtAccountPassword = root.findViewById(R.id.etxtAccountPassword);
-        imgEditIcon1 = root.findViewById(R.id.imgEditIcon1);
-        imgEditIcon2 = root.findViewById(R.id.imgEditIcon2);
-        imgEditIcon3 = root.findViewById(R.id.imgEditIcon3);
+        editIcon1 = (ImageButton) root.findViewById(R.id.editIcon1);
+        editIcon2 = (ImageButton) root.findViewById(R.id.editIcon2);
         btnTicketHistory = root.findViewById(R.id.btnTicketHistory);
         btnLogOut = root.findViewById(R.id.btnLogOut);
     }
@@ -151,5 +197,10 @@ public class NotificationsFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         binding = null;
+    }
+
+
+    private void NavigateToTicketHistory() {
+        //TODO implement the navigation to ticket history
     }
 }
