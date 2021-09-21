@@ -1,6 +1,8 @@
 package com.mob3000.cinematrum.ui.account;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -46,7 +48,7 @@ public class NotificationsFragment extends Fragment {
     private User loggedUser;
     private int _btnEditIcon1ClickCounter = 1;
     private int _btnEditIcon2ClickCounter = 1;
-    private AlphaAnimation buttonClick = new AlphaAnimation(0.5F, 0.1F);
+    private AlphaAnimation buttonClick = new AlphaAnimation(0.3F, 0.1F);
 
     //initializing Views inside this fragment
     private TextView txtWelcomeAccountLabel;
@@ -108,9 +110,9 @@ public class NotificationsFragment extends Fragment {
         public void onClick(View v) {
             v.startAnimation(buttonClick);
             if (_btnEditIcon1ClickCounter % 2 != 0)
-                UnlockInputField(etxtAccountUsername);
+                UnlockInputField(etxtAccountUsername, editIcon1);
             else
-                LockInputField(etxtAccountUsername);
+                LockInputField(etxtAccountUsername, editIcon1);
             _btnEditIcon1ClickCounter++;
         }
     };
@@ -118,9 +120,9 @@ public class NotificationsFragment extends Fragment {
         public void onClick(View v) {
             v.startAnimation(buttonClick);
             if (_btnEditIcon2ClickCounter % 2 != 0)
-                UnlockInputField(etxtAccountEmail);
+                UnlockInputField(etxtAccountEmail, editIcon2);
             else
-                LockInputField(etxtAccountEmail);
+                LockInputField(etxtAccountEmail, editIcon2);
             _btnEditIcon2ClickCounter++;
         }
     };
@@ -134,19 +136,70 @@ public class NotificationsFragment extends Fragment {
         etxtAccountEmail.setTextColor(getResources().getColor(R.color.hint_color));
     }
 
-    private void LockInputField(EditText view) {
-        view.setEnabled(false);
-        view.setTextColor(getResources().getColor(R.color.hint_color));
+
+    //checking if the data changed in input fields
+    private boolean DataChanged() {
+        if (etxtAccountUsername.getText().toString().equals(loggedUser.getName()) && etxtAccountEmail.getText().toString().equals(loggedUser.getEmail()))
+            return false;
+        return true;
     }
 
-    private void UnlockInputField(EditText view) {
+    //updating the user's data with new data and saving it
+    private void UpdateUserData(String newUsername, String newEmail) {
+        //setting up the new data
+        loggedUser.setName(newUsername);
+        loggedUser.setEmail(newEmail);
+        //updating the data in SQLite
+        sp.edit().putString("email",loggedUser.getEmail()).apply();
+        DataAcessor.updateUser(getActivity(), loggedUser);
+
+        //loading user, this time with new data
+        LoadLoggedUserData();
+    }
+
+
+    //lock and unlock input field if user wants to update data
+    private void LockInputField(EditText view, ImageButton editicon) {
+        if (DataChanged()) {
+            AlertDialog.Builder dialog = new AlertDialog.Builder(getActivity());
+            dialog.setTitle("User approval");
+            dialog.setMessage("Some of the data has changed, are You sure You want to update?");
+
+
+            //if user agrees we update his data and load it again
+            dialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    UpdateUserData(etxtAccountUsername.getText().toString(), etxtAccountEmail.getText().toString());
+                    Toast.makeText(getActivity(), "Data successfully updated!", Toast.LENGTH_SHORT).show();
+                }
+            });
+
+            dialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    //we dont have to do anything if user cancels
+                    etxtAccountUsername.setText(loggedUser.getName());
+                    etxtAccountEmail.setText(loggedUser.getEmail());
+                    view.setEnabled(false);
+                    view.setTextColor(getResources().getColor(R.color.hint_color));
+                    editicon.setImageResource(R.drawable.edit_icon);
+                }
+            });
+
+            dialog.create().show();
+        }
+
+        view.setEnabled(false);
+        view.setTextColor(getResources().getColor(R.color.hint_color));
+        editicon.setImageResource(R.drawable.edit_icon);
+    }
+    private void UnlockInputField(EditText view, ImageButton editicon) {
         view.setEnabled(true);
         view.setTextColor(getResources().getColor(R.color.black));
         view.requestFocus();
+        editicon.setImageResource(R.drawable.save_icon);
     }
-
-
-
 
 
     //method for loading all data of currently logged user
@@ -162,7 +215,6 @@ public class NotificationsFragment extends Fragment {
                 txtWelcomeAccountLabel.setText("Welcome " + loggedUser.getName());
                 etxtAccountUsername.setText(loggedUser.getName());
                 etxtAccountEmail.setText(loggedUser.getEmail());
-                //TODO implement decryption of a password
 
             } catch (Exception e) {
                 e.printStackTrace();
@@ -199,9 +251,6 @@ public class NotificationsFragment extends Fragment {
         Intent intent = new Intent(getActivity(), WelcomeActivity.class);
         startActivity(intent);
     }
-
-
-
 
 
     @Override

@@ -462,7 +462,7 @@ public class DataAcessor {
 
             ContentValues values = new ContentValues();
             values.put(DatabaseHelper.COLUMN_USER_username, u.getName());
-            values.put(DatabaseHelper.COLUMN_USER_email, u.getName());
+            values.put(DatabaseHelper.COLUMN_USER_email, u.getEmail());
             values.put(DatabaseHelper.COLUMN_USER_telephone, u.getTelephone());
             values.put(DatabaseHelper.COLUMN_USER_userType, u.getUserType());
 
