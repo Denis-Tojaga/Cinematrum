@@ -36,6 +36,7 @@ import com.mob3000.cinematrum.databinding.FragmentNotificationsBinding;
 import com.mob3000.cinematrum.helpers.Validator;
 import com.mob3000.cinematrum.sqlite.DataAcessor;
 import com.mob3000.cinematrum.sqlite.DatabaseHelper;
+import com.mob3000.cinematrum.ui.TicketHistoryActivity;
 
 import java.util.ArrayList;
 
@@ -96,6 +97,21 @@ public class NotificationsFragment extends Fragment {
                     btnLogOut.startAnimation(scale_down);
 
                 LogOut();
+                return true;
+            }
+        });
+
+
+        //setting onClickListener to ticketHistory button and navigating to different activity
+        btnTicketHistory.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                if (motionEvent.getAction() == MotionEvent.ACTION_DOWN)
+                    btnTicketHistory.startAnimation(scale_up);
+                else if (motionEvent.getAction() == MotionEvent.ACTION_UP)
+                    btnTicketHistory.startAnimation(scale_down);
+
+                NavigateToTicketHistory();
                 return true;
             }
         });
@@ -260,7 +276,13 @@ public class NotificationsFragment extends Fragment {
     }
 
 
+
+
+    //navigating to TicketHistory activity
     private void NavigateToTicketHistory() {
         //TODO implement the navigation to ticket history
+        Intent intent = new Intent(getActivity(), TicketHistoryActivity.class);
+        intent.putExtra("user",loggedUser);
+        startActivity(intent);
     }
 }
