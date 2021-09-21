@@ -48,6 +48,8 @@ public class WishlistTableAdapter extends ArrayAdapter<Wishlist> {
             nameView.setText(currentMovie.getName());
             descriptionView.setText(currentMovie.getDescription());
             categoriesView.setText(currentMovie.getCategoriesNamesConcat());
+
+            Picasso.with(_context).load(currentMovie.getPicture()).into(imageView);
             // TODO: DOWNLOAD IMAGE?
 
         }

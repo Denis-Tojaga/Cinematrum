@@ -7,8 +7,10 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -62,6 +64,17 @@ public class WishlistFragment extends Fragment {
         _wishlistAdapter = new WishlistTableAdapter(getActivity().getApplicationContext(), _wishlist);
         _wishlistListView.setAdapter(_wishlistAdapter);
 
+        _wishlistListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Wishlist currentEntry = _wishlist.get(i);
+                Toast.makeText(getActivity().getApplicationContext(), "Item Clicked: " + currentEntry.get_movie().getName(), Toast.LENGTH_LONG).show();
+                // TODO: Navigate to Movie Detail Screen
+
+            }
+        });
+
+
         _searchTextInput.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -82,8 +95,10 @@ public class WishlistFragment extends Fragment {
                         if (item.get_movie().getDescription().contains(text) || item.get_movie().getName().contains(text))
                             filteredWishlist.add(_fullWishlist.get(i));
                     }
+                    _wishlist = filteredWishlist;
                     _wishlistAdapter.updateData(filteredWishlist);
                 } else {
+                    _wishlist = _fullWishlist;
                     _wishlistAdapter.updateData(_fullWishlist);
                 }
             }
