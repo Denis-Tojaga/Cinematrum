@@ -36,33 +36,6 @@ public class WelcomeActivity extends AppCompatActivity {
         //loading all activity views
         LoadViews();
         //setting up the touch listeners
-        SetOnTouchListeners();
-    }
-
-    private void TryAutoLogin() {
-        if(GetIsLogged())
-            GoToMainActivity();
-    }
-
-    private boolean GetIsLogged() {
-        return sharedPreferences.getBoolean("logged",true);
-    }
-
-    private void GoToMainActivity() {
-        Intent intent = new Intent(WelcomeActivity.this,MainActivity.class);
-        startActivity(intent);
-    }
-
-
-    //loading all the views from activity
-    private void LoadViews() {
-        btnSignIn = findViewById(R.id.btnSignIn);
-        btnSignUp = findViewById(R.id.btnSignUp);
-    }
-
-
-    //setting touch listeners on both buttons to activate the touch animations and navigating to corresponding activity
-    private void SetOnTouchListeners() {
         btnSignIn.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
@@ -88,9 +61,34 @@ public class WelcomeActivity extends AppCompatActivity {
 
                 Intent intent = new Intent(WelcomeActivity.this,SignUpActivity.class);
                 startActivity(intent);
-                return false;
+                return true;
             }
         });
+    }
+
+
+    //method that will try to auto login a user if he is already signed in
+    private void TryAutoLogin() {
+        if(GetIsLogged())
+            GoToMainActivity();
+    }
+
+    private boolean GetIsLogged() {
+        return sharedPreferences.getBoolean("logged",true);
+    }
+
+
+    //navigates to main activity
+    private void GoToMainActivity() {
+        Intent intent = new Intent(WelcomeActivity.this,MainActivity.class);
+        startActivity(intent);
+    }
+
+
+    //loading all the views from activity
+    private void LoadViews() {
+        btnSignIn = findViewById(R.id.btnSignIn);
+        btnSignUp = findViewById(R.id.btnSignUp);
     }
 
 
@@ -99,6 +97,4 @@ public class WelcomeActivity extends AppCompatActivity {
         scale_up_animation = AnimationUtils.loadAnimation(this,R.anim.scale_up);
         scale_down_animation = AnimationUtils.loadAnimation(this,R.anim.scale_down);
     }
-
-
 }

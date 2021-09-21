@@ -11,4 +11,9 @@
     <string name="password_input_hint">Password</string>
     <string name="signin_action_title">Sign In</string>
     <string name="signup_action_title">Sign Up</string>
+    <string name="account_screen_title">Welcome</string>
+    <string name="account_screen_subheading">Information</string>
+    <string name="ticket_button_text">Ticket history</string>
+    <string name="logout_button_text">Log out</string>
+
 </resources>

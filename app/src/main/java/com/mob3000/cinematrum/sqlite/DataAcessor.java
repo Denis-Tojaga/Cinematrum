@@ -308,7 +308,8 @@ public class DataAcessor {
         try {
             DatabaseHelper dbhelper = new DatabaseHelper(ctx);
             SQLiteDatabase db = dbhelper.getReadableDatabase();
-            String sql = "SELECT * FROM " + DatabaseHelper.TABLENAME_LOGGEDINUSER + ";";
+            String sql = "SELECT * FROM " + DatabaseHelper.TABLENAME_USER + ";";
+
             Cursor c = db.rawQuery(sql, null);
             if (c.getCount() < 1) return null;
 
@@ -397,12 +398,12 @@ public class DataAcessor {
         }
     }
 
-    public static boolean insertUser(Context ctx, User u) throws UserNameTakenException {
+    public static boolean insertUser(Context ctx, User u) throws EmailTakenException {
         try {
 
-            ArrayList<User> userWithSameName = DataAcessor.getUser(ctx, DatabaseHelper.COLUMN_USER_username, u.getName());
-            if (userWithSameName.size() > 0)
-                throw new UserNameTakenException("Username " + u.getName() + " is already taken");
+            ArrayList<User> userWithSameEmail = DataAcessor.getUser(ctx, DatabaseHelper.COLUMN_USER_email, u.getEmail());
+            if (userWithSameEmail.size() > 0)
+                throw new EmailTakenException("Email -> " + u.getEmail() + " already in use. Try again!");
 
             ContentValues values = new ContentValues();
 
@@ -414,7 +415,6 @@ public class DataAcessor {
             values.put(DatabaseHelper.COLUMN_USER_userType, u.getUserType());
             values.put(DatabaseHelper.COLUMN_USER_telephone, u.getTelephone());
 
-            //TODO new user should be inserted inside LoggedInUser table, so next time we open the app
 
             return insertData(ctx, values, DatabaseHelper.TABLENAME_USER);
         } catch (Exception ex) {
@@ -429,7 +429,6 @@ public class DataAcessor {
             ArrayList<User> dbUsers = getUser(ctx, DatabaseHelper.COLUMN_USER_email, u.getEmail());
             if (dbUsers.size() != 1) return false;
 
-            //TODO passwordWithoutSalt and password are the same but the method keeps returning false
             String hashedPasswordWithoutSalt = Validator.ExtractPasswordPart(dbUsers.get(0).getPasswordHash());
 
             return hashedPasswordWithoutSalt.equals(u.getPasswordHash());
@@ -463,7 +462,7 @@ public class DataAcessor {
 
             ContentValues values = new ContentValues();
             values.put(DatabaseHelper.COLUMN_USER_username, u.getName());
-            values.put(DatabaseHelper.COLUMN_USER_email, u.getName());
+            values.put(DatabaseHelper.COLUMN_USER_email, u.getEmail());
             values.put(DatabaseHelper.COLUMN_USER_telephone, u.getTelephone());
             values.put(DatabaseHelper.COLUMN_USER_userType, u.getUserType());
 
@@ -476,7 +475,7 @@ public class DataAcessor {
         }
     }
 
-    public static boolean logInUser(Context ctx, User u){
+    public static boolean logInUser(Context ctx, User u) {
         try {
             DatabaseHelper dbhelper = new DatabaseHelper(ctx);
             SQLiteDatabase db = dbhelper.getWritableDatabase();
@@ -499,7 +498,7 @@ public class DataAcessor {
         }
     }
 
-    public static boolean  logOutUser(Context ctx, User u){
+    public static boolean logOutUser(Context ctx, User u) {
         try {
             DatabaseHelper dbhelper = new DatabaseHelper(ctx);
             SQLiteDatabase db = dbhelper.getWritableDatabase();
@@ -654,8 +653,6 @@ public class DataAcessor {
             return categories;
         }
     }
-
-
 
 
 }

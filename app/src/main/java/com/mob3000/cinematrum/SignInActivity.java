@@ -6,7 +6,10 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -34,6 +37,10 @@ public class SignInActivity extends AppCompatActivity {
     private EditText etxtPasswordSignIn;
     private Button btnSignIn;
 
+    //initializing animations
+    private Animation scale_up;
+    private Animation scale_down;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,6 +55,28 @@ public class SignInActivity extends AppCompatActivity {
 
         InitViews();
 
+        LoadAnimations();
+
+        btnSignIn.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                if(motionEvent.getAction()==MotionEvent.ACTION_DOWN)
+                    btnSignIn.startAnimation(scale_up);
+                else if(motionEvent.getAction() == MotionEvent.ACTION_UP)
+                    btnSignIn.startAnimation(scale_down);
+
+                SignInClick();
+                return true;
+            }
+        });
+
+    }
+
+
+    //method for loading animation files
+    private void LoadAnimations() {
+        scale_up = AnimationUtils.loadAnimation(this,R.anim.scale_up);
+        scale_down = AnimationUtils.loadAnimation(this,R.anim.scale_down);
     }
 
     //initializing all views from this activity
@@ -61,7 +90,7 @@ public class SignInActivity extends AppCompatActivity {
 
 
     //method for signing in the user with inserted credentials
-    public void btnSignInClick(View view) {
+    public void SignInClick() {
         try {
 
             if (ValidateFields()) {
