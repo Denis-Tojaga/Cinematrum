@@ -40,12 +40,14 @@ public class WishlistTableAdapter extends ArrayAdapter<Wishlist> {
         TextView nameView = (TextView) listItem.findViewById(R.id.textView_name);
         TextView descriptionView = (TextView) listItem.findViewById(R.id.textView_description);
         ImageView imageView = (ImageView) listItem.findViewById(R.id.imageView);
+        TextView categoriesView = (TextView) listItem.findViewById(R.id.textView_categories);
 
         if (_wishlist != null && _wishlist.size() > 0) {
 
             Movie currentMovie = _wishlist.get(position).get_movie();
             nameView.setText(currentMovie.getName());
             descriptionView.setText(currentMovie.getDescription());
+            categoriesView.setText(currentMovie.getCategoriesNamesConcat());
             // TODO: DOWNLOAD IMAGE?
 
         }
@@ -54,7 +56,7 @@ public class WishlistTableAdapter extends ArrayAdapter<Wishlist> {
     }
 
     public void updateData(ArrayList<Wishlist> wishlist){
-        //this._wishlist = wishlist;
+        this._wishlist = wishlist;
         this.clear();
         this.addAll(wishlist);
         this.notifyDataSetChanged();

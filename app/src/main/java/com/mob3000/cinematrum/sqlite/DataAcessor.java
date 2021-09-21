@@ -463,7 +463,7 @@ public class DataAcessor {
     }
 
 
-    // TODO: FINISH
+    // TODO: FINISH WITH SALT?
     public static boolean updateUser(Context ctx, User u) {
         try {
             DatabaseHelper dbhelper = new DatabaseHelper(ctx);
@@ -566,6 +566,7 @@ public class DataAcessor {
                     tmpMovie.setPublishedDate((new java.util.Date((long) unixTimestamp * 1000)));
                     tmpMovie.setMoviesCinemas(getMoviesCinemas(ctx, DatabaseHelper.COLUMN_MOVIESCINEMAS_movieID, String.valueOf(tmpMovie.getMovie_id())));
                     tmpMovie.setCategories(getCategoriesForMovie(ctx, tmpMovie.getMovie_id()));
+                    tmpMovie.setCategoriesNamesConcat(concatCategoryNames(tmpMovie.getCategories()));
                     movies.add(tmpMovie);
                 }
                 while (c.moveToNext());
@@ -578,6 +579,19 @@ public class DataAcessor {
             Log.e(LOG_TAG, ex.getMessage());
             return movies;
         }
+    }
+
+    private static String concatCategoryNames(ArrayList<Category> categories){
+        String concattedNames = "";
+        for (int i = 0; i < categories.size(); i++){
+            if (i  > 0){
+                concattedNames += ", ";
+            }
+            else {
+                concattedNames += categories.get(i).getName();
+            }
+        }
+        return concattedNames;
     }
 
     // TODO FINISH!!

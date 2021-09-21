@@ -1,19 +1,18 @@
 package com.mob3000.cinematrum.ui.wishlist;
 
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ListView;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 
 import com.mob3000.cinematrum.R;
 import com.mob3000.cinematrum.adapter.WishlistTableAdapter;
@@ -26,9 +25,8 @@ import java.util.ArrayList;
 
 public class WishlistFragment extends Fragment {
 
-    private static String LOG_TAG = "WISHLISTLOG";
-
-    private ArrayList<Wishlist> _wishlist;
+    private ArrayList<Wishlist> _wishlist; //
+    private ArrayList<Wishlist> _fullWishlist; // All wishlist items copied once cause _wishlist gets passed to adapter and possibly cleared.
     private User _currentUser;
 
     private EditText _searchTextInput;
@@ -48,9 +46,8 @@ public class WishlistFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-
         // INIT VIEW
-        _searchTextInput = (EditText) view.findViewById(R.id.search_textInput);
+        _searchTextInput = view.findViewById(R.id.search_textInput);
 
         _wishlistListView = view.findViewById(R.id.wishlist_listView);
 
@@ -60,8 +57,7 @@ public class WishlistFragment extends Fragment {
         if (_wishlist == null)
             _wishlist = new ArrayList<>();
 
-        Log.d(LOG_TAG, "WISHLIST SIZE:");
-        Log.d(LOG_TAG, String.valueOf(_wishlist.size()));
+        _fullWishlist = new ArrayList<>(_wishlist);
 
         _wishlistAdapter = new WishlistTableAdapter(getActivity().getApplicationContext(), _wishlist);
         _wishlistListView.setAdapter(_wishlistAdapter);
@@ -69,35 +65,28 @@ public class WishlistFragment extends Fragment {
         _searchTextInput.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
             }
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
             }
 
             @Override
             public void afterTextChanged(Editable editable) {
                 String text = _searchTextInput.getText().toString();
 
-                if (text != ""){
-                    ArrayList<Wishlist> completeList = _wishlist;
+                if (!TextUtils.isEmpty(text)) {
                     ArrayList<Wishlist> filteredWishlist = new ArrayList<>();
-                    for (int i = 0; i < completeList.size(); i ++){
-                        Wishlist item = completeList.get(i);
-                        if (item.get_movie().getDescription().contains(text) ||item.get_movie().getName().contains(text))
-                            filteredWishlist.add(completeList.get(i));
+                    for (int i = 0; i < _fullWishlist.size(); i++) {
+                        Wishlist item = _fullWishlist.get(i);
+                        if (item.get_movie().getDescription().contains(text) || item.get_movie().getName().contains(text))
+                            filteredWishlist.add(_fullWishlist.get(i));
                     }
                     _wishlistAdapter.updateData(filteredWishlist);
+                } else {
+                    _wishlistAdapter.updateData(_fullWishlist);
                 }
-                else {
-                    //_wishlist = _currentUser.getWishlist();
-                    _wishlistAdapter.updateData(_wishlist);
-                }
-
             }
         });
-
     }
 }

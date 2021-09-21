@@ -1,6 +1,7 @@
 package com.mob3000.cinematrum.dataModels;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -11,8 +12,12 @@ public class Movie {
     private String description;
     private String picture;
     private Date publishedDate;
-    private List<MoviesCinemas> moviesCinemas;
-    private List<Category> categories;
+    private ArrayList<MoviesCinemas> moviesCinemas;
+    private ArrayList<Category> categories;
+
+
+
+    private String categoriesNamesConcat;
 
     public int getMovie_id() {
         return movie_id;
@@ -50,7 +55,7 @@ public class Movie {
         return moviesCinemas;
     }
 
-    public void setMoviesCinemas(List<MoviesCinemas> moviesCinemas) {
+    public void setMoviesCinemas(ArrayList<MoviesCinemas> moviesCinemas) {
         this.moviesCinemas = moviesCinemas;
     }
 
@@ -62,12 +67,20 @@ public class Movie {
         this.description = description;
     }
 
-    public List<Category> getCategories() {
+    public ArrayList<Category> getCategories() {
         return categories;
     }
 
-    public void setCategories(List<Category> categories) {
+    public void setCategories(ArrayList<Category> categories) {
         this.categories = categories;
+    }
+
+    public String getCategoriesNamesConcat() {
+        return categoriesNamesConcat;
+    }
+
+    public void setCategoriesNamesConcat(String categoriesNamesConcat) {
+        this.categoriesNamesConcat = categoriesNamesConcat;
     }
 
     @Override
