@@ -19,43 +19,50 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-
-    <ImageView
-        android:id="@+id/imageView"
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardView"
         android:layout_width="@dimen/wishlist_item_imageViewWidth"
         android:layout_height="@dimen/wishlist_item_imageViewHeight"
         android:layout_marginTop="16dp"
+        app:cardCornerRadius="8dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView_name" />
+        app:layout_constraintTop_toBottomOf="@+id/textView_name">
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+    </androidx.cardview.widget.CardView>
 
 
     <TextView
         android:id="@+id/textView_description"
         android:layout_width="0dp"
         android:layout_height="@dimen/wishlist_item_descriptionHeight"
-        android:layout_marginStart="16dp"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
         android:ellipsize="end"
         android:fontFamily="@font/trenda_regular"
+        android:maxLines="5"
         android:textColor="@color/white"
         android:textSize="@dimen/wishlist_item_descriptionSize"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/imageView"
-        app:layout_constraintTop_toBottomOf="@+id/textView_name"
-        android:maxLines="5"/>
+        app:layout_constraintStart_toEndOf="@+id/cardView"
+        app:layout_constraintTop_toBottomOf="@+id/textView_name" />
 
     <TextView
         android:id="@+id/textView_categories"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
-        android:ellipsize="none"
+        android:ellipsize="end"
         android:fontFamily="@font/trenda_regular"
+        android:maxLines="1"
         android:textColor="@color/white"
         android:textSize="@dimen/wishlist_item_descriptionSize"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/imageView"
+        app:layout_constraintStart_toStartOf="@+id/textView_description"
         app:layout_constraintTop_toBottomOf="@+id/textView_description" />
 
 

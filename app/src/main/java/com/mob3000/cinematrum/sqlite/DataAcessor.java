@@ -5,6 +5,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -484,7 +485,7 @@ public class DataAcessor {
         }
     }
 
-    public static boolean logInUser(Context ctx, User u){
+    public static boolean logInUser(Context ctx, User u) {
         try {
             DatabaseHelper dbhelper = new DatabaseHelper(ctx);
             SQLiteDatabase db = dbhelper.getWritableDatabase();
@@ -507,7 +508,7 @@ public class DataAcessor {
         }
     }
 
-    public static boolean  logOutUser(Context ctx, User u){
+    public static boolean logOutUser(Context ctx, User u) {
         try {
             DatabaseHelper dbhelper = new DatabaseHelper(ctx);
             SQLiteDatabase db = dbhelper.getWritableDatabase();
@@ -581,13 +582,13 @@ public class DataAcessor {
         }
     }
 
-    private static String concatCategoryNames(ArrayList<Category> categories){
+    private static String concatCategoryNames(ArrayList<Category> categories) {
         String concattedNames = "";
-        for (int i = 0; i < categories.size(); i++){
-            if (i  > 0){
-                concattedNames += ", ";
-            }
-            else {
+        for (int i = 0; i < categories.size(); i++) {
+            if (!TextUtils.isEmpty(categories.get(i).getName())) {
+                if (i > 0) {
+                    concattedNames += ", ";
+                }
                 concattedNames += categories.get(i).getName();
             }
         }
@@ -647,9 +648,11 @@ public class DataAcessor {
             SQLiteDatabase db = dbhelper.getWritableDatabase();
 
             String sql = "SELECT * FROM " + DatabaseHelper.TABLENAME_CATEGORIE_MOVIE
-                    + " LEFT JOIN " + DatabaseHelper.TABLENAME_CATEGORIE + " on " + DatabaseHelper.TABLENAME_CATEGORIE_MOVIE + "." + DatabaseHelper.COLUMN_CATEGORIESMOVIES_movieId
+                    + " LEFT JOIN " + DatabaseHelper.TABLENAME_CATEGORIE + " on " + DatabaseHelper.TABLENAME_CATEGORIE_MOVIE + "." + DatabaseHelper.COLUMN_CATEGORIESMOVIES_categoryId
                     + " = " + DatabaseHelper.TABLENAME_CATEGORIE + "." + DatabaseHelper.COLUMN_CATEGORY_categoryId
                     + " where " + DatabaseHelper.COLUMN_CATEGORIESMOVIES_movieId + "=?;";
+
+
             String[] sqlArgs = new String[]{String.valueOf(movie_id)};
 
             Cursor c = db.rawQuery(sql, sqlArgs);
@@ -678,8 +681,6 @@ public class DataAcessor {
             return categories;
         }
     }
-
-
 
 
 }

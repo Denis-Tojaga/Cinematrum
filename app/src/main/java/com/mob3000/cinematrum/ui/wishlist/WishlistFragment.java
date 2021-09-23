@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.SearchView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -31,7 +32,7 @@ public class WishlistFragment extends Fragment {
     private ArrayList<Wishlist> _fullWishlist; // All wishlist items copied once cause _wishlist gets passed to adapter and possibly cleared.
     private User _currentUser;
 
-    private EditText _searchTextInput;
+    private SearchView _searchTextInput;
     private ListView _wishlistListView;
 
     private WishlistTableAdapter _wishlistAdapter;
@@ -74,34 +75,60 @@ public class WishlistFragment extends Fragment {
             }
         });
 
+_searchTextInput.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+    @Override
+    public boolean onQueryTextSubmit(String s) {
+        return false;
+    }
 
-        _searchTextInput.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+    @Override
+    public boolean onQueryTextChange(String s) {
+
+        String text = _searchTextInput.getQuery().toString();
+
+        if (!TextUtils.isEmpty(text)) {
+            ArrayList<Wishlist> filteredWishlist = new ArrayList<>();
+            for (int i = 0; i < _fullWishlist.size(); i++) {
+                Wishlist item = _fullWishlist.get(i);
+                if (item.get_movie().getDescription().contains(text) || item.get_movie().getName().contains(text) || item.get_movie().getCategoriesNamesConcat().contains(text))
+                    filteredWishlist.add(_fullWishlist.get(i));
             }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-                String text = _searchTextInput.getText().toString();
-
-                if (!TextUtils.isEmpty(text)) {
-                    ArrayList<Wishlist> filteredWishlist = new ArrayList<>();
-                    for (int i = 0; i < _fullWishlist.size(); i++) {
-                        Wishlist item = _fullWishlist.get(i);
-                        if (item.get_movie().getDescription().contains(text) || item.get_movie().getName().contains(text))
-                            filteredWishlist.add(_fullWishlist.get(i));
-                    }
-                    _wishlist = filteredWishlist;
-                    _wishlistAdapter.updateData(filteredWishlist);
-                } else {
-                    _wishlist = _fullWishlist;
-                    _wishlistAdapter.updateData(_fullWishlist);
-                }
-            }
-        });
+            _wishlist = filteredWishlist;
+            _wishlistAdapter.updateData(filteredWishlist);
+        } else {
+            _wishlist = _fullWishlist;
+            _wishlistAdapter.updateData(_fullWishlist);
+        }
+        return false;
+    }
+});
+//        _searchTextInput.addTextChangedListener(new TextWatcher() {
+//            @Override
+//            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+//            }
+//
+//            @Override
+//            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+//            }
+//
+//            @Override
+//            public void afterTextChanged(Editable editable) {
+//                String text = _searchTextInput.getQuery().toString();
+//
+//                if (!TextUtils.isEmpty(text)) {
+//                    ArrayList<Wishlist> filteredWishlist = new ArrayList<>();
+//                    for (int i = 0; i < _fullWishlist.size(); i++) {
+//                        Wishlist item = _fullWishlist.get(i);
+//                        if (item.get_movie().getDescription().contains(text) || item.get_movie().getName().contains(text) || item.get_movie().getCategoriesNamesConcat().contains(text))
+//                            filteredWishlist.add(_fullWishlist.get(i));
+//                    }
+//                    _wishlist = filteredWishlist;
+//                    _wishlistAdapter.updateData(filteredWishlist);
+//                } else {
+//                    _wishlist = _fullWishlist;
+//                    _wishlistAdapter.updateData(_fullWishlist);
+//                }
+//            }
+//        });
     }
 }

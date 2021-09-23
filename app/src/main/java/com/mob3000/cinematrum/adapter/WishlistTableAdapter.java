@@ -1,6 +1,7 @@
 package com.mob3000.cinematrum.adapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +15,7 @@ import androidx.annotation.Nullable;
 import com.mob3000.cinematrum.R;
 import com.mob3000.cinematrum.dataModels.Movie;
 import com.mob3000.cinematrum.dataModels.Wishlist;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
