@@ -25,8 +25,8 @@
 
     <SearchView
         android:id="@+id/svSearchInput"
-        android:layout_width="340dp"
-        android:layout_height="50dp"
+        android:layout_width="@dimen/ticket_screen_search_width"
+        android:layout_height="@dimen/ticket_screen_search_height"
         android:layout_marginHorizontal="@dimen/ticket_screen_search_margin_horizontal"
         android:layout_marginTop="@dimen/ticket_screen_search_margin_top"
         android:background="@drawable/search_field_radius"
@@ -39,7 +39,8 @@
         android:id="@+id/recViewTickets"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_margin="@dimen/ticket_screen_recyclerView_margin"
+        android:layout_marginHorizontal="@dimen/ticket_screen_recyclerView_margin"
+        android:layout_marginTop="@dimen/ticket_screen_recyclerView_margin"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

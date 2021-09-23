@@ -71,13 +71,15 @@
 
     <!-- ticket history screen dimensions -->
     <dimen name="ticket_screen_title_margin_top">20dp</dimen>
-    <dimen name="ticket_screen_search_margin_top">30dp</dimen>
+    <dimen name="ticket_screen_search_margin_top">15dp</dimen>
+    <dimen name="ticket_screen_search_width">355dp</dimen>
+    <dimen name="ticket_screen_search_height">48dp</dimen>
     <dimen name="ticket_screen_search_margin_horizontal">50dp</dimen>
     <dimen name="ticket_screen_recyclerView_margin">20dp</dimen>
     <dimen name="ticket_screen_adapterimg_margin">20dp</dimen>
-    <dimen name="ticket_movie_title_label">25dp</dimen>
-    <dimen name="ticket_movie_price_label">25dp</dimen>
-    <dimen name="ticket_movie_row_seat_label">20dp</dimen>
+    <dimen name="ticket_movie_title_label">22dp</dimen>
+    <dimen name="ticket_movie_price_label">22dp</dimen>
+    <dimen name="ticket_movie_row_seat_label">17dp</dimen>
     <dimen name="ticket_movie_label_marginTop">20dp</dimen>
     <dimen name="ticket_movie_img_width">150dp</dimen>
 

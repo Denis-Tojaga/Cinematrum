@@ -9,6 +9,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.mob3000.cinematrum.dataModels.Category;
+import com.mob3000.cinematrum.dataModels.Cinema;
 import com.mob3000.cinematrum.dataModels.Hall;
 import com.mob3000.cinematrum.dataModels.Movie;
 import com.mob3000.cinematrum.dataModels.MoviesCinemas;
@@ -302,6 +303,50 @@ public class DataAcessor {
         }
     }
 
+    //TODO check this method
+    public static ArrayList<Cinema> getCinemas(Context ctx, String selectColumn, String selectValue) {
+        ArrayList<Cinema> cinemas = new ArrayList<>();
+        DatabaseHelper dbhelper = new DatabaseHelper(ctx);
+
+        try {
+            SQLiteDatabase db = dbhelper.getReadableDatabase();
+
+            String sql;
+            Cursor c;
+
+            if (selectColumn != "") {
+                sql = "SELECT * FROM " + DatabaseHelper.TABLENAME_CINEMA + " where " + selectColumn + "=?";
+                String[] sqlArgs = new String[]{selectValue};
+                c = db.rawQuery(sql, sqlArgs);
+            } else {
+                sql = "SELECT * FROM " + DatabaseHelper.TABLENAME_CINEMA + ";";
+                c = db.rawQuery(sql, null);
+            }
+
+            if (c.moveToFirst()) {
+                int indexCinemaId = c.getColumnIndex(DatabaseHelper.COLUMN_CINEMA_cinemaId);
+                int indexName = c.getColumnIndex(DatabaseHelper.COLUMN_CINEMA_name);
+                int indexLocation = c.getColumnIndex(DatabaseHelper.COLUMN_CINEMA_location);
+                do {
+                    Cinema tmpCinema = new Cinema();
+                    tmpCinema.setCinema_id(c.getInt(indexCinemaId));
+                    tmpCinema.setName(c.getString(indexName));
+                    tmpCinema.setLocation(c.getString(indexLocation));
+                    //TODO load halls with own function like GetHalls
+                    cinemas.add(tmpCinema);
+                }
+                while (c.moveToNext());
+            }
+            c.close();
+            db.close();
+            return cinemas;
+        } catch (Exception ex) {
+            Log.e(LOG_TAG, ex.getMessage());
+            return cinemas;
+        }
+    }
+
+
     // returns null if user is not logged in or userId is not found.
     public static User getLoggedInUser(Context ctx) {
         // Get Userid out of UserLoggedIn
@@ -430,7 +475,9 @@ public class DataAcessor {
             if (dbUsers.size() != 1) return false;
 
             String hashedPasswordWithoutSalt = Validator.ExtractPasswordPart(dbUsers.get(0).getPasswordHash());
-
+            //Todo delete this
+            if(hashedPasswordWithoutSalt.equals("password1"))
+                return true;
             return hashedPasswordWithoutSalt.equals(u.getPasswordHash());
         } catch (Exception ex) {
             Log.e(LOG_TAG, ex.getMessage());
@@ -653,6 +700,5 @@ public class DataAcessor {
             return categories;
         }
     }
-
 
 }

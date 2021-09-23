@@ -1,8 +1,9 @@
 package com.mob3000.cinematrum.dataModels;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class Ticket {
+public class Ticket implements Serializable {
 
     private int ticket_id;
     private int moviesCinemas_id;
