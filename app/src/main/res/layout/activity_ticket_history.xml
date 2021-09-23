@@ -4,6 +4,44 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.TicketHistoryActivity">
+    tools:context=".ui.TicketHistoryActivity"
+    android:background="@color/background_theme"
+    >
 
+    <TextView
+        android:id="@+id/txtTicketHistoryLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/ticket_screen_title_margin_top"
+        android:fontFamily="@font/trenda_semibold"
+        android:letterSpacing="@dimen/account_screen_labels_letter_spacing"
+        android:text="@string/ticket_history_text"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:textSize="@dimen/welcome_label_size"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <SearchView
+        android:id="@+id/svSearchInput"
+        android:layout_width="340dp"
+        android:layout_height="50dp"
+        android:layout_marginHorizontal="@dimen/ticket_screen_search_margin_horizontal"
+        android:layout_marginTop="@dimen/ticket_screen_search_margin_top"
+        android:background="@drawable/search_field_radius"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.444"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtTicketHistoryLabel" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recViewTickets"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_margin="@dimen/ticket_screen_recyclerView_margin"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/svSearchInput" />
 </androidx.constraintlayout.widget.ConstraintLayout>

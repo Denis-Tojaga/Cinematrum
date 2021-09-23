@@ -15,5 +15,9 @@
     <string name="account_screen_subheading">Information</string>
     <string name="ticket_button_text">Ticket history</string>
     <string name="logout_button_text">Log out</string>
+    <string name="ticket_history_text">Ticket history</string>
+    <string name="ticket_row">Row:</string>
+    <string name="ticket_seat">Seat:</string>
+
 
 </resources>

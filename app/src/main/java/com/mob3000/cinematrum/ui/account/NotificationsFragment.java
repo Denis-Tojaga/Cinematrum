@@ -280,7 +280,6 @@ public class NotificationsFragment extends Fragment {
 
     //navigating to TicketHistory activity
     private void NavigateToTicketHistory() {
-        //TODO implement the navigation to ticket history
         Intent intent = new Intent(getActivity(), TicketHistoryActivity.class);
         intent.putExtra("user",loggedUser);
         startActivity(intent);
