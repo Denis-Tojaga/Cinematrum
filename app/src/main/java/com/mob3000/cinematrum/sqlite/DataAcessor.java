@@ -256,7 +256,7 @@ public class DataAcessor {
         }
     }
 
-    private static ArrayList<MoviesCinemas> getMoviesCinemas(Context ctx, String selectColumn, String selectValue) {
+    public static ArrayList<MoviesCinemas> getMoviesCinemas(Context ctx, String selectColumn, String selectValue) {
         ArrayList<MoviesCinemas> moviesCinemas = new ArrayList<>();
         DatabaseHelper dbhelper = new DatabaseHelper(ctx);
         try {

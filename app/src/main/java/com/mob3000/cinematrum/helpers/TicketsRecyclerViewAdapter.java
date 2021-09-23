@@ -12,7 +12,12 @@ import androidx.constraintlayout.helper.widget.Layer;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.mob3000.cinematrum.R;
+import com.mob3000.cinematrum.dataModels.Cinema;
+import com.mob3000.cinematrum.dataModels.Hall;
+import com.mob3000.cinematrum.dataModels.Movie;
+import com.mob3000.cinematrum.dataModels.MoviesCinemas;
 import com.mob3000.cinematrum.dataModels.Ticket;
+import com.mob3000.cinematrum.sqlite.DataAcessor;
 
 import java.util.ArrayList;
 
@@ -62,8 +67,42 @@ public class TicketsRecyclerViewAdapter extends RecyclerView.Adapter<TicketsRecy
         //in this method we manipulate with all the data regarding the one view item
         //setting on click listener, setting data inside something, etc..
 
-        //TODO get the moviesccinemas object from sql and set all the data inside of this 
 
+        // -> hall(cinema_id) -> cinema(name,location)
+                                                                           //->movie(name,pictureURL)
+
+        //getting the movies_cinemas object from ticket object
+        String mcObjectID = Integer.toString(userTickets.get(position).getMoviesCinemas_id());
+        ArrayList<MoviesCinemas> mcObjects = DataAcessor.getMoviesCinemas(mContext,"moviesCienemas_id",mcObjectID);
+        MoviesCinemas mcObject = mcObjects.get(0);
+
+
+        //getting the movie object from movies_cinemas object
+        String movieObjectID = Integer.toString(mcObject.getMovie_id());
+        ArrayList<Movie> movies = DataAcessor.getMovies(mContext,"movie_id",movieObjectID);
+        Movie movieObject = movies.get(0);
+
+
+        //getting the hall object from movies_cinemas object
+        String hallObjectID = Integer.toString(mcObject.getHall_id());
+        ArrayList<Hall> halls = DataAcessor.getHalls(mContext,"hall_id",hallObjectID);
+        Hall hallObject = halls.get(0);
+
+
+        //getting the cinema object from hall object
+        String cinemaObjectID = Integer.toString(hallObject.getCinema_id());
+        //TODO implement the method inside DataAcessor for getCinemas()
+
+
+
+        //picture, cinemaName,cinemaLocation
+        //TODO add Glide dependency and load the movieImageURL
+        holder.txtMovieTitle.setText(movieObject.getName());
+        holder.txtMoviePrice.setText(Double.toString(mcObject.getPrice()));
+        holder.txtMovieRowNumber.setText(userTickets.get(position).getRowNumber());
+        holder.txtMovieSeatNumber.setText(userTickets.get(position).getSeatNumber());
+
+        holder.txtMovieReservedAt.setText(userTickets.get(position).getReservedAt().toString());
 
     }
 
