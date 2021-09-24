@@ -11,6 +11,8 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 
+import java.io.File;
+
 public class WelcomeActivity extends AppCompatActivity {
 
     //custom animations for button click because it isn't from MaterialDesign (it's from android.widget.button)
@@ -69,7 +71,10 @@ public class WelcomeActivity extends AppCompatActivity {
 
     //method that will try to auto login a user if he is already signed in
     private void TryAutoLogin() {
-        if(GetIsLogged())
+        File f = new File("/data/data/com.mob3000.cinematrum/shared_prefs/login.xml");
+        boolean fileExists = f.exists();
+        boolean userLoggedIn = GetIsLogged();
+        if(fileExists && userLoggedIn)
             GoToMainActivity();
     }
 
