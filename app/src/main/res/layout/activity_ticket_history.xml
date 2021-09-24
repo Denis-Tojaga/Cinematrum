@@ -59,4 +59,33 @@
         app:layout_constraintTop_toTopOf="@+id/txtTicketHistoryLabel"
         app:srcCompat="@drawable/go_back_icon"
         tools:ignore="ContentDescription,SpeakableTextPresentCheck" />
+
+    <ImageView
+        android:id="@+id/imgErrorIcon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/recViewTickets"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/svSearchInput"
+        app:layout_constraintVertical_bias="0.26"
+        app:srcCompat="@drawable/error_icon" />
+
+    <TextView
+        android:id="@+id/txtErrorMessage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/error_message_margin_top"
+        android:fontFamily="@font/trenda_bold"
+        android:text="@string/error_message_no_tickets"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:textSize="@dimen/error_message_text_size"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="@+id/imgErrorIcon"
+        app:layout_constraintHorizontal_bias="0.502"
+        app:layout_constraintStart_toStartOf="@+id/imgErrorIcon"
+        app:layout_constraintTop_toBottomOf="@+id/imgErrorIcon"
+        />
 </androidx.constraintlayout.widget.ConstraintLayout>

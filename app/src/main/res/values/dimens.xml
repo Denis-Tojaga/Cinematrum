@@ -83,6 +83,8 @@
     <dimen name="ticket_movie_row_seat_label">17dp</dimen>
     <dimen name="ticket_movie_label_marginTop">20dp</dimen>
     <dimen name="ticket_movie_img_width">150dp</dimen>
+    <dimen name="error_message_margin_top">35dp</dimen>
+    <dimen name="error_message_text_size">40sp</dimen>
 
 
 

@@ -14,13 +14,22 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.AlphaAnimation;
 import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.SearchView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.mob3000.cinematrum.MainActivity;
 import com.mob3000.cinematrum.R;
+import com.mob3000.cinematrum.dataModels.Movie;
+import com.mob3000.cinematrum.dataModels.MoviesCinemas;
+import com.mob3000.cinematrum.dataModels.Ticket;
 import com.mob3000.cinematrum.dataModels.User;
 import com.mob3000.cinematrum.helpers.TicketsRecyclerViewAdapter;
+import com.mob3000.cinematrum.sqlite.DataAcessor;
 import com.mob3000.cinematrum.ui.account.NotificationsFragment;
+
+import java.util.ArrayList;
 
 public class TicketHistoryActivity extends AppCompatActivity {
 
@@ -28,6 +37,9 @@ public class TicketHistoryActivity extends AppCompatActivity {
     private RecyclerView recViewTickets;
     private TicketsRecyclerViewAdapter ticketRecyclerViewAdapter;
     private ImageButton btnGoBack;
+    private ImageView imgErrorIcon;
+    private TextView txtErrorMessage;
+    private SearchView svSearchInput;
 
 
     private AlphaAnimation goBackButtonClick = new AlphaAnimation(0.3F, 0.1F);
@@ -42,20 +54,52 @@ public class TicketHistoryActivity extends AppCompatActivity {
 
         InitViews();
         LoadLoggedUser();
+        LoadTickets(loggedUser.getTickets());
 
+        //setting onClickListener to go back icon
         btnGoBack.setOnClickListener(goBackListener);
 
+        //setting onQueryTextListener to searchView for filtering tickets on user input
+        svSearchInput.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String s) {
+                //we simply call the filter method that is implemented in recyclerView
+                ticketRecyclerViewAdapter.getFilter().filter(s);
+                return false;
+            }
+        });
+    }
+
+
+
+
+    //method used to initialize recyclerView and load the user's tickets
+    private void LoadTickets(ArrayList<Ticket> tickets) {
+        //initializing recyclerView and recyclerViewAdapter
         recViewTickets = findViewById(R.id.recViewTickets);
         ticketRecyclerViewAdapter = new TicketsRecyclerViewAdapter(this, "MainActivity");
 
         //using the user's ticket list to initialize the arrayList of tickets inside an adapter
-        ticketRecyclerViewAdapter.set_tickets(loggedUser.getTickets());
+        if (tickets.size() != 0) {
+            ticketRecyclerViewAdapter.set_tickets(tickets);
+            //setting adapter for recyclerView
+            recViewTickets.setAdapter(ticketRecyclerViewAdapter);
+            //everytime we use custom adapter we need to set a LayoutManager
+            recViewTickets.setLayoutManager(new LinearLayoutManager(this));
+        } else
+            ShowNoTicketsMessage();
+    }
 
-        //setting adapter for recyclerView
-        recViewTickets.setAdapter(ticketRecyclerViewAdapter);
-
-        //everytime we use custom adapter we need to set a LayoutManager
-        recViewTickets.setLayoutManager(new LinearLayoutManager(this));
+    //method for hiding recyclerView and showing alert message
+    private void ShowNoTicketsMessage() {
+        recViewTickets.setVisibility(View.GONE);
+        imgErrorIcon.setVisibility(View.VISIBLE);
+        txtErrorMessage.setVisibility(View.VISIBLE);
     }
 
 
@@ -66,6 +110,7 @@ public class TicketHistoryActivity extends AppCompatActivity {
             onBackPressed();
         }
     };
+
     @Override
     public void onBackPressed() {
         finish();
@@ -85,5 +130,8 @@ public class TicketHistoryActivity extends AppCompatActivity {
     private void InitViews() {
         recViewTickets = findViewById(R.id.recViewTickets);
         btnGoBack = findViewById(R.id.btnGoBack);
+        imgErrorIcon = findViewById(R.id.imgErrorIcon);
+        txtErrorMessage = findViewById(R.id.txtErrorMessage);
+        svSearchInput = findViewById(R.id.svSearchInput);
     }
 }
