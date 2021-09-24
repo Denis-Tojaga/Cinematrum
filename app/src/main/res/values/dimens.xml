@@ -32,7 +32,7 @@
 
 
     <!-- welcome label dimensions -->
-    <dimen name ="welcome_label_size">25dp</dimen>
+    <dimen name ="welcome_label_size">25sp</dimen>
     <dimen name ="label_letter_spacing">.2</dimen>
 
 
@@ -72,6 +72,7 @@
     <!-- ticket history screen dimensions -->
     <dimen name="ticket_screen_title_margin_top">20dp</dimen>
     <dimen name="ticket_screen_search_margin_top">15dp</dimen>
+    <dimen name="ticket_screen_goback_margin_left">20dp</dimen>
     <dimen name="ticket_screen_search_width">355dp</dimen>
     <dimen name="ticket_screen_search_height">48dp</dimen>
     <dimen name="ticket_screen_search_margin_horizontal">50dp</dimen>

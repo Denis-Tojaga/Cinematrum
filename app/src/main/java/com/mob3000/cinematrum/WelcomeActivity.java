@@ -23,7 +23,7 @@ public class WelcomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome);
 
-        sharedPreferences = getSharedPreferences("login",MODE_PRIVATE);
+        sharedPreferences = this.getSharedPreferences("login",MODE_PRIVATE);
 
         //checks if the user is already logged in
         TryAutoLogin();

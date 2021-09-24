@@ -263,7 +263,8 @@ public class NotificationsFragment extends Fragment {
 
     //clearing the shared preferences and navigating the user back to the welcome screen
     private void LogOut() {
-        sp.edit().putBoolean("logged", false).commit();
+        sp = getActivity().getSharedPreferences("login",Context.MODE_PRIVATE);
+        sp.edit().putBoolean("logged",false).apply();
         Intent intent = new Intent(getActivity(), WelcomeActivity.class);
         startActivity(intent);
     }
@@ -280,8 +281,11 @@ public class NotificationsFragment extends Fragment {
 
     //navigating to TicketHistory activity
     private void NavigateToTicketHistory() {
+
+
         Intent intent = new Intent(getActivity(), TicketHistoryActivity.class);
         intent.putExtra("user",loggedUser);
+        intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
         startActivity(intent);
     }
 }
