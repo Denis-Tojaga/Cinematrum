@@ -32,7 +32,7 @@
 
 
     <!-- welcome label dimensions -->
-    <dimen name ="welcome_label_size">25dp</dimen>
+    <dimen name ="welcome_label_size">25sp</dimen>
     <dimen name ="label_letter_spacing">.2</dimen>
 
 
@@ -60,6 +60,32 @@
     <dimen name="account_screen_logout_button_width">250dp</dimen>
     <dimen name="account_screen_logout_button_height">60dp</dimen>
     <dimen name="account_screen_logout_button_margin_top">15dp</dimen>
+
+
+
+
+
+
+
+
+
+    <!-- ticket history screen dimensions -->
+    <dimen name="ticket_screen_title_margin_top">20dp</dimen>
+    <dimen name="ticket_screen_search_margin_top">15dp</dimen>
+    <dimen name="ticket_screen_goback_margin_left">20dp</dimen>
+    <dimen name="ticket_screen_search_width">355dp</dimen>
+    <dimen name="ticket_screen_search_height">48dp</dimen>
+    <dimen name="ticket_screen_search_margin_horizontal">50dp</dimen>
+    <dimen name="ticket_screen_recyclerView_margin">20dp</dimen>
+    <dimen name="ticket_screen_adapterimg_margin">20dp</dimen>
+    <dimen name="ticket_movie_title_label">22dp</dimen>
+    <dimen name="ticket_movie_price_label">22dp</dimen>
+    <dimen name="ticket_movie_row_seat_label">17dp</dimen>
+    <dimen name="ticket_movie_label_marginTop">20dp</dimen>
+    <dimen name="ticket_movie_img_width">150dp</dimen>
+    <dimen name="error_message_margin_top">35dp</dimen>
+    <dimen name="error_message_text_size">40sp</dimen>
+
 
 
 
