@@ -23,7 +23,7 @@
         android:id="@+id/cardView"
         android:layout_width="@dimen/wishlist_item_imageViewWidth"
         android:layout_height="@dimen/wishlist_item_imageViewHeight"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="10dp"
         app:cardCornerRadius="8dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView_name">
@@ -31,7 +31,9 @@
         <ImageView
             android:id="@+id/imageView"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:adjustViewBounds="true"
+            android:scaleType="centerCrop"/>
 
     </androidx.cardview.widget.CardView>
 
@@ -41,11 +43,11 @@
         android:layout_width="0dp"
         android:layout_height="@dimen/wishlist_item_descriptionHeight"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="10dp"
         android:ellipsize="end"
         android:fontFamily="@font/trenda_regular"
         android:maxLines="5"
-        android:textColor="@color/white"
+        android:textColor="@color/text_light_grey"
         android:textSize="@dimen/wishlist_item_descriptionSize"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/cardView"
@@ -59,7 +61,7 @@
         android:ellipsize="end"
         android:fontFamily="@font/trenda_regular"
         android:maxLines="1"
-        android:textColor="@color/white"
+        android:textColor="@color/text_light_grey"
         android:textSize="@dimen/wishlist_item_descriptionSize"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/textView_description"

@@ -36,11 +36,11 @@
     <dimen name ="label_letter_spacing">.2</dimen>
 
     <!-- wishlist table item dimensions -->
-    <dimen name="wishlist_item_itemViewHeight">210dp</dimen>
+    <dimen name="wishlist_item_itemViewHeight">200dp</dimen>
     <dimen name="wishlist_item_padding">20dp</dimen>
     <dimen name="wishlist_item_nameSize">20sp</dimen>
     <dimen name="wishlist_item_descriptionSize">15sp</dimen>
-    <dimen name="wishlist_item_imageViewHeight">150dp</dimen>
+    <dimen name="wishlist_item_imageViewHeight">125dp</dimen>
     <dimen name="wishlist_item_imageViewWidth">100dp</dimen>
     <dimen name="wishlist_item_descriptionHeight">100dp</dimen>
 

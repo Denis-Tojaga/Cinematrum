@@ -70,7 +70,7 @@ public class WishlistFragment extends Fragment {
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Wishlist currentEntry = _wishlist.get(i);
                 Toast.makeText(getActivity().getApplicationContext(), "Item Clicked: " + currentEntry.get_movie().getName(), Toast.LENGTH_LONG).show();
-                // TODO: Navigate to Movie Detail Screen
+                // TODO: FINALIZE: Navigate to Movie Detail Screen
 
             }
         });
