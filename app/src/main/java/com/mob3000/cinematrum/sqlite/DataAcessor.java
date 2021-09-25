@@ -9,6 +9,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.mob3000.cinematrum.dataModels.Category;
+import com.mob3000.cinematrum.dataModels.Cinema;
 import com.mob3000.cinematrum.dataModels.Hall;
 import com.mob3000.cinematrum.dataModels.Movie;
 import com.mob3000.cinematrum.dataModels.MoviesCinemas;
@@ -100,7 +101,7 @@ public class DataAcessor {
                     tmpUser.setName(cursor.getString(nameIndex));
                     tmpUser.setEmail(cursor.getString(emailIndex));
                     tmpUser.setPasswordHash(cursor.getString(passwordIndex));
-                    tmpUser.setSalt(cursor.getString(saltIndex));// TODO Update for Salt and hash
+                    tmpUser.setSalt(cursor.getString(saltIndex));
                     tmpUser.setTelephone(cursor.getString(telephoneIndex));
                     tmpUser.setTickets(getTickets(ctx, DatabaseHelper.COLUMN_TICKET_userID, String.valueOf(tmpUser.getUser_id())));
                     tmpUser.setWishlist(getWishlists(ctx, DatabaseHelper.COLUMN_WISHLIST_userId, String.valueOf(tmpUser.getUser_id())));
@@ -256,7 +257,7 @@ public class DataAcessor {
         }
     }
 
-    private static ArrayList<MoviesCinemas> getMoviesCinemas(Context ctx, String selectColumn, String selectValue) {
+    public static ArrayList<MoviesCinemas> getMoviesCinemas(Context ctx, String selectColumn, String selectValue) {
         ArrayList<MoviesCinemas> moviesCinemas = new ArrayList<>();
         DatabaseHelper dbhelper = new DatabaseHelper(ctx);
         try {
@@ -301,6 +302,50 @@ public class DataAcessor {
             return moviesCinemas;
         }
     }
+
+    //TODO check this method
+    public static ArrayList<Cinema> getCinemas(Context ctx, String selectColumn, String selectValue) {
+        ArrayList<Cinema> cinemas = new ArrayList<>();
+        DatabaseHelper dbhelper = new DatabaseHelper(ctx);
+
+        try {
+            SQLiteDatabase db = dbhelper.getReadableDatabase();
+
+            String sql;
+            Cursor c;
+
+            if (selectColumn != "") {
+                sql = "SELECT * FROM " + DatabaseHelper.TABLENAME_CINEMA + " where " + selectColumn + "=?";
+                String[] sqlArgs = new String[]{selectValue};
+                c = db.rawQuery(sql, sqlArgs);
+            } else {
+                sql = "SELECT * FROM " + DatabaseHelper.TABLENAME_CINEMA + ";";
+                c = db.rawQuery(sql, null);
+            }
+
+            if (c.moveToFirst()) {
+                int indexCinemaId = c.getColumnIndex(DatabaseHelper.COLUMN_CINEMA_cinemaId);
+                int indexName = c.getColumnIndex(DatabaseHelper.COLUMN_CINEMA_name);
+                int indexLocation = c.getColumnIndex(DatabaseHelper.COLUMN_CINEMA_location);
+                do {
+                    Cinema tmpCinema = new Cinema();
+                    tmpCinema.setCinema_id(c.getInt(indexCinemaId));
+                    tmpCinema.setName(c.getString(indexName));
+                    tmpCinema.setLocation(c.getString(indexLocation));
+                    //TODO load halls with own function like GetHalls
+                    cinemas.add(tmpCinema);
+                }
+                while (c.moveToNext());
+            }
+            c.close();
+            db.close();
+            return cinemas;
+        } catch (Exception ex) {
+            Log.e(LOG_TAG, ex.getMessage());
+            return cinemas;
+        }
+    }
+
 
     // returns null if user is not logged in or userId is not found.
     public static User getLoggedInUser(Context ctx) {
@@ -430,7 +475,6 @@ public class DataAcessor {
             if (dbUsers.size() != 1) return false;
 
             String hashedPasswordWithoutSalt = Validator.ExtractPasswordPart(dbUsers.get(0).getPasswordHash());
-
             return hashedPasswordWithoutSalt.equals(u.getPasswordHash());
         } catch (Exception ex) {
             Log.e(LOG_TAG, ex.getMessage());
@@ -454,7 +498,6 @@ public class DataAcessor {
     }
 
 
-    // TODO: FINISH
     public static boolean updateUser(Context ctx, User u) {
         try {
             DatabaseHelper dbhelper = new DatabaseHelper(ctx);
@@ -520,7 +563,6 @@ public class DataAcessor {
         }
     }
 
-    // TODO: FINISH;
     public static ArrayList<Movie> getMovies(Context ctx, String selectColumn, String selectValue) {
         ArrayList<Movie> movies = new ArrayList<>();
 
@@ -569,7 +611,6 @@ public class DataAcessor {
         }
     }
 
-    // TODO FINISH!!
     public static ArrayList<Category> getCategories(Context ctx, String selectColumn, String selectValue) {
 
         ArrayList<Category> categories = new ArrayList<>();
@@ -614,7 +655,6 @@ public class DataAcessor {
     }
 
 
-    // TODO : FINISH!!!
     public static ArrayList<Category> getCategoriesForMovie(Context ctx, int movie_id) {
         ArrayList<Category> categories = new ArrayList<>();
         try {
@@ -653,6 +693,5 @@ public class DataAcessor {
             return categories;
         }
     }
-
 
 }

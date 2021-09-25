@@ -80,8 +80,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     // INSERT DATA
     public static final String INSERT_MOVIE_TABLE = "INSERT INTO " + TABLENAME_MOVIE + " (" + COLUMN_MOVIE_name  + ", " + COLUMN_MOVIE_picture + ", " + COLUMN_MOVIE_video + ", " + COLUMN_MOVIE_duration + ", " + COLUMN_MOVIE_description + ", " + COLUMN_MOVIE_publishedDate + ") "
 
-            + "VALUES (\"James Bond\",\"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQy7G06j-HhGeHCUAiOwZU-gUcpvjlKnODkAJ4ZZPsaYVrAx8SKnuuQcsCboqU-WaDppNI&usqp=CAU\", \"\", 1.25, \"The hero James Bond likes to fight all the evil people all over the world\", 1631451990),"
-            + "(\"IT\",\"https://akamai.vgc.no/v2/images/f2d2f165-41ec-4cbc-9fa7-01b69dbaf4e9?fit=crop&h=1267&w=1900&s=ca937e54cedd2e14493af218e2b695de02aae573\", \"\", 1.9, \"It is back. The clown who comes back every 25 years. Already two kids have been missing until the group of young children find out the truth\",1631451990)";
+            + "VALUES (\"James Bond\",\"https://i.pinimg.com/originals/24/7c/68/247c683e0f24793e7fe2ae030c8835dc.jpg\", \"\", 1.25, \"The hero James Bond likes to fight all the evil people all over the world\", 1631451990),"
+            + "(\"IT\",\"https://wegotthiscovered.com/wp-content/uploads/2020/07/maxresdefault-17.jpg\", \"\", 1.9, \"It is back. The clown who comes back every 25 years. Already two kids have been missing until the group of young children find out the truth\",1631451990)";
     public static final String INSERT_USER_TABLE = "INSERT INTO " + TABLENAME_USER + " (" + COLUMN_USER_username + ", " + COLUMN_USER_email + ", " + COLUMN_USER_password + ", " + COLUMN_USER_salt + ", " + COLUMN_USER_userType + ", " + COLUMN_USER_telephone + ") "
             + "VALUES (\"user1\",\"email1\",\"password1\",\"salt1\",01234, \"admin\"),"
             + "(\"user3\",\"email2\",\"password3\",\"salt2\",012348790809, \"user\"),"

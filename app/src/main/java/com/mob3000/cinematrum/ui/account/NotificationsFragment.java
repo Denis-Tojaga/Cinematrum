@@ -36,6 +36,7 @@ import com.mob3000.cinematrum.databinding.FragmentNotificationsBinding;
 import com.mob3000.cinematrum.helpers.Validator;
 import com.mob3000.cinematrum.sqlite.DataAcessor;
 import com.mob3000.cinematrum.sqlite.DatabaseHelper;
+import com.mob3000.cinematrum.ui.TicketHistoryActivity;
 
 import java.util.ArrayList;
 
@@ -101,6 +102,21 @@ public class NotificationsFragment extends Fragment {
         });
 
 
+        //setting onClickListener to ticketHistory button and navigating to different activity
+        btnTicketHistory.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                if (motionEvent.getAction() == MotionEvent.ACTION_DOWN)
+                    btnTicketHistory.startAnimation(scale_up);
+                else if (motionEvent.getAction() == MotionEvent.ACTION_UP)
+                    btnTicketHistory.startAnimation(scale_down);
+
+                NavigateToTicketHistory();
+                return true;
+            }
+        });
+
+
         return root;
     }
 
@@ -150,7 +166,7 @@ public class NotificationsFragment extends Fragment {
         loggedUser.setName(newUsername);
         loggedUser.setEmail(newEmail);
         //updating the data in SQLite
-        sp.edit().putString("email",loggedUser.getEmail()).apply();
+        sp.edit().putString("email", loggedUser.getEmail()).apply();
         DataAcessor.updateUser(getActivity(), loggedUser);
 
         //loading user, this time with new data
@@ -162,8 +178,8 @@ public class NotificationsFragment extends Fragment {
     private void LockInputField(EditText view, ImageButton editicon) {
         if (DataChanged()) {
             AlertDialog.Builder dialog = new AlertDialog.Builder(getActivity());
-            dialog.setTitle("User approval");
-            dialog.setMessage("Some of the data has changed, are You sure You want to update?");
+            dialog.setTitle(getResources().getText(R.string.alertdialog_title));
+            dialog.setMessage(getResources().getText(R.string.alertdialog_message));
 
 
             //if user agrees we update his data and load it again
@@ -171,7 +187,7 @@ public class NotificationsFragment extends Fragment {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {
                     UpdateUserData(etxtAccountUsername.getText().toString(), etxtAccountEmail.getText().toString());
-                    Toast.makeText(getActivity(), "Data successfully updated!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), getResources().getText(R.string.update_success_toast), Toast.LENGTH_SHORT).show();
                 }
             });
 
@@ -194,6 +210,7 @@ public class NotificationsFragment extends Fragment {
         view.setTextColor(getResources().getColor(R.color.hint_color));
         editicon.setImageResource(R.drawable.edit_icon);
     }
+
     private void UnlockInputField(EditText view, ImageButton editicon) {
         view.setEnabled(true);
         view.setTextColor(getResources().getColor(R.color.black));
@@ -220,7 +237,7 @@ public class NotificationsFragment extends Fragment {
                 e.printStackTrace();
             }
         } else
-            Toast.makeText(getActivity(), "Loading logged user went wrong!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), "No user found with these credentials!", Toast.LENGTH_SHORT).show();
 
     }
 
@@ -247,11 +264,20 @@ public class NotificationsFragment extends Fragment {
 
     //clearing the shared preferences and navigating the user back to the welcome screen
     private void LogOut() {
-        sp.edit().putBoolean("logged", false).commit();
+        sp = getActivity().getSharedPreferences("login", Context.MODE_PRIVATE);
+        sp.edit().putBoolean("logged", false).apply();
         Intent intent = new Intent(getActivity(), WelcomeActivity.class);
         startActivity(intent);
     }
 
+
+    //navigating to TicketHistory activity
+    private void NavigateToTicketHistory() {
+        Intent intent = new Intent(getActivity(), TicketHistoryActivity.class);
+        intent.putExtra("user", loggedUser);
+        intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        startActivity(intent);
+    }
 
     @Override
     public void onDestroyView() {
@@ -259,8 +285,4 @@ public class NotificationsFragment extends Fragment {
         binding = null;
     }
 
-
-    private void NavigateToTicketHistory() {
-        //TODO implement the navigation to ticket history
-    }
 }
