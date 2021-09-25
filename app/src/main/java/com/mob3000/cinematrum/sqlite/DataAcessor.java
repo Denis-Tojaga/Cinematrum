@@ -101,7 +101,7 @@ public class DataAcessor {
                     tmpUser.setName(cursor.getString(nameIndex));
                     tmpUser.setEmail(cursor.getString(emailIndex));
                     tmpUser.setPasswordHash(cursor.getString(passwordIndex));
-                    tmpUser.setSalt(cursor.getString(saltIndex));// TODO Update for Salt and hash
+                    tmpUser.setSalt(cursor.getString(saltIndex));
                     tmpUser.setTelephone(cursor.getString(telephoneIndex));
                     tmpUser.setTickets(getTickets(ctx, DatabaseHelper.COLUMN_TICKET_userID, String.valueOf(tmpUser.getUser_id())));
                     tmpUser.setWishlist(getWishlists(ctx, DatabaseHelper.COLUMN_WISHLIST_userId, String.valueOf(tmpUser.getUser_id())));
@@ -475,9 +475,6 @@ public class DataAcessor {
             if (dbUsers.size() != 1) return false;
 
             String hashedPasswordWithoutSalt = Validator.ExtractPasswordPart(dbUsers.get(0).getPasswordHash());
-            //Todo delete this
-            if(hashedPasswordWithoutSalt.equals("password1"))
-                return true;
             return hashedPasswordWithoutSalt.equals(u.getPasswordHash());
         } catch (Exception ex) {
             Log.e(LOG_TAG, ex.getMessage());
@@ -501,7 +498,6 @@ public class DataAcessor {
     }
 
 
-    // TODO: FINISH
     public static boolean updateUser(Context ctx, User u) {
         try {
             DatabaseHelper dbhelper = new DatabaseHelper(ctx);
@@ -567,7 +563,6 @@ public class DataAcessor {
         }
     }
 
-    // TODO: FINISH;
     public static ArrayList<Movie> getMovies(Context ctx, String selectColumn, String selectValue) {
         ArrayList<Movie> movies = new ArrayList<>();
 
@@ -616,7 +611,6 @@ public class DataAcessor {
         }
     }
 
-    // TODO FINISH!!
     public static ArrayList<Category> getCategories(Context ctx, String selectColumn, String selectValue) {
 
         ArrayList<Category> categories = new ArrayList<>();
@@ -661,7 +655,6 @@ public class DataAcessor {
     }
 
 
-    // TODO : FINISH!!!
     public static ArrayList<Category> getCategoriesForMovie(Context ctx, int movie_id) {
         ArrayList<Category> categories = new ArrayList<>();
         try {

@@ -33,9 +33,13 @@ import java.util.ArrayList;
 
 public class TicketHistoryActivity extends AppCompatActivity {
 
+    //instantiating variables
     private User loggedUser;
     private RecyclerView recViewTickets;
     private TicketsRecyclerViewAdapter ticketRecyclerViewAdapter;
+
+
+    //instantiating views
     private ImageButton btnGoBack;
     private ImageView imgErrorIcon;
     private TextView txtErrorMessage;
@@ -76,13 +80,11 @@ public class TicketHistoryActivity extends AppCompatActivity {
     }
 
 
-
-
     //method used to initialize recyclerView and load the user's tickets
     private void LoadTickets(ArrayList<Ticket> tickets) {
         //initializing recyclerView and recyclerViewAdapter
         recViewTickets = findViewById(R.id.recViewTickets);
-        ticketRecyclerViewAdapter = new TicketsRecyclerViewAdapter(this, "MainActivity");
+        ticketRecyclerViewAdapter = new TicketsRecyclerViewAdapter(this);
 
         //using the user's ticket list to initialize the arrayList of tickets inside an adapter
         if (tickets.size() != 0) {

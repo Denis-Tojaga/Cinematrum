@@ -62,9 +62,6 @@ public class Validator {
 
     //method for extracting only the password part from hashedPassword, we will remove salt
     public static String ExtractPasswordPart(String hashedPassword) {
-        //TODO delete this
-        if(hashedPassword.equals("password1"))
-            return hashedPassword;
         String newString = new String();
         for (int i = 17; i < hashedPassword.length(); i++)
             newString += hashedPassword.charAt(i);

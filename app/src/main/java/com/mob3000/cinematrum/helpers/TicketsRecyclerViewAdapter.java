@@ -37,13 +37,11 @@ public class TicketsRecyclerViewAdapter extends RecyclerView.Adapter<TicketsRecy
     //if we are going to use Glide to show images from internet we need to have context in this class, because we are not inside activity
     private Context mContext;
 
-    private String parentActivity;
 
 
     //constructor of RecyclerView adapter
-    public TicketsRecyclerViewAdapter(Context mContext, String parentActivity) {
+    public TicketsRecyclerViewAdapter(Context mContext) {
         this.mContext = mContext;
-        this.parentActivity = parentActivity;
     }
 
     //method for setting tickets
@@ -59,7 +57,6 @@ public class TicketsRecyclerViewAdapter extends RecyclerView.Adapter<TicketsRecy
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         //this method will inflate a view with a layout that will present it's values
-
         //this is why we needed context
         View view = LayoutInflater.from(mContext).inflate(R.layout.list_item_ticket, parent, false);
 
@@ -120,11 +117,13 @@ public class TicketsRecyclerViewAdapter extends RecyclerView.Adapter<TicketsRecy
         return userTickets.size();
     }
 
+
+
+    //method which performs filtering
     @Override
     public Filter getFilter() {
         return exampleFilter;
     }
-
     private Filter exampleFilter = new Filter() {
         @Override
         protected FilterResults performFiltering(CharSequence charSequence) {
@@ -163,7 +162,6 @@ public class TicketsRecyclerViewAdapter extends RecyclerView.Adapter<TicketsRecy
         @Override
         protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
             //here the results will be automatically published with UI thread
-
             //we clear our original list of tickets and fill it with result data
             userTickets.clear();
             userTickets.addAll((ArrayList<Ticket>) filterResults.values);
