@@ -87,7 +87,8 @@
     <dimen name="error_message_text_size">40sp</dimen>
 
 
-
-
+    <!-- reservation screen dimensions -->
+    <dimen name="reservation_list_item_height">75dp</dimen>
+    <dimen name="reservation_list_item_fontSize">15sp</dimen>
 
 </resources>

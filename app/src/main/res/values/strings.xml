@@ -22,7 +22,9 @@
     <string name="alertdialog_message">Some data has changed, do You want to update?</string>
     <string name="update_success_toast">Data successfully updated!</string>
     <string name="error_message_no_tickets">No tickets found!</string>
-
+    <string name="buy_ticket">Buy ticket</string>
+    <string name="seats_available">Seats available:</string>
+    <string name="buy_now">Buy now</string>
 
 
 </resources>

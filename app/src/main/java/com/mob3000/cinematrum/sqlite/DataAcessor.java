@@ -303,6 +303,54 @@ public class DataAcessor {
         }
     }
 
+    public static ArrayList<MoviesCinemas> getMoviesCinemasByCinemaId(Context ctx, int movieId, int cinemaId) {
+        ArrayList<MoviesCinemas> moviesCinemas = new ArrayList();
+        try {
+
+            DatabaseHelper dbhelper = new DatabaseHelper(ctx);
+            SQLiteDatabase db = dbhelper.getReadableDatabase();
+
+            String sql = "SELECT * FROM " + DatabaseHelper.TABLENAME_MOVIES_CINEMAS
+                    + " LEFT JOIN " + DatabaseHelper.TABLENAME_HALL + " on " + DatabaseHelper.TABLENAME_HALL + "." + DatabaseHelper.COLUMN_HALL_hallId
+                    + " = " + DatabaseHelper.TABLENAME_MOVIES_CINEMAS + "." + DatabaseHelper.COLUMN_MOVIESCINEMAS_hallId
+                    + " LEFT JOIN " + DatabaseHelper.TABLENAME_CINEMA + " on " + DatabaseHelper.TABLENAME_CINEMA + "." + DatabaseHelper.COLUMN_CINEMA_cinemaId
+                    + " = " + DatabaseHelper.TABLENAME_HALL + "." + DatabaseHelper.COLUMN_HALL_hallId
+                    + " where " + DatabaseHelper.TABLENAME_MOVIES_CINEMAS + "." + DatabaseHelper.COLUMN_MOVIESCINEMAS_movieID + "=? AND "
+                    + DatabaseHelper.TABLENAME_CINEMA + "." + DatabaseHelper.COLUMN_CINEMA_cinemaId + " =?;";
+            String[] sqlArgs = new String[]{String.valueOf(movieId), String.valueOf(cinemaId)};
+
+            Cursor c = db.rawQuery(sql, sqlArgs);
+
+            if (c.moveToFirst()) {
+                int indexMoviesCinemaId = c.getColumnIndex(DatabaseHelper.COLUMN_MOVIESCINEMAS_moviesCinemasID);
+                int indexMovieId = c.getColumnIndex(DatabaseHelper.COLUMN_MOVIESCINEMAS_movieID);
+                int indexHallId = c.getColumnIndex(DatabaseHelper.COLUMN_MOVIESCINEMAS_hallId);
+                int indexPrice = c.getColumnIndex(DatabaseHelper.COLUMN_MOVIESCINEMAS_price);
+                int indexSeatsAvailable = c.getColumnIndex(DatabaseHelper.COLUMN_MOVIESCINEMAS_seatsAvailable);
+                //int indexAllSeats = c.getColumnIndex(DatabaseHelper.COLUMN_MOVIESCINEMAS_allSeats);
+                int indexDate = c.getColumnIndex(DatabaseHelper.COLUMN_MOVIESCINEMAS_date);
+
+                do {
+                    MoviesCinemas tmpMoviesCinema = new MoviesCinemas();
+                    tmpMoviesCinema.setMoviesCinemas_id(c.getInt(indexMoviesCinemaId));
+                    tmpMoviesCinema.setMovie_id(c.getInt(indexMovieId));
+                    tmpMoviesCinema.setHall_id(c.getInt(indexHallId));
+                    tmpMoviesCinema.setPrice(c.getDouble(indexPrice));
+                    tmpMoviesCinema.setSeatsAvailable(c.getInt(indexSeatsAvailable));
+                    int unixTimestamp = c.getInt(indexDate);
+                    tmpMoviesCinema.setDate((new java.util.Date((long) unixTimestamp * 1000)));
+                    moviesCinemas.add(tmpMoviesCinema);
+                }
+                while (c.moveToNext());
+            }
+            c.close();
+            db.close();
+            return moviesCinemas;
+        } catch (Exception e) {
+            return moviesCinemas;
+        }
+    }
+
     //TODO check this method
     public static ArrayList<Cinema> getCinemas(Context ctx, String selectColumn, String selectValue) {
         ArrayList<Cinema> cinemas = new ArrayList<>();
