@@ -86,7 +86,6 @@ public class NotificationsFragment extends Fragment {
         editIcon1.setOnClickListener(icon1ButtonHandler);
         editIcon2.setOnClickListener(icon2ButtonHandler);
 
-
         //defining a logOut button and setting onTouchListener
         btnLogOut.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -101,7 +100,6 @@ public class NotificationsFragment extends Fragment {
             }
         });
 
-
         //setting onClickListener to ticketHistory button and navigating to different activity
         btnTicketHistory.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -115,8 +113,6 @@ public class NotificationsFragment extends Fragment {
                 return true;
             }
         });
-
-
         return root;
     }
 
@@ -210,7 +206,6 @@ public class NotificationsFragment extends Fragment {
         view.setTextColor(getResources().getColor(R.color.hint_color));
         editicon.setImageResource(R.drawable.edit_icon);
     }
-
     private void UnlockInputField(EditText view, ImageButton editicon) {
         view.setEnabled(true);
         view.setTextColor(getResources().getColor(R.color.black));

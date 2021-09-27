@@ -47,7 +47,7 @@ public class TicketsRecyclerViewAdapter extends RecyclerView.Adapter<TicketsRecy
     //method for setting tickets
     public void set_tickets(ArrayList<Ticket> tickets) {
         userTickets = tickets;
-        exampleUserTickets = new ArrayList<>(userTickets);
+        exampleUserTickets = new ArrayList<Ticket>(userTickets);
         //since we are going to refresh the data inside recycler view we need to add this built in method
         notifyDataSetChanged();
     }
