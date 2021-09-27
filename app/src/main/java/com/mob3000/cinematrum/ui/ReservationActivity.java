@@ -4,8 +4,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.animation.AlphaAnimation;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,17 +26,30 @@ import com.mob3000.cinematrum.sqlite.DataAcessor;
 import com.mob3000.cinematrum.sqlite.DatabaseHelper;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class ReservationActivity extends AppCompatActivity implements OnItemClickListener {
 
     public static String INTENT_MOVIE_ID = "movieID";
     public static String INTENT_CINEMA_ID = "cinemaID";
+
+    private static String SPINNER_ROW_INITIAL_TEXT = "Choose Row";
+    private static String SPINNER_SEAT_INITIAL_TEXT = "Choose Seat";
+
     ImageButton backButton;
     TextView txtMovieName;
     TextView txtCinemaName;
     RecyclerView recyclerView;
     Button btnBuyTicket;
+    Spinner spinnerRow;
+    Spinner spinnerSeat;
     ReservationRecyclerViewAdapter viewAdapter;
+    ArrayAdapter<String> spinnerRowAdapter;
+    ArrayAdapter<String> spinnerSeatAdapter;
+    ArrayList<String> spinnerRowDataSource = new ArrayList<String>(Arrays.asList("1", "2", "3", "4", SPINNER_ROW_INITIAL_TEXT));
+    ArrayList<String> spinnerSeatDataSource = new ArrayList<>(Arrays.asList("5", "6", "7", SPINNER_SEAT_INITIAL_TEXT));
+    int spinnerRowDataSourceLength = spinnerRowDataSource.size() - 1;
+    int spinnerSeatDataSourceLength = spinnerSeatDataSource.size() - 1;
     private AlphaAnimation goBackButtonClick = new AlphaAnimation(0.3F, 0.1F);
 
     @Override
@@ -50,6 +65,8 @@ public class ReservationActivity extends AppCompatActivity implements OnItemClic
         txtCinemaName = findViewById(R.id.txtCinemaName);
         recyclerView = findViewById(R.id.recyclerView);
         btnBuyTicket = findViewById(R.id.btnBuyTicket);
+        spinnerRow = findViewById(R.id.spinnerRow);
+        spinnerSeat = findViewById(R.id.spinnerSeat);
 
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -89,13 +106,32 @@ public class ReservationActivity extends AppCompatActivity implements OnItemClic
         recyclerView.setAdapter(viewAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.addItemDecoration(new DividerItemDecoration(recyclerView.getContext(), DividerItemDecoration.VERTICAL));
+
+        // Setting up spinner and adapter
+        spinnerRowAdapter = new ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, spinnerRowDataSource){
+            @Override
+            public int getCount() {
+                return spinnerRowDataSourceLength;
+            }
+        };
+        spinnerRow.setAdapter(spinnerRowAdapter);
+        spinnerRow.setSelection(spinnerRowDataSourceLength);
+        spinnerSeatAdapter = new ArrayAdapter(this,android.R.layout.simple_spinner_dropdown_item, spinnerSeatDataSource){
+            @Override
+            public int getCount() {
+                return spinnerSeatDataSourceLength;
+            }
+        };
+        spinnerSeat.setAdapter(spinnerSeatAdapter);
+        spinnerSeat.setSelection(spinnerSeatDataSourceLength);
+
     }
 
     @Override
     public void onItemClick(int index) {
         Toast.makeText(this, String.valueOf(index), Toast.LENGTH_LONG).show();
         viewAdapter.setSelectedPosition(index);
-        viewAdapter.notifyDataSetChanged();
+        viewAdapter.notifyDataSetChanged(); // Update color of selected/unselected rows.
     }
 
 
@@ -111,5 +147,14 @@ public class ReservationActivity extends AppCompatActivity implements OnItemClic
         // ....
 
         finish();
+    }
+
+    // TODO: FINISH!
+    private void updateSpinner(){
+        // Load new Data
+
+        // Update Data Length
+
+        // NOTIFY ADAPTER CHANGED
     }
 }
