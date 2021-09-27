@@ -3,12 +3,18 @@ package com.mob3000.cinematrum.ui;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NavUtils;
+import androidx.core.app.NotificationManagerCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.AlarmManager;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
@@ -26,6 +32,7 @@ import com.mob3000.cinematrum.dataModels.MoviesCinemas;
 import com.mob3000.cinematrum.dataModels.Ticket;
 import com.mob3000.cinematrum.dataModels.User;
 import com.mob3000.cinematrum.helpers.TicketsRecyclerViewAdapter;
+import com.mob3000.cinematrum.notification.NotificationReminderBroadcast;
 import com.mob3000.cinematrum.sqlite.DataAcessor;
 import com.mob3000.cinematrum.ui.account.NotificationsFragment;
 
@@ -56,6 +63,8 @@ public class TicketHistoryActivity extends AppCompatActivity {
         //removes the UI actionBar at the top of the screen
         getSupportActionBar().hide();
 
+        CreateNotificationChannel();
+        MethodForNotifying();
         InitViews();
         LoadLoggedUser();
         LoadTickets(loggedUser.getTickets());
@@ -79,6 +88,15 @@ public class TicketHistoryActivity extends AppCompatActivity {
         });
     }
 
+
+    //initializing all views from this activity
+    private void InitViews() {
+        recViewTickets = findViewById(R.id.recViewTickets);
+        btnGoBack = findViewById(R.id.btnGoBack);
+        imgErrorIcon = findViewById(R.id.imgErrorIcon);
+        txtErrorMessage = findViewById(R.id.txtErrorMessage);
+        svSearchInput = findViewById(R.id.svSearchInput);
+    }
 
     //method used to initialize recyclerView and load the user's tickets
     private void LoadTickets(ArrayList<Ticket> tickets) {
@@ -104,7 +122,6 @@ public class TicketHistoryActivity extends AppCompatActivity {
         txtErrorMessage.setVisibility(View.VISIBLE);
     }
 
-
     //method for going back to previous fragment from where this activity is started
     View.OnClickListener goBackListener = new View.OnClickListener() {
         public void onClick(View v) {
@@ -112,11 +129,6 @@ public class TicketHistoryActivity extends AppCompatActivity {
             onBackPressed();
         }
     };
-
-    @Override
-    public void onBackPressed() {
-        finish();
-    }
 
     //this method loads the logged user into the user instance
     private void LoadLoggedUser() {
@@ -128,12 +140,45 @@ public class TicketHistoryActivity extends AppCompatActivity {
         }
     }
 
-    //initializing all views from this activity
-    private void InitViews() {
-        recViewTickets = findViewById(R.id.recViewTickets);
-        btnGoBack = findViewById(R.id.btnGoBack);
-        imgErrorIcon = findViewById(R.id.imgErrorIcon);
-        txtErrorMessage = findViewById(R.id.txtErrorMessage);
-        svSearchInput = findViewById(R.id.svSearchInput);
+    //creating a notification channel
+    private void CreateNotificationChannel() {
+        //if the API level is 26 or higher we need to make a notification channel
+        Toast.makeText(this, "The notification channel is creating!", Toast.LENGTH_SHORT).show();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+
+            CharSequence notificationChannelName = "MovieNotificationChannel";
+            String description = "Channel for user notifications";
+            int importance = NotificationManager.IMPORTANCE_HIGH;
+
+            NotificationChannel channel = new NotificationChannel("MovieNotification", notificationChannelName, importance);
+            channel.setDescription(description);
+
+
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
+        }
+    }
+
+
+    //notification logic
+    //TODO implement this logic when the user books the ticket and then call it for every movie that he didn't watched
+    private void MethodForNotifying() {
+        Intent intent = new Intent(TicketHistoryActivity.this, NotificationReminderBroadcast.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(TicketHistoryActivity.this, 0, intent, 0);
+
+        //we get the alarm manager that will actually notify us
+        AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+        long time = System.currentTimeMillis();
+
+        long tenSeconds = 1000 * 10;
+
+        //not we call the alarm, which type is it, the time in which will we get notified, and what happens when we get notified
+        //RTC_WAKEUP - wakes up the device to fire the pending intent at the specified time
+        alarmManager.set(AlarmManager.RTC_WAKEUP, time + tenSeconds, pendingIntent);
+    }
+
+    @Override
+    public void onBackPressed() {
+        finish();
     }
 }
