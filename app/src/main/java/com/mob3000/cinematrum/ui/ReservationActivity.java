@@ -2,8 +2,10 @@ package com.mob3000.cinematrum.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.animation.AlphaAnimation;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -22,6 +24,7 @@ import com.mob3000.cinematrum.dataModels.Movie;
 import com.mob3000.cinematrum.dataModels.MoviesCinemas;
 import com.mob3000.cinematrum.helpers.OnItemClickListener;
 import com.mob3000.cinematrum.helpers.ReservationRecyclerViewAdapter;
+import com.mob3000.cinematrum.helpers.ReservationSpinnerAdapter;
 import com.mob3000.cinematrum.sqlite.DataAcessor;
 import com.mob3000.cinematrum.sqlite.DatabaseHelper;
 
@@ -32,9 +35,10 @@ public class ReservationActivity extends AppCompatActivity implements OnItemClic
 
     public static String INTENT_MOVIE_ID = "movieID";
     public static String INTENT_CINEMA_ID = "cinemaID";
+    private static String LOG_TAG = "RESERVATIONACTIVITY";
 
-    private static String SPINNER_ROW_INITIAL_TEXT = "Choose Row";
-    private static String SPINNER_SEAT_INITIAL_TEXT = "Choose Seat";
+    public  static String SPINNER_ROW_INITIAL_TEXT = "Choose Row";
+    public static String SPINNER_SEAT_INITIAL_TEXT = "Choose Seat";
 
     ImageButton backButton;
     TextView txtMovieName;
@@ -43,11 +47,14 @@ public class ReservationActivity extends AppCompatActivity implements OnItemClic
     Button btnBuyTicket;
     Spinner spinnerRow;
     Spinner spinnerSeat;
+    ArrayList<MoviesCinemas> moviesCinemas;
     ReservationRecyclerViewAdapter viewAdapter;
-    ArrayAdapter<String> spinnerRowAdapter;
-    ArrayAdapter<String> spinnerSeatAdapter;
-    ArrayList<String> spinnerRowDataSource = new ArrayList<String>(Arrays.asList("1", "2", "3", "4", SPINNER_ROW_INITIAL_TEXT));
-    ArrayList<String> spinnerSeatDataSource = new ArrayList<>(Arrays.asList("5", "6", "7", SPINNER_SEAT_INITIAL_TEXT));
+    ReservationSpinnerAdapter spinnerRowAdapter;
+    ReservationSpinnerAdapter spinnerSeatAdapter;
+
+    MoviesCinemas currentMovieCinema = new MoviesCinemas();
+    ArrayList<String> spinnerRowDataSource = new ArrayList<String>(Arrays.asList("10", "20", "30", "40", SPINNER_ROW_INITIAL_TEXT));
+    ArrayList<String> spinnerSeatDataSource = new ArrayList<>(Arrays.asList("50", "60", "70", SPINNER_SEAT_INITIAL_TEXT));
     int spinnerRowDataSourceLength = spinnerRowDataSource.size() - 1;
     int spinnerSeatDataSourceLength = spinnerSeatDataSource.size() - 1;
     private AlphaAnimation goBackButtonClick = new AlphaAnimation(0.3F, 0.1F);
@@ -101,29 +108,71 @@ public class ReservationActivity extends AppCompatActivity implements OnItemClic
 
 
         //Setting up recyclerView
-        ArrayList<MoviesCinemas> moviesCinemas = DataAcessor.getMoviesCinemasByCinemaId(this, movieId, cinemaId);
+        moviesCinemas = DataAcessor.getMoviesCinemasByCinemaId(this, movieId, cinemaId);
         viewAdapter = new ReservationRecyclerViewAdapter(this, moviesCinemas, this);
         recyclerView.setAdapter(viewAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.addItemDecoration(new DividerItemDecoration(recyclerView.getContext(), DividerItemDecoration.VERTICAL));
 
         // Setting up spinner and adapter
-        spinnerRowAdapter = new ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, spinnerRowDataSource){
+     /*   spinnerRowAdapter = new ArrayAdapter(this,R.layout.spinner_item, spinnerRowDataSource){
             @Override
             public int getCount() {
-                return spinnerRowDataSourceLength;
+                return super.getCount() - 1;
             }
-        };
+
+        };*/
+        spinnerRowAdapter = new ReservationSpinnerAdapter(this, R.layout.spinner_item, spinnerRowDataSource);
         spinnerRow.setAdapter(spinnerRowAdapter);
         spinnerRow.setSelection(spinnerRowDataSourceLength);
-        spinnerSeatAdapter = new ArrayAdapter(this,android.R.layout.simple_spinner_dropdown_item, spinnerSeatDataSource){
+        //android.R.layout.simple_spinner_dropdown_item
+        /*spinnerSeatAdapter = new ArrayAdapter(this,R.layout.spinner_item, spinnerSeatDataSource){
             @Override
             public int getCount() {
-                return spinnerSeatDataSourceLength;
+                return super.getCount() - 1;
             }
-        };
+        };*/
+        spinnerSeatAdapter = new ReservationSpinnerAdapter(this, R.layout.spinner_item, spinnerSeatDataSource);
         spinnerSeat.setAdapter(spinnerSeatAdapter);
         spinnerSeat.setSelection(spinnerSeatDataSourceLength);
+
+
+        spinnerRow.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+
+                try{
+                    int index = Integer.parseInt(spinnerRowDataSource.get(i));
+                    ArrayList<String> newFreeSeats = DataAcessor.getFreeSeatsForRow(getApplicationContext(), currentMovieCinema, index);
+                    spinnerSeatAdapter.updateData(newFreeSeats);
+
+                }
+                catch(Exception ex){
+                    Log.e(LOG_TAG, ex.getMessage());
+                    ex.printStackTrace();
+
+                }
+                // Load free seats of given row.
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
+        spinnerSeat.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
 
     }
 
@@ -132,6 +181,13 @@ public class ReservationActivity extends AppCompatActivity implements OnItemClic
         Toast.makeText(this, String.valueOf(index), Toast.LENGTH_LONG).show();
         viewAdapter.setSelectedPosition(index);
         viewAdapter.notifyDataSetChanged(); // Update color of selected/unselected rows.
+
+        // TODO: Load free rows for selected timeslot.
+        currentMovieCinema = moviesCinemas.get(index);
+        spinnerRowDataSource = DataAcessor.getFreeRowsForMovieCinema(this, moviesCinemas.get(index));
+
+        spinnerRowAdapter.updateData(DataAcessor.getFreeRowsForMovieCinema(this, moviesCinemas.get(index)));
+        spinnerRow.setSelection(spinnerRowAdapter.getCount() + 1);
     }
 
 
@@ -144,7 +200,7 @@ public class ReservationActivity extends AppCompatActivity implements OnItemClic
             return;
         }
 
-        // ....
+        // .... CREATE TICKET IN DATABASE
 
         finish();
     }

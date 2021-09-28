@@ -90,5 +90,7 @@
     <!-- reservation screen dimensions -->
     <dimen name="reservation_list_item_height">75dp</dimen>
     <dimen name="reservation_list_item_fontSize">15sp</dimen>
+    <dimen name="reservation_fontSize_main">20sp</dimen>
+    <dimen name="reservation_fontSize_labels">12sp</dimen>
 
 </resources>

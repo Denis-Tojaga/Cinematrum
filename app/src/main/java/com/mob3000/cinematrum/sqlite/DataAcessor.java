@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.mob3000.cinematrum.R;
 import com.mob3000.cinematrum.dataModels.Category;
 import com.mob3000.cinematrum.dataModels.Cinema;
 import com.mob3000.cinematrum.dataModels.Hall;
@@ -17,8 +18,12 @@ import com.mob3000.cinematrum.dataModels.Ticket;
 import com.mob3000.cinematrum.dataModels.User;
 import com.mob3000.cinematrum.dataModels.Wishlist;
 import com.mob3000.cinematrum.helpers.Validator;
+import com.mob3000.cinematrum.ui.ReservationActivity;
 
+import java.sql.Array;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 
 public class DataAcessor {
@@ -740,6 +745,73 @@ public class DataAcessor {
             Log.e(LOG_TAG, ex.getMessage());
             return categories;
         }
+    }
+
+    public static ArrayList<String> getFreeRowsForMovieCinema(Context ctx, MoviesCinemas movieCinema) {
+        ArrayList<String> freeRows = new ArrayList<>();
+        try{
+            // get Tickets for movieCinema
+            ArrayList<Ticket> tickets = getTickets(ctx, DatabaseHelper.COLUMN_TICKET_moviesCinemaID, String.valueOf(movieCinema.getMoviesCinemas_id()));
+
+            // get number of Rows for hall in movieCinema
+            Hall hall = getHalls(ctx, DatabaseHelper.COLUMN_HALL_hallId, String.valueOf(movieCinema.getHall_id())).get(0);
+            int numberOfRows = hall.getRows();
+
+            // TODO: Handle if all seats in a row are already taken!
+            for (int i = 0; i < numberOfRows; i++){
+                freeRows.add(String.valueOf(i+1));
+            }
+            freeRows.add(ReservationActivity.SPINNER_ROW_INITIAL_TEXT);
+
+            return freeRows;
+        }
+        catch(Exception ex){
+            Log.e(LOG_TAG, ex.getMessage());
+            return freeRows;
+        }
+    }
+
+    public static ArrayList<String> getFreeSeatsForRow(Context ctx, MoviesCinemas movieCinema, int rowNumber){
+        ArrayList<String> freeSeats = new ArrayList<>();
+
+        try{
+            // get Tickets for movieCinema
+            ArrayList<Ticket> tickets = getTickets(ctx, DatabaseHelper.COLUMN_TICKET_moviesCinemaID, String.valueOf(movieCinema.getMoviesCinemas_id()));
+            ArrayList<Ticket> ticketsInRow = getTicketsWithRow(tickets, rowNumber);
+
+            Hall hall = getHalls(ctx, DatabaseHelper.COLUMN_HALL_hallId, String.valueOf(movieCinema.getHall_id())).get(0);
+            int seatsPerRow = hall.getSeatsPerRow();
+
+            for (int i = 0; i < seatsPerRow; i++){
+                // check if there is a ticket in row
+                if (!checkSeatInTickets(ticketsInRow, i + 1))
+                    freeSeats.add(String.valueOf(i+1));
+            }
+            freeSeats.add(ReservationActivity.SPINNER_SEAT_INITIAL_TEXT);
+
+            return freeSeats;
+        }
+        catch(Exception ex){
+            Log.e(LOG_TAG, ex.getMessage());
+            return freeSeats;
+        }
+    }
+
+    private static ArrayList<Ticket> getTicketsWithRow(ArrayList<Ticket> tickets, int rowNumber){
+        ArrayList<Ticket> filteredTickets = new ArrayList<>();
+
+        for(Ticket t :  tickets){
+            if (t.getRowNumber() == rowNumber)
+                filteredTickets.add(t);
+        }
+        return filteredTickets;
+    }
+    private static boolean checkSeatInTickets(ArrayList<Ticket> tickets, int seatNumber){
+        for(Ticket t : tickets) {
+            if (t.getSeatNumber() == seatNumber)
+                return true;
+        }
+        return false;
     }
 
 }
