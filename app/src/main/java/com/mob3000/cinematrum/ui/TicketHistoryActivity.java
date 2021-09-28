@@ -16,6 +16,7 @@ import android.app.PendingIntent;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.AlphaAnimation;
@@ -36,7 +37,13 @@ import com.mob3000.cinematrum.notification.NotificationReminderBroadcast;
 import com.mob3000.cinematrum.sqlite.DataAcessor;
 import com.mob3000.cinematrum.ui.account.NotificationsFragment;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
 
 public class TicketHistoryActivity extends AppCompatActivity {
 
@@ -64,7 +71,6 @@ public class TicketHistoryActivity extends AppCompatActivity {
         getSupportActionBar().hide();
 
         CreateNotificationChannel();
-        MethodForNotifying();
         InitViews();
         LoadLoggedUser();
         LoadTickets(loggedUser.getTickets());
@@ -86,6 +92,8 @@ public class TicketHistoryActivity extends AppCompatActivity {
                 return false;
             }
         });
+
+
     }
 
 
@@ -158,11 +166,9 @@ public class TicketHistoryActivity extends AppCompatActivity {
             notificationManager.createNotificationChannel(channel);
         }
     }
-
-
-    //notification logic
+    //logic for triggering the alarm when the notification needs to be sent
     //TODO implement this logic when the user books the ticket and then call it for every movie that he didn't watched
-    private void MethodForNotifying() {
+    private void MethodForNotifying(long timeForNotifying) {
         Intent intent = new Intent(TicketHistoryActivity.this, NotificationReminderBroadcast.class);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(TicketHistoryActivity.this, 0, intent, 0);
 
@@ -170,11 +176,9 @@ public class TicketHistoryActivity extends AppCompatActivity {
         AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
         long time = System.currentTimeMillis();
 
-        long tenSeconds = 1000 * 10;
-
         //not we call the alarm, which type is it, the time in which will we get notified, and what happens when we get notified
         //RTC_WAKEUP - wakes up the device to fire the pending intent at the specified time
-        alarmManager.set(AlarmManager.RTC_WAKEUP, time + tenSeconds, pendingIntent);
+        alarmManager.set(AlarmManager.RTC_WAKEUP, time + timeForNotifying, pendingIntent);
     }
 
     @Override

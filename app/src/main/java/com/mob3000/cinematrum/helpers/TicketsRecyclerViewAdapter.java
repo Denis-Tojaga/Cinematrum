@@ -1,6 +1,7 @@
 package com.mob3000.cinematrum.helpers;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,8 +23,11 @@ import com.mob3000.cinematrum.dataModels.MoviesCinemas;
 import com.mob3000.cinematrum.dataModels.Ticket;
 import com.mob3000.cinematrum.sqlite.DataAcessor;
 
+import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 
 public class TicketsRecyclerViewAdapter extends RecyclerView.Adapter<TicketsRecyclerViewAdapter.ViewHolder> implements Filterable {
@@ -106,8 +110,47 @@ public class TicketsRecyclerViewAdapter extends RecyclerView.Adapter<TicketsRecy
 
         //extracting only date without time from this value
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MMM/yyyy");
-        String dateOnly = dateFormat.format(userTickets.get(position).getReservedAt());
-        holder.txtMovieReservedAt.setText(dateOnly);
+        String ticketDate = dateFormat.format(userTickets.get(position).getReservedAt());
+        holder.txtMovieReservedAt.setText(ticketDate);
+        NotifyTheUser(ticketDate);
+    }
+
+
+    //TODO implement this method when the user buys a ticket
+    private void NotifyTheUser(String ticketDate) {
+        try{
+            SimpleDateFormat formatter = new SimpleDateFormat("dd.MM.yyyy, HH:mm");
+            formatter.setLenient(false);
+
+            //getting the current date and it's millis
+            Date currenDate = new Date();
+            long currentMillis = currenDate.getTime();
+
+            //formatting the ticketDate and getting it's millis
+            String curTime = formatter.format(currenDate);
+            Date ticketDateTime = formatter.parse(ticketDate);
+            long ticketDateMillis = ticketDateTime.getTime();
+
+            if(currentMillis < ticketDateMillis)
+            {
+                Log.d("TAG", "NotifyTheUser: Datum karte je stariji");
+                //TODO set the notification for this millis
+
+                //the difference between this data and ticketDate is at what time a notification should pop up minus 60 minutes
+                //because a notification should be an hour before the movie starts
+                long timeForNotifying = ticketDateMillis - currentMillis - (60 * (60 * 1000));
+
+
+                //TODO call the method for notifying
+
+            }else{
+                //TODO dont do anything
+            }
+
+        }catch (ParseException e)
+        {
+            e.printStackTrace();
+        }
     }
 
 
