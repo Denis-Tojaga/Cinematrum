@@ -1,11 +1,6 @@
 package com.mob3000.cinematrum.ui;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.NavUtils;
-import androidx.core.app.NotificationManagerCompat;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -16,8 +11,6 @@ import android.app.PendingIntent;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.AlphaAnimation;
 import android.widget.ImageButton;
@@ -26,24 +19,13 @@ import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.mob3000.cinematrum.MainActivity;
 import com.mob3000.cinematrum.R;
-import com.mob3000.cinematrum.dataModels.Movie;
-import com.mob3000.cinematrum.dataModels.MoviesCinemas;
 import com.mob3000.cinematrum.dataModels.Ticket;
 import com.mob3000.cinematrum.dataModels.User;
 import com.mob3000.cinematrum.helpers.TicketsRecyclerViewAdapter;
 import com.mob3000.cinematrum.notification.NotificationReminderBroadcast;
-import com.mob3000.cinematrum.sqlite.DataAcessor;
-import com.mob3000.cinematrum.ui.account.NotificationsFragment;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Locale;
 
 public class TicketHistoryActivity extends AppCompatActivity {
 
