@@ -22,7 +22,7 @@ public class ReservationSpinnerAdapter extends ArrayAdapter<String> {
 
     @Override
     public int getCount() {
-        return this.data.size() - 1;
+        return this.data.size() - 1 + 1;
     }
 
     public void updateData(ArrayList<String> newData){

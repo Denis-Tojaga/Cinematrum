@@ -53,8 +53,8 @@ public class ReservationActivity extends AppCompatActivity implements OnItemClic
     ReservationSpinnerAdapter spinnerSeatAdapter;
 
     MoviesCinemas currentMovieCinema = new MoviesCinemas();
-    ArrayList<String> spinnerRowDataSource = new ArrayList<String>(Arrays.asList("10", "20", "30", "40", SPINNER_ROW_INITIAL_TEXT));
-    ArrayList<String> spinnerSeatDataSource = new ArrayList<>(Arrays.asList("50", "60", "70", SPINNER_SEAT_INITIAL_TEXT));
+    ArrayList<String> spinnerRowDataSource = new ArrayList<String>(Arrays.asList(SPINNER_ROW_INITIAL_TEXT));
+    ArrayList<String> spinnerSeatDataSource = new ArrayList<>(Arrays.asList(SPINNER_SEAT_INITIAL_TEXT));
     int spinnerRowDataSourceLength = spinnerRowDataSource.size() - 1;
     int spinnerSeatDataSourceLength = spinnerSeatDataSource.size() - 1;
     private AlphaAnimation goBackButtonClick = new AlphaAnimation(0.3F, 0.1F);
@@ -144,7 +144,9 @@ public class ReservationActivity extends AppCompatActivity implements OnItemClic
                 try{
                     int index = Integer.parseInt(spinnerRowDataSource.get(i));
                     ArrayList<String> newFreeSeats = DataAcessor.getFreeSeatsForRow(getApplicationContext(), currentMovieCinema, index);
+                    spinnerSeatDataSource = newFreeSeats;
                     spinnerSeatAdapter.updateData(newFreeSeats);
+                    spinnerSeat.setSelection(spinnerRowDataSource.size());
 
                 }
                 catch(Exception ex){
@@ -152,7 +154,6 @@ public class ReservationActivity extends AppCompatActivity implements OnItemClic
                     ex.printStackTrace();
 
                 }
-                // Load free seats of given row.
 
             }
 
