@@ -1,4 +1,4 @@
-package com.mob3000.cinematrum.ui.dashboard;
+package com.mob3000.cinematrum.ui.wishlist;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -12,20 +12,19 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.mob3000.cinematrum.R;
-import com.mob3000.cinematrum.databinding.FragmentDashboardBinding;
+import com.mob3000.cinematrum.databinding.FragmentWishlistBinding;
 
-public class DashboardFragment extends Fragment {
+public class WishlistFragment extends Fragment {
 
-    private DashboardViewModel dashboardViewModel;
-    private FragmentDashboardBinding binding;
+    private WishlistViewModel dashboardViewModel;
+    private FragmentWishlistBinding binding;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         dashboardViewModel =
-                new ViewModelProvider(this).get(DashboardViewModel.class);
+                new ViewModelProvider(this).get(WishlistViewModel.class);
 
-        binding = FragmentDashboardBinding.inflate(inflater, container, false);
+        binding = FragmentWishlistBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
         final TextView textView = binding.textDashboard;

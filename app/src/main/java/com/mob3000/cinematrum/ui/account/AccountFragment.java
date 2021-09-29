@@ -32,7 +32,7 @@ import com.mob3000.cinematrum.R;
 import com.mob3000.cinematrum.SignInActivity;
 import com.mob3000.cinematrum.WelcomeActivity;
 import com.mob3000.cinematrum.dataModels.User;
-import com.mob3000.cinematrum.databinding.FragmentNotificationsBinding;
+import com.mob3000.cinematrum.databinding.FragmentAccountBinding;
 import com.mob3000.cinematrum.helpers.Validator;
 import com.mob3000.cinematrum.sqlite.DataAcessor;
 import com.mob3000.cinematrum.sqlite.DatabaseHelper;
@@ -40,7 +40,7 @@ import com.mob3000.cinematrum.ui.TicketHistoryActivity;
 
 import java.util.ArrayList;
 
-public class NotificationsFragment extends Fragment {
+public class AccountFragment extends Fragment {
 
     private SharedPreferences sp;
     private Animation scale_up;
@@ -62,8 +62,8 @@ public class NotificationsFragment extends Fragment {
     private Button btnLogOut;
 
 
-    private NotificationsViewModel notificationsViewModel;
-    private FragmentNotificationsBinding binding;
+    private AccountsViewModel notificationsViewModel;
+    private FragmentAccountBinding binding;
 
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -72,9 +72,9 @@ public class NotificationsFragment extends Fragment {
         sp = getActivity().getSharedPreferences("login", Context.MODE_PRIVATE);
 
         notificationsViewModel =
-                new ViewModelProvider(this).get(NotificationsViewModel.class);
+                new ViewModelProvider(this).get(AccountsViewModel.class);
 
-        binding = FragmentNotificationsBinding.inflate(inflater, container, false);
+        binding = FragmentAccountBinding.inflate(inflater, container, false);
         root = binding.getRoot();
 
 
