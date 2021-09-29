@@ -10,6 +10,7 @@ public class Movie {
     private String name;
     private String picture;
     private Date publishedDate;
+    private String rating;
     private List<MoviesCinemas> moviesCinemas;
     private List<Category> categories;
 
@@ -45,6 +46,14 @@ public class Movie {
         this.publishedDate = publishedDate;
     }
 
+    public String getRating() {
+        return rating;
+    }
+
+    public void setRating(String rating) {
+        this.rating = rating;
+    }
+
     public List<MoviesCinemas> getMoviesCinemas() {
         return moviesCinemas;
     }
@@ -68,6 +77,7 @@ public class Movie {
                 ", name='" + name + '\'' +
                 ", picture='" + picture + '\'' +
                 ", publishedDate=" + publishedDate +
+                ", rating='" + rating + '\'' +
                 ", moviesCinemas=" + moviesCinemas +
                 ", categories=" + categories +
                 '}';
