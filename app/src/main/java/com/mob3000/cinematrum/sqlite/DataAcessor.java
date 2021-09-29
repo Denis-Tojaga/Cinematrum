@@ -587,6 +587,7 @@ public class DataAcessor {
                 int indexName = c.getColumnIndex(DatabaseHelper.COLUMN_MOVIE_name);
                 int indexPicture = c.getColumnIndex(DatabaseHelper.COLUMN_MOVIE_picture);
                 int indexPlublishedDate = c.getColumnIndex(DatabaseHelper.COLUMN_MOVIE_publishedDate);
+                int indexRating = c.getColumnIndex(DatabaseHelper.COLUMN_MOVIE_rating);
 
                 do {
                     Movie tmpMovie = new Movie();
@@ -597,6 +598,7 @@ public class DataAcessor {
                     tmpMovie.setPublishedDate((new java.util.Date((long) unixTimestamp * 1000)));
                     tmpMovie.setMoviesCinemas(getMoviesCinemas(ctx, DatabaseHelper.COLUMN_MOVIESCINEMAS_movieID, String.valueOf(tmpMovie.getMovie_id())));
                     tmpMovie.setCategories(getCategoriesForMovie(ctx, tmpMovie.getMovie_id()));
+                    tmpMovie.setRating(c.getString(indexRating));
                     movies.add(tmpMovie);
                 }
                 while (c.moveToNext());

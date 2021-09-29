@@ -75,13 +75,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String COLUMN_MOVIE_duration = "duration";
     public static final String COLUMN_MOVIE_description = "description";
     public static final String COLUMN_MOVIE_publishedDate = "publishedDate";
+    public static final String COLUMN_MOVIE_rating = "rating";
     // COLUMNS - LOGGEDINUSER
     public static final String COLUMN_LOGGEDINUSER_userId = "user_id";
     // INSERT DATA
-    public static final String INSERT_MOVIE_TABLE = "INSERT INTO " + TABLENAME_MOVIE + " (" + COLUMN_MOVIE_name  + ", " + COLUMN_MOVIE_picture + ", " + COLUMN_MOVIE_video + ", " + COLUMN_MOVIE_duration + ", " + COLUMN_MOVIE_description + ", " + COLUMN_MOVIE_publishedDate + ") "
+    public static final String INSERT_MOVIE_TABLE = "INSERT INTO " + TABLENAME_MOVIE + " (" + COLUMN_MOVIE_name  + ", " + COLUMN_MOVIE_picture + ", " + COLUMN_MOVIE_video + ", " + COLUMN_MOVIE_duration + ", " + COLUMN_MOVIE_description + ", " + COLUMN_MOVIE_publishedDate +  ", " + COLUMN_MOVIE_rating + ") "
 
-            + "VALUES (\"James Bond\",\"https://i.pinimg.com/originals/24/7c/68/247c683e0f24793e7fe2ae030c8835dc.jpg\", \"\", 1.25, \"The hero James Bond likes to fight all the evil people all over the world\", 1631451990),"
-            + "(\"IT\",\"https://wegotthiscovered.com/wp-content/uploads/2020/07/maxresdefault-17.jpg\", \"\", 1.9, \"It is back. The clown who comes back every 25 years. Already two kids have been missing until the group of young children find out the truth\",1631451990)";
+            + "VALUES (\"James Bond\",\"https://i.pinimg.com/originals/24/7c/68/247c683e0f24793e7fe2ae030c8835dc.jpg\", \"\", 1.25, \"The hero James Bond likes to fight all the evil people all over the world\", 1631451990, \"9.5/10\"),"
+            + "(\"IT\",\"https://wegotthiscovered.com/wp-content/uploads/2020/07/maxresdefault-17.jpg\", \"\", 1.9, \"It is back. The clown who comes back every 25 years. Already two kids have been missing until the group of young children find out the truth\",1631451990, \"8/10\" )";
     public static final String INSERT_USER_TABLE = "INSERT INTO " + TABLENAME_USER + " (" + COLUMN_USER_username + ", " + COLUMN_USER_email + ", " + COLUMN_USER_password + ", " + COLUMN_USER_salt + ", " + COLUMN_USER_userType + ", " + COLUMN_USER_telephone + ") "
             + "VALUES (\"user1\",\"email1\",\"password1\",\"salt1\",01234, \"admin\"),"
             + "(\"user3\",\"email2\",\"password3\",\"salt2\",012348790809, \"user\"),"
@@ -175,6 +176,7 @@ public static final String INSERT_USERLOGGEDIN_TABLE = "INSERT INTO " + TABLENAM
             + COLUMN_MOVIE_duration + " NUMERIC NOT NULL, "
             + COLUMN_MOVIE_description + " TEXT NOT NULL, "
             + COLUMN_MOVIE_publishedDate + " INTEGER NOT NULL, " // STORING UNIX TIMESTAMP
+            + COLUMN_MOVIE_rating + " TEXT, "
             + "PRIMARY KEY(" + COLUMN_MOVIE_movieId + " AUTOINCREMENT));";
     private static final String CREATE_LOGGEDINUSER_TABLE = "CREATE TABLE " + TABLENAME_LOGGEDINUSER + " ( "
             + COLUMN_LOGGEDINUSER_userId + " INTEGER NOT NULL, "
