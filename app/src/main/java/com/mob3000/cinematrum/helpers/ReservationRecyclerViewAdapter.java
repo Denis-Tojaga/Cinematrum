@@ -49,7 +49,7 @@ public class ReservationRecyclerViewAdapter extends RecyclerView.Adapter<Reserva
 
         holder.txtPrice.setText(currentMoviesCinemas.getPrice() + "€");
         holder.txtSeatsAvailable.setText(currentMoviesCinemas.getSeatsAvailable() + "");
-        DateFormat dateFormat = new SimpleDateFormat("dd.mm.yyyy");
+        DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
         holder.txtDate.setText(dateFormat.format(currentMoviesCinemas.getDate()));
 
         DateFormat timeFormat = new SimpleDateFormat("hh:mm");
