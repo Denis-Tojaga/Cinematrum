@@ -119,16 +119,17 @@ public class TicketsRecyclerViewAdapter extends RecyclerView.Adapter<TicketsRecy
     //TODO implement this method when the user buys a ticket
     private void NotifyTheUser(String ticketDate) {
         try{
+            //first make the formatter we want
             SimpleDateFormat formatter = new SimpleDateFormat("dd.MM.yyyy, HH:mm");
             formatter.setLenient(false);
 
             //getting the current date and it's millis
-            Date currenDate = new Date();
-            long currentMillis = currenDate.getTime();
+            Date currentDate = new Date();
+            long currentMillis = currentDate.getTime();
 
             //formatting the ticketDate and getting it's millis
-            String curTime = formatter.format(currenDate);
-            Date ticketDateTime = formatter.parse(ticketDate);
+            String formattedTicketDate = formatter.format(ticketDate);
+            Date ticketDateTime = formatter.parse(formattedTicketDate);
             long ticketDateMillis = ticketDateTime.getTime();
 
             if(currentMillis < ticketDateMillis)
