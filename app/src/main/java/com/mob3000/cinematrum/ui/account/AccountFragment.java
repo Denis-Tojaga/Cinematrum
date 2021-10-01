@@ -20,13 +20,11 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
-
 import com.mob3000.cinematrum.MainActivity;
 import com.mob3000.cinematrum.R;
 import com.mob3000.cinematrum.SignInActivity;
@@ -62,18 +60,15 @@ public class AccountFragment extends Fragment {
     private Button btnLogOut;
 
 
-    private AccountsViewModel notificationsViewModel;
+    private AccountViewModel accountViewModel;
     private FragmentAccountBinding binding;
-
-
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
         sp = getActivity().getSharedPreferences("login", Context.MODE_PRIVATE);
 
-        notificationsViewModel =
-                new ViewModelProvider(this).get(AccountsViewModel.class);
-
+        accountViewModel =
+                new ViewModelProvider(this).get(AccountViewModel.class);
         binding = FragmentAccountBinding.inflate(inflater, container, false);
         root = binding.getRoot();
 
@@ -101,7 +96,6 @@ public class AccountFragment extends Fragment {
             }
         });
 
-
         //setting onClickListener to ticketHistory button and navigating to different activity
         btnTicketHistory.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -115,8 +109,6 @@ public class AccountFragment extends Fragment {
                 return true;
             }
         });
-
-
         return root;
     }
 
@@ -211,7 +203,7 @@ public class AccountFragment extends Fragment {
         editicon.setImageResource(R.drawable.edit_icon);
     }
 
-    private void UnlockInputField(EditText view, ImageButton editicon) {
+  private void UnlockInputField(EditText view, ImageButton editicon) {
         view.setEnabled(true);
         view.setTextColor(getResources().getColor(R.color.black));
         view.requestFocus();

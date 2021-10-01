@@ -16,19 +16,21 @@ import com.mob3000.cinematrum.databinding.FragmentWishlistBinding;
 
 public class WishlistFragment extends Fragment {
 
-    private WishlistViewModel dashboardViewModel;
+    private WishlistViewModel wishlistViewModel;
     private FragmentWishlistBinding binding;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        dashboardViewModel =
+        wishlistViewModel =
+
                 new ViewModelProvider(this).get(WishlistViewModel.class);
 
         binding = FragmentWishlistBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
         final TextView textView = binding.textDashboard;
-        dashboardViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
+        wishlistViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
+
             @Override
             public void onChanged(@Nullable String s) {
                 textView.setText(s);

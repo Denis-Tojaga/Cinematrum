@@ -18,6 +18,7 @@ import android.widget.Toast;
 import com.mob3000.cinematrum.dataModels.User;
 import com.mob3000.cinematrum.helpers.Validator;
 import com.mob3000.cinematrum.sqlite.DataAcessor;
+import com.mob3000.cinematrum.sqlite.EmailTakenException;
 
 public class SignInActivity extends AppCompatActivity {
 
@@ -60,9 +61,9 @@ public class SignInActivity extends AppCompatActivity {
         btnSignIn.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
-                if(motionEvent.getAction()==MotionEvent.ACTION_DOWN)
+                if (motionEvent.getAction() == MotionEvent.ACTION_DOWN)
                     btnSignIn.startAnimation(scale_up);
-                else if(motionEvent.getAction() == MotionEvent.ACTION_UP)
+                else if (motionEvent.getAction() == MotionEvent.ACTION_UP)
                     btnSignIn.startAnimation(scale_down);
 
                 SignInClick();
@@ -75,8 +76,8 @@ public class SignInActivity extends AppCompatActivity {
 
     //method for loading animation files
     private void LoadAnimations() {
-        scale_up = AnimationUtils.loadAnimation(this,R.anim.scale_up);
-        scale_down = AnimationUtils.loadAnimation(this,R.anim.scale_down);
+        scale_up = AnimationUtils.loadAnimation(this, R.anim.scale_up);
+        scale_down = AnimationUtils.loadAnimation(this, R.anim.scale_down);
     }
 
     //initializing all views from this activity
@@ -84,17 +85,17 @@ public class SignInActivity extends AppCompatActivity {
         etxtEmailSignIn = findViewById(R.id.etxtEmailSignIn);
         etxtPasswordSignIn = findViewById(R.id.etxtPasswordSignIn);
         txtEmailWarningMessage = findViewById(R.id.txtEmailWarningMessage);
-        txtPasswordWarningMessage = findViewById(R.id.txtPasswordWarningMessage);
+        txtPasswordWarningMessage = findViewById(R.id.txtPasswordWarningMessage2);
         btnSignIn = findViewById(R.id.btnSignIn);
     }
 
 
     //method for signing in the user with inserted credentials
     public void SignInClick() {
-        try {
 
-            if (ValidateFields()) {
-                ClearWarningLabels();
+        if (ValidateFields()) {
+            ClearWarningLabels();
+            try {
                 //we need salt here in order to hash password and set it as hashPassword so we can check with the one inside database
                 User user = new User();
                 user.setEmail(etxtEmailSignIn.getText().toString());
@@ -105,17 +106,14 @@ public class SignInActivity extends AppCompatActivity {
                     Intent intent = new Intent(SignInActivity.this, MainActivity.class);
                     FillSharedPreferences("logged", true, "email", user.getEmail(), "password", user.getPasswordHash());
                     startActivity(intent);
-                    Toast.makeText(SignInActivity.this, "User is logged in -> " + user.getEmail(), Toast.LENGTH_SHORT).show();
                 } else
-                    Toast.makeText(SignInActivity.this, "Something went wrong, please try again!", Toast.LENGTH_SHORT).show();
+                    throw new EmailTakenException("Email/password is incorrect. Try again!");
 
-            } else
-                SetWarningLabels();
-
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-
+            } catch (Exception e) {
+                Toast.makeText(this, e.getMessage().toString(), Toast.LENGTH_SHORT).show();
+            }
+        } else
+            SetWarningLabels();
     }
 
 

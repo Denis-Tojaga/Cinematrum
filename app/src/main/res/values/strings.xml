@@ -1,8 +1,8 @@
 <resources>
     <string name="app_name">Cinematrum</string>
     <string name="title_home">Home</string>
-    <string name="title_dashboard">Dashboard</string>
-    <string name="title_notifications">Notifications</string>
+    <string name="title_wishlist">Wishlist</string>
+    <string name="title_account">Account</string>
     <string name="button_signup">Sign up</string>
     <string name="button_signin">Sign in</string>
     <string name="welcome_activity_label">Book your ticket</string>

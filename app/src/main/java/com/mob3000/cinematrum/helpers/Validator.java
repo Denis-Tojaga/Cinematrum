@@ -17,6 +17,7 @@ public class Validator {
     public static final String INPUT_NOT_VALID_MESSAGE = "This field is required!";
     public static final String PASSWORD_NOT_VALID_MESSAGE = "This field is required!";
     public static final String PASSWORD_LENGTH_NOT_VAlID = "Password must be at least 6 characters!";
+    public static final String INPUT_EMAIL_NOT_VALID = "Email must be in correct format!";
     public static final String VALID_FIELD = "VALID";
 
     private Validator() {
@@ -29,6 +30,14 @@ public class Validator {
         EditText object = (EditText) view;
         if (view instanceof EditText && TextUtils.isEmpty(object.getText()))
             return INPUT_NOT_VALID_MESSAGE;
+        return VALID_FIELD;
+    }
+
+    //validating email field
+    public static String ValidateInputFieldEmail(View view){
+        EditText object = (EditText) view;
+        if(view instanceof EditText && !object.getText().toString().contains("@"))
+            return INPUT_EMAIL_NOT_VALID;
         return VALID_FIELD;
     }
 

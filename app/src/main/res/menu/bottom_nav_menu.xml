@@ -8,13 +8,18 @@
         android:title="@string/title_wishlist" />
 
     <item
+        android:id="@+id/navigation_wishlist"
+        android:icon="@drawable/wishlist"
+        android:title="@string/title_wishlist" />
+
+    <item
         android:id="@+id/navigation_home"
         android:icon="@drawable/ic_home_black_24dp"
         android:title="@string/title_home" />
 
     <item
         android:id="@+id/navigation_account"
-        android:icon="@drawable/ic_account"
-        android:title="@string/label_account" />
+        android:icon="@drawable/account"
+        android:title="@string/title_account" />
 
 </menu>

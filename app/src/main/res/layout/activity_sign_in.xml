@@ -73,21 +73,23 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/trenda_semibold"
-        android:text="TextView"
-        android:textColor="@color/warning_message"
+        android:text=""
         android:visibility="gone"
+        android:textColor="@color/warning_message"
         app:layout_constraintStart_toStartOf="@+id/etxtEmailSignIn"
         app:layout_constraintTop_toBottomOf="@+id/etxtEmailSignIn" />
 
     <TextView
-        android:id="@+id/txtPasswordWarningMessage"
+        android:id="@+id/txtPasswordWarningMessage2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/trenda_semibold"
-        android:text="TextView"
-        android:textColor="@color/warning_message"
+        android:text=""
         android:visibility="gone"
+        android:textColor="@color/warning_message"
         app:layout_constraintStart_toStartOf="@+id/etxtPasswordSignIn"
         app:layout_constraintTop_toBottomOf="@+id/etxtPasswordSignIn" />
 
+
 </androidx.constraintlayout.widget.ConstraintLayout>
+
