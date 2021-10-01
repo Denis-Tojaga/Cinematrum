@@ -88,7 +88,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             + "(\"user3\",\"email2\",\"password3\",\"salt2\",012348790809, \"user\"),"
             + "(\"user2\",\"email3\",\"password2\",\"salt3\",012348790809, \"user\");";
     public static final String INSERT_TICKET_TABLE = "INSERT INTO " + TABLENAME_TICKET + " (" + COLUMN_TICKET_userID + ", " + COLUMN_TICKET_moviesCinemaID + ", " + COLUMN_TICKET_reservedAt + ", " + COLUMN_TICKET_rowNumber + ", " + COLUMN_TICKET_seatNumber + ") "
-            + "VALUES (1,1,1631451997,1,1),(1,1,1631451997,1,1);";
+            + "VALUES (1,1,1631451997,1,2),(1,1,1631451997,1,3);";
     public static final String INSERT_CINEMA_TABLE = "INSERT INTO " + TABLENAME_CINEMA + " (" + COLUMN_CINEMA_name + ", " + COLUMN_CINEMA_location + ") "
             + "VALUES (\"Hönefoss Cinema\", \"\"), (\"Ciname Oslo\", \"\"), (\"Oslo Theater\", \"\");";
     public static final String INSERT_HALL_TABLE = "INSERT INTO " + TABLENAME_HALL + " (" + COLUMN_HALL_cinemaId + ", " + COLUMN_HALL_rows + ", " + COLUMN_HALL_seatsPerRow + ") "
@@ -96,7 +96,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String INSERT_WISHLIST_TABLE = "INSERT INTO " + TABLENAME_WISHLIST + " ( " + COLUMN_WISHLIST_userId + ", " + COLUMN_WISHLIST_movieId + ", " + COLUMN_WISHLIST_hallId + ") "
             + "VALUES (1, 1,1), (1,2,1); ";
     public static final String INSERT_MOVIESCINEMAS_TABLE = "INSERT INTO " + TABLENAME_MOVIES_CINEMAS + " (" + COLUMN_MOVIESCINEMAS_movieID + ", " + COLUMN_MOVIESCINEMAS_hallId + ", " + COLUMN_MOVIESCINEMAS_price + ", " + COLUMN_MOVIESCINEMAS_seatsAvailable + ", " + COLUMN_MOVIESCINEMAS_allSeats + ", " + COLUMN_MOVIESCINEMAS_date + ") "
-            + "VALUES (1,1,10.99,20,100,1631451990), "
+            + "VALUES (1,1,13.99,20,100,1631451990),"
+            + "(1,1,14.99,20,100,1632655355), "
             + "(2,1,20.99,20,100,1631451990),"
             + "(1,2,10.99,20,100,1631451990);";
     public static final String INSERT_CATEGORIES_TABLE = "INSERT INTO " + TABLENAME_CATEGORIE + " (" + COLUMN_CATEGORY_name + ", " + COLUMN_CATEGORY_unicodeIcon + ") "

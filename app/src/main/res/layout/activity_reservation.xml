@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background_theme"
+    tools:context=".ui.ReservationActivity">
+
+
+    <ImageButton
+        android:id="@+id/btnGoBack"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/ticket_screen_goback_margin_left"
+        android:background="@color/background_theme"
+        android:minWidth="48dp"
+        android:minHeight="48dp"
+        app:layout_constraintBottom_toBottomOf="@+id/txtReservationLabel"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/txtReservationLabel"
+        app:srcCompat="@drawable/go_back_icon"
+        tools:ignore="ContentDescription,SpeakableTextPresentCheck" />
+
+    <TextView
+        android:id="@+id/txtReservationLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/ticket_screen_title_margin_top"
+        android:fontFamily="@font/trenda_semibold"
+        android:letterSpacing="@dimen/account_screen_labels_letter_spacing"
+        android:text="@string/buy_ticket"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:textSize="@dimen/welcome_label_size"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.3"
+        app:layout_constraintStart_toEndOf="@+id/btnGoBack"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/txtMovieName"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="16dp"
+        android:fontFamily="@font/trenda_regular"
+        android:text="TextView"
+        android:textColor="@color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtReservationLabel"
+        android:textSize="@dimen/reservation_fontSize_main"/>
+
+    <TextView
+        android:id="@+id/txtCinemaName"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        android:fontFamily="@font/trenda_regular"
+        android:text="TextView"
+        android:textColor="@color/white"
+        android:textSize="@dimen/reservation_fontSize_main"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtMovieName" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        android:background="@color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtCinemaName" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_width="380dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginBottom="190dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtCinemaName" />
+
+
+    <android.widget.Button
+        android:id="@+id/btnBuyTicket"
+        android:layout_width="@dimen/button_width"
+        android:layout_height="@dimen/button_height"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/button_radius"
+        android:fontFamily="@font/moon_light"
+        android:letterSpacing="@dimen/button_letter_spacing"
+        android:text="@string/buy_now"
+        android:textSize="@dimen/button_text_size"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Spinner
+        android:id="@+id/spinnerRow"
+        android:layout_width="162dp"
+        android:layout_height="63dp"
+        android:layout_marginTop="30dp"
+        android:backgroundTint="@color/white"
+        android:popupBackground="@color/background_theme"
+        app:layout_constraintEnd_toStartOf="@+id/spinnerSeat"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/recyclerView" />
+
+    <Spinner
+        android:id="@+id/spinnerSeat"
+        android:layout_width="162dp"
+        android:layout_height="63dp"
+        android:layout_marginTop="30dp"
+        android:backgroundTint="@color/white"
+        android:popupBackground="@color/background_theme"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/spinnerRow"
+        app:layout_constraintTop_toBottomOf="@+id/recyclerView" />
+
+    <TextView
+        android:id="@+id/labelRowSpinner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/row"
+        app:layout_constraintBottom_toTopOf="@+id/spinnerRow"
+        app:layout_constraintStart_toStartOf="@+id/spinnerRow"
+        android:textColor="@color/white"
+        android:fontFamily="@font/trenda_regular"
+        android:textSize="@dimen/reservation_fontSize_labels"
+        />
+
+    <TextView
+        android:id="@+id/labelSeatSpinner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/seat"
+        app:layout_constraintBottom_toTopOf="@+id/spinnerSeat"
+        app:layout_constraintStart_toStartOf="@+id/spinnerSeat"
+        android:textColor="@color/white"
+        android:fontFamily="@font/trenda_regular"
+        android:textSize="@dimen/reservation_fontSize_labels"/>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

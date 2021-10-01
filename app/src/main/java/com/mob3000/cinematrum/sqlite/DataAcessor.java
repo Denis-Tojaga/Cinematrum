@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.mob3000.cinematrum.R;
 import com.mob3000.cinematrum.dataModels.Category;
 import com.mob3000.cinematrum.dataModels.Cinema;
 import com.mob3000.cinematrum.dataModels.Hall;
@@ -17,8 +18,12 @@ import com.mob3000.cinematrum.dataModels.Ticket;
 import com.mob3000.cinematrum.dataModels.User;
 import com.mob3000.cinematrum.dataModels.Wishlist;
 import com.mob3000.cinematrum.helpers.Validator;
+import com.mob3000.cinematrum.ui.ReservationActivity;
 
+import java.sql.Array;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 
 public class DataAcessor {
@@ -119,7 +124,7 @@ public class DataAcessor {
         }
     }
 
-    private static ArrayList<Ticket> getTickets(Context ctx, String selectColumn, String selectValue) {
+    public static ArrayList<Ticket> getTickets(Context ctx, String selectColumn, String selectValue) {
         ArrayList<Ticket> tickets = new ArrayList<>();
         DatabaseHelper dbhelper = new DatabaseHelper(ctx);
 
@@ -299,6 +304,54 @@ public class DataAcessor {
             return moviesCinemas;
         } catch (Exception ex) {
             Log.e(LOG_TAG, ex.getMessage());
+            return moviesCinemas;
+        }
+    }
+
+    public static ArrayList<MoviesCinemas> getMoviesCinemasByCinemaId(Context ctx, int movieId, int cinemaId) {
+        ArrayList<MoviesCinemas> moviesCinemas = new ArrayList();
+        try {
+
+            DatabaseHelper dbhelper = new DatabaseHelper(ctx);
+            SQLiteDatabase db = dbhelper.getReadableDatabase();
+
+            String sql = "SELECT * FROM " + DatabaseHelper.TABLENAME_MOVIES_CINEMAS
+                    + " LEFT JOIN " + DatabaseHelper.TABLENAME_HALL + " on " + DatabaseHelper.TABLENAME_HALL + "." + DatabaseHelper.COLUMN_HALL_hallId
+                    + " = " + DatabaseHelper.TABLENAME_MOVIES_CINEMAS + "." + DatabaseHelper.COLUMN_MOVIESCINEMAS_hallId
+                    + " LEFT JOIN " + DatabaseHelper.TABLENAME_CINEMA + " on " + DatabaseHelper.TABLENAME_CINEMA + "." + DatabaseHelper.COLUMN_CINEMA_cinemaId
+                    + " = " + DatabaseHelper.TABLENAME_HALL + "." + DatabaseHelper.COLUMN_HALL_hallId
+                    + " where " + DatabaseHelper.TABLENAME_MOVIES_CINEMAS + "." + DatabaseHelper.COLUMN_MOVIESCINEMAS_movieID + "=? AND "
+                    + DatabaseHelper.TABLENAME_CINEMA + "." + DatabaseHelper.COLUMN_CINEMA_cinemaId + " =?;";
+            String[] sqlArgs = new String[]{String.valueOf(movieId), String.valueOf(cinemaId)};
+
+            Cursor c = db.rawQuery(sql, sqlArgs);
+
+            if (c.moveToFirst()) {
+                int indexMoviesCinemaId = c.getColumnIndex(DatabaseHelper.COLUMN_MOVIESCINEMAS_moviesCinemasID);
+                int indexMovieId = c.getColumnIndex(DatabaseHelper.COLUMN_MOVIESCINEMAS_movieID);
+                int indexHallId = c.getColumnIndex(DatabaseHelper.COLUMN_MOVIESCINEMAS_hallId);
+                int indexPrice = c.getColumnIndex(DatabaseHelper.COLUMN_MOVIESCINEMAS_price);
+                int indexSeatsAvailable = c.getColumnIndex(DatabaseHelper.COLUMN_MOVIESCINEMAS_seatsAvailable);
+                //int indexAllSeats = c.getColumnIndex(DatabaseHelper.COLUMN_MOVIESCINEMAS_allSeats);
+                int indexDate = c.getColumnIndex(DatabaseHelper.COLUMN_MOVIESCINEMAS_date);
+
+                do {
+                    MoviesCinemas tmpMoviesCinema = new MoviesCinemas();
+                    tmpMoviesCinema.setMoviesCinemas_id(c.getInt(indexMoviesCinemaId));
+                    tmpMoviesCinema.setMovie_id(c.getInt(indexMovieId));
+                    tmpMoviesCinema.setHall_id(c.getInt(indexHallId));
+                    tmpMoviesCinema.setPrice(c.getDouble(indexPrice));
+                    tmpMoviesCinema.setSeatsAvailable(c.getInt(indexSeatsAvailable));
+                    int unixTimestamp = c.getInt(indexDate);
+                    tmpMoviesCinema.setDate((new java.util.Date((long) unixTimestamp * 1000)));
+                    moviesCinemas.add(tmpMoviesCinema);
+                }
+                while (c.moveToNext());
+            }
+            c.close();
+            db.close();
+            return moviesCinemas;
+        } catch (Exception e) {
             return moviesCinemas;
         }
     }
@@ -694,6 +747,73 @@ public class DataAcessor {
             Log.e(LOG_TAG, ex.getMessage());
             return categories;
         }
+    }
+
+    public static ArrayList<String> getFreeRowsForMovieCinema(Context ctx, MoviesCinemas movieCinema) {
+        ArrayList<String> freeRows = new ArrayList<>();
+        try{
+            // get Tickets for movieCinema
+            ArrayList<Ticket> tickets = getTickets(ctx, DatabaseHelper.COLUMN_TICKET_moviesCinemaID, String.valueOf(movieCinema.getMoviesCinemas_id()));
+
+            // get number of Rows for hall in movieCinema
+            Hall hall = getHalls(ctx, DatabaseHelper.COLUMN_HALL_hallId, String.valueOf(movieCinema.getHall_id())).get(0);
+            int numberOfRows = hall.getRows();
+
+            // TODO: Handle if all seats in a row are already taken!
+            for (int i = 0; i < numberOfRows; i++){
+                freeRows.add(String.valueOf(i+1));
+            }
+            freeRows.add(ReservationActivity.SPINNER_ROW_INITIAL_TEXT);
+
+            return freeRows;
+        }
+        catch(Exception ex){
+            Log.e(LOG_TAG, ex.getMessage());
+            return freeRows;
+        }
+    }
+
+    public static ArrayList<String> getFreeSeatsForRow(Context ctx, MoviesCinemas movieCinema, int rowNumber){
+        ArrayList<String> freeSeats = new ArrayList<>();
+
+        try{
+            // get Tickets for movieCinema
+            ArrayList<Ticket> tickets = getTickets(ctx, DatabaseHelper.COLUMN_TICKET_moviesCinemaID, String.valueOf(movieCinema.getMoviesCinemas_id()));
+            ArrayList<Ticket> ticketsInRow = getTicketsWithRow(tickets, rowNumber);
+
+            Hall hall = getHalls(ctx, DatabaseHelper.COLUMN_HALL_hallId, String.valueOf(movieCinema.getHall_id())).get(0);
+            int seatsPerRow = hall.getSeatsPerRow();
+
+            for (int i = 0; i < seatsPerRow; i++){
+                // check if there is a ticket in row
+                if (!checkSeatInTickets(ticketsInRow, i + 1))
+                    freeSeats.add(String.valueOf(i+1));
+            }
+            freeSeats.add(ReservationActivity.SPINNER_SEAT_INITIAL_TEXT);
+
+            return freeSeats;
+        }
+        catch(Exception ex){
+            Log.e(LOG_TAG, ex.getMessage());
+            return freeSeats;
+        }
+    }
+
+    private static ArrayList<Ticket> getTicketsWithRow(ArrayList<Ticket> tickets, int rowNumber){
+        ArrayList<Ticket> filteredTickets = new ArrayList<>();
+
+        for(Ticket t :  tickets){
+            if (t.getRowNumber() == rowNumber)
+                filteredTickets.add(t);
+        }
+        return filteredTickets;
+    }
+    private static boolean checkSeatInTickets(ArrayList<Ticket> tickets, int seatNumber){
+        for(Ticket t : tickets) {
+            if (t.getSeatNumber() == seatNumber)
+                return true;
+        }
+        return false;
     }
 
 }
