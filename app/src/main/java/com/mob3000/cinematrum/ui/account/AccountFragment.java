@@ -10,23 +10,28 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
-
+import com.mob3000.cinematrum.MainActivity;
 import com.mob3000.cinematrum.R;
+import com.mob3000.cinematrum.SignInActivity;
 import com.mob3000.cinematrum.WelcomeActivity;
 import com.mob3000.cinematrum.dataModels.User;
 import com.mob3000.cinematrum.databinding.FragmentAccountBinding;
+import com.mob3000.cinematrum.helpers.Validator;
 import com.mob3000.cinematrum.sqlite.DataAcessor;
 import com.mob3000.cinematrum.sqlite.DatabaseHelper;
 import com.mob3000.cinematrum.ui.TicketHistoryActivity;
@@ -57,8 +62,6 @@ public class AccountFragment extends Fragment {
 
     private AccountViewModel accountViewModel;
     private FragmentAccountBinding binding;
-
-
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
@@ -66,7 +69,6 @@ public class AccountFragment extends Fragment {
 
         accountViewModel =
                 new ViewModelProvider(this).get(AccountViewModel.class);
-
         binding = FragmentAccountBinding.inflate(inflater, container, false);
         root = binding.getRoot();
 
@@ -78,6 +80,7 @@ public class AccountFragment extends Fragment {
 
         editIcon1.setOnClickListener(icon1ButtonHandler);
         editIcon2.setOnClickListener(icon2ButtonHandler);
+
 
         //defining a logOut button and setting onTouchListener
         btnLogOut.setOnTouchListener(new View.OnTouchListener() {
@@ -199,7 +202,8 @@ public class AccountFragment extends Fragment {
         view.setTextColor(getResources().getColor(R.color.hint_color));
         editicon.setImageResource(R.drawable.edit_icon);
     }
-    private void UnlockInputField(EditText view, ImageButton editicon) {
+
+  private void UnlockInputField(EditText view, ImageButton editicon) {
         view.setEnabled(true);
         view.setTextColor(getResources().getColor(R.color.black));
         view.requestFocus();

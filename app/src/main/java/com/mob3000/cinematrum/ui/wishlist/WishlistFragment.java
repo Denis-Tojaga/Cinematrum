@@ -22,6 +22,7 @@ public class WishlistFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         wishlistViewModel =
+
                 new ViewModelProvider(this).get(WishlistViewModel.class);
 
         binding = FragmentWishlistBinding.inflate(inflater, container, false);
@@ -29,6 +30,7 @@ public class WishlistFragment extends Fragment {
 
         final TextView textView = binding.textDashboard;
         wishlistViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
+
             @Override
             public void onChanged(@Nullable String s) {
                 textView.setText(s);

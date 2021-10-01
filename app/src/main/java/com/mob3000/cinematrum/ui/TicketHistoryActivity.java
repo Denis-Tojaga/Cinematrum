@@ -1,5 +1,12 @@
 package com.mob3000.cinematrum.ui;
 
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import android.os.Bundle;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -19,12 +26,13 @@ import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+
 import com.mob3000.cinematrum.R;
 import com.mob3000.cinematrum.dataModels.Ticket;
 import com.mob3000.cinematrum.dataModels.User;
 import com.mob3000.cinematrum.helpers.TicketsRecyclerViewAdapter;
 import com.mob3000.cinematrum.notification.NotificationReminderBroadcast;
-
+import com.mob3000.cinematrum.MainActivity;
 import java.util.ArrayList;
 
 public class TicketHistoryActivity extends AppCompatActivity {

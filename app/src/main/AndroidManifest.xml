@@ -14,9 +14,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Cinematrum">
         <activity
+            android:name=".ui.ReservationActivity"
+            android:exported="true" />
+        <activity
             android:name=".ui.TicketHistoryActivity"
             android:exported="true"
-            android:parentActivityName=".MainActivity"/>
+            android:parentActivityName=".MainActivity" />
         <activity
             android:name=".SignInActivity"
             android:exported="true"
