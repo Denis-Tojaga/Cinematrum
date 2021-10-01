@@ -124,7 +124,7 @@ public class DataAcessor {
         }
     }
 
-    private static ArrayList<Ticket> getTickets(Context ctx, String selectColumn, String selectValue) {
+    public static ArrayList<Ticket> getTickets(Context ctx, String selectColumn, String selectValue) {
         ArrayList<Ticket> tickets = new ArrayList<>();
         DatabaseHelper dbhelper = new DatabaseHelper(ctx);
 
