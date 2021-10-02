@@ -13,6 +13,15 @@ public class Movie {
     private List<MoviesCinemas> moviesCinemas;
     private List<Category> categories;
 
+    public Movie()
+    {
+    }
+
+    public Movie(String picture, String name) {
+        this.name = name;
+        this.picture = picture;
+    }
+
     public int getMovie_id() {
         return movie_id;
     }

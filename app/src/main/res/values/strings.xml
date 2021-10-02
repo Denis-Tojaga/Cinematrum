@@ -11,4 +11,21 @@
     <string name="password_input_hint">Password</string>
     <string name="signin_action_title">Sign In</string>
     <string name="signup_action_title">Sign Up</string>
+    <string name="account_screen_title">Welcome</string>
+    <string name="account_screen_subheading">Information</string>
+    <string name="ticket_button_text">Ticket history</string>
+    <string name="logout_button_text">Log out</string>
+    <string name="ticket_history_text">Ticket history</string>
+    <string name="ticket_row">Row:</string>
+    <string name="ticket_seat">Seat:</string>
+    <string name="alertdialog_title">User approval</string>
+    <string name="alertdialog_message">Some data has changed, do You want to update?</string>
+    <string name="update_success_toast">Data successfully updated!</string>
+    <string name="error_message_no_tickets">No tickets found!</string>
+    <string name="Welcome">Welcome Denis, pick a movie.</string>
+    <string name="SW">Tap To Search</string>
+    <string name="description">When Gru, the world\'s most super-bad turned super-dad has been recruited by a team of officials to stop lethal muscle and a host of Gru\'s own, He has to fight back with new gadgetry, cars, and more minion madness.</string>
+
+
+
 </resources>

@@ -1,6 +1,8 @@
 package com.mob3000.cinematrum;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ImageView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -21,7 +23,7 @@ public class HomeScreenActivity extends AppCompatActivity {
 
     private ActivityHomeScreenBinding binding;
     private User loggedUser;
-
+    private MovieAdapter.MovieClickListener listener;
     private RecyclerView recyclerView;
     private ArrayList<Movie> MovieList;
     private ImageView imageView;
@@ -66,8 +68,8 @@ public class HomeScreenActivity extends AppCompatActivity {
     }
 
     private void setAdapter() {
-
-        MovieAdapter adapter = new MovieAdapter(MovieList);
+        setOnClickListener();
+        MovieAdapter adapter = new MovieAdapter(MovieList, this, listener);
         layoutManager = new LinearLayoutManager(this);
         layoutManager.setOrientation(RecyclerView.HORIZONTAL);
         recyclerView.setLayoutManager(layoutManager);
@@ -75,6 +77,18 @@ public class HomeScreenActivity extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
 
     }
+
+    private void setOnClickListener() {
+        listener = new MovieAdapter.MovieClickListener() {
+            @Override
+            public void onClick(View v, int position) {
+                Intent intent = new Intent(getApplicationContext(), MovieDetailsActivity.class);
+                intent.putExtra("movieID", MovieList.get(position).getMovie_id());
+                startActivity(intent);
+            }
+        };
+    }
+
 
     void LoadCategoryImages()
     {

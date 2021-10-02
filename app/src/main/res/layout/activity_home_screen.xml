@@ -146,7 +146,7 @@
         android:layout_height="40dp"
         android:background="@drawable/searchviewbackground"
         android:iconifiedByDefault="false"
-        android:queryHint="@string/search_view_message"
+        android:queryHint="@string/SW"
         app:layout_constraintBottom_toTopOf="@+id/guideline2"
         app:layout_constraintEnd_toStartOf="@+id/guideline6"
         app:layout_constraintHorizontal_bias="0.0"
@@ -238,7 +238,7 @@
         android:layout_width="410dp"
         android:layout_height="388dp"
 
-        app:layout_constraintBottom_toBottomOf="@+id/nav_view_hs"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
