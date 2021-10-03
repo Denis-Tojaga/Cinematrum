@@ -80,7 +80,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String COLUMN_LOGGEDINUSER_userId = "user_id";
     // INSERT DATA
     public static final String INSERT_MOVIE_TABLE = "INSERT INTO " + TABLENAME_MOVIE + " (" + COLUMN_MOVIE_name  + ", " + COLUMN_MOVIE_picture + ", " + COLUMN_MOVIE_video + ", " + COLUMN_MOVIE_duration + ", " + COLUMN_MOVIE_description + ", " + COLUMN_MOVIE_publishedDate +  ", " + COLUMN_MOVIE_rating + ") "
-
             + "VALUES (\"James Bond\",\"https://i.pinimg.com/originals/24/7c/68/247c683e0f24793e7fe2ae030c8835dc.jpg\", \"\", 1.25, \"The hero James Bond likes to fight all the evil people all over the world\", 1631451990, \"9.5/10\"),"
             + "(\"IT\",\"https://wegotthiscovered.com/wp-content/uploads/2020/07/maxresdefault-17.jpg\", \"\", 1.9, \"It is back. The clown who comes back every 25 years. Already two kids have been missing until the group of young children find out the truth\",1631451990, \"8/10\" )";
     public static final String INSERT_USER_TABLE = "INSERT INTO " + TABLENAME_USER + " (" + COLUMN_USER_username + ", " + COLUMN_USER_email + ", " + COLUMN_USER_password + ", " + COLUMN_USER_salt + ", " + COLUMN_USER_userType + ", " + COLUMN_USER_telephone + ") "
@@ -103,7 +102,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String INSERT_CATEGORIES_TABLE = "INSERT INTO " + TABLENAME_CATEGORIE + " (" + COLUMN_CATEGORY_name + ", " + COLUMN_CATEGORY_unicodeIcon + ") "
             + "VALUES (\"Comedy\", \"U+1F600\"),(\"Horror\", \"U+1F636\"),(\"Action\", \"U+1F920\"),(\"Super Hero\",\"U+1F9BE\");";
     public static final String INSERT_CATEGORIESMOVIES_TABLE = "INSERT INTO " + TABLENAME_CATEGORIE_MOVIE + " (" + COLUMN_CATEGORIESMOVIES_categoryId + ", " + COLUMN_CATEGORIESMOVIES_movieId + ") "
-            + "VALUES (1,1),(1,2);";
+            + "VALUES (1,1),(1,2), (2,1), (3,1);";
 public static final String INSERT_USERLOGGEDIN_TABLE = "INSERT INTO " + TABLENAME_LOGGEDINUSER + " ( " + COLUMN_LOGGEDINUSER_userId + ")"
         + "VALUES (1);";
      /* CREATING DATABASE SCHEME*/
@@ -212,7 +211,7 @@ public static final String INSERT_USERLOGGEDIN_TABLE = "INSERT INTO " + TABLENAM
         db.execSQL(INSERT_USER_TABLE);
         db.execSQL(INSERT_CATEGORIESMOVIES_TABLE);
         db.execSQL(INSERT_HALL_TABLE);
-        //db.execSQL(INSERT_WISHLIST_TABLE);
+        db.execSQL(INSERT_WISHLIST_TABLE);
         db.execSQL(INSERT_MOVIESCINEMAS_TABLE);
         db.execSQL(INSERT_TICKET_TABLE);
         db.execSQL(INSERT_USERLOGGEDIN_TABLE);

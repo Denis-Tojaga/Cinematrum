@@ -5,6 +5,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -54,6 +55,7 @@ public class DataAcessor {
                 tmpUser.setPasswordHash(cursor.getString(passwordIndex));
                 tmpUser.setSalt(cursor.getString(saltIndex));
                 tmpUser.setTelephone(cursor.getString(telephoneIndex));
+                tmpUser.setWishlist(getWishlists(ctx, DatabaseHelper.COLUMN_WISHLIST_userId, String.valueOf(tmpUser.getUser_id())));
                 user = tmpUser;
 
             }
@@ -199,6 +201,13 @@ public class DataAcessor {
                     tmpWishlist.setWishlist_id(c.getInt(indexWishlistId));
                     tmpWishlist.setUser_id(c.getInt(indexUserId));
                     tmpWishlist.setMovie_id(c.getInt(indexMovieId));
+
+                    ArrayList<Movie> wishlistMovies = getMovies(ctx, DatabaseHelper.COLUMN_MOVIE_movieId, String.valueOf(tmpWishlist.getMovie_id()));
+                    if (wishlistMovies.size() == 1)
+                        tmpWishlist.set_movie(wishlistMovies.get(0));
+                    else
+                        tmpWishlist.set_movie(new Movie());
+
                     wishlists.add(tmpWishlist);
                 }
                 while (c.moveToNext());
@@ -635,17 +644,21 @@ public class DataAcessor {
                 int indexName = c.getColumnIndex(DatabaseHelper.COLUMN_MOVIE_name);
                 int indexPicture = c.getColumnIndex(DatabaseHelper.COLUMN_MOVIE_picture);
                 int indexPlublishedDate = c.getColumnIndex(DatabaseHelper.COLUMN_MOVIE_publishedDate);
+                int indexDescription = c.getColumnIndex(DatabaseHelper.COLUMN_MOVIE_description);
                 int indexRating = c.getColumnIndex(DatabaseHelper.COLUMN_MOVIE_rating);
+
 
                 do {
                     Movie tmpMovie = new Movie();
                     tmpMovie.setMovie_id(c.getInt(indexMovieId));
                     tmpMovie.setName(c.getString(indexName));
+                    tmpMovie.setDescription(c.getString(indexDescription));
                     tmpMovie.setPicture(c.getString(indexPicture));
                     int unixTimestamp = c.getInt(indexPlublishedDate);
                     tmpMovie.setPublishedDate((new java.util.Date((long) unixTimestamp * 1000)));
                     tmpMovie.setMoviesCinemas(getMoviesCinemas(ctx, DatabaseHelper.COLUMN_MOVIESCINEMAS_movieID, String.valueOf(tmpMovie.getMovie_id())));
                     tmpMovie.setCategories(getCategoriesForMovie(ctx, tmpMovie.getMovie_id()));
+                    tmpMovie.setCategoriesNamesConcat(concatCategoryNames(tmpMovie.getCategories()));
                     tmpMovie.setRating(c.getString(indexRating));
                     movies.add(tmpMovie);
                 }
@@ -660,6 +673,22 @@ public class DataAcessor {
             return movies;
         }
     }
+
+
+    private static String concatCategoryNames(ArrayList<Category> categories) {
+        String concattedNames = "";
+        for (int i = 0; i < categories.size(); i++) {
+            if (!TextUtils.isEmpty(categories.get(i).getName())) {
+                if (i > 0) {
+                    concattedNames += ", ";
+                }
+                concattedNames += categories.get(i).getName();
+            }
+        }
+        return concattedNames;
+    }
+
+    // TODO FINISH!!
 
     public static ArrayList<Category> getCategories(Context ctx, String selectColumn, String selectValue) {
 
@@ -712,9 +741,11 @@ public class DataAcessor {
             SQLiteDatabase db = dbhelper.getWritableDatabase();
 
             String sql = "SELECT * FROM " + DatabaseHelper.TABLENAME_CATEGORIE_MOVIE
-                    + " LEFT JOIN " + DatabaseHelper.TABLENAME_CATEGORIE + " on " + DatabaseHelper.TABLENAME_CATEGORIE_MOVIE + "." + DatabaseHelper.COLUMN_CATEGORIESMOVIES_movieId
+                    + " LEFT JOIN " + DatabaseHelper.TABLENAME_CATEGORIE + " on " + DatabaseHelper.TABLENAME_CATEGORIE_MOVIE + "." + DatabaseHelper.COLUMN_CATEGORIESMOVIES_categoryId
                     + " = " + DatabaseHelper.TABLENAME_CATEGORIE + "." + DatabaseHelper.COLUMN_CATEGORY_categoryId
                     + " where " + DatabaseHelper.COLUMN_CATEGORIESMOVIES_movieId + "=?;";
+
+
             String[] sqlArgs = new String[]{String.valueOf(movie_id)};
 
             Cursor c = db.rawQuery(sql, sqlArgs);
@@ -749,6 +780,7 @@ public class DataAcessor {
         try {
             // get Tickets for movieCinema
             ArrayList<Ticket> tickets = getTickets(ctx, DatabaseHelper.COLUMN_TICKET_moviesCinemaID, String.valueOf(movieCinema.getMoviesCinemas_id()));
+
 
             // get number of Rows for hall in movieCinema
             Hall hall = getHalls(ctx, DatabaseHelper.COLUMN_HALL_hallId, String.valueOf(movieCinema.getHall_id())).get(0);
@@ -814,5 +846,6 @@ public class DataAcessor {
         }
         return false;
     }
+
 
 }

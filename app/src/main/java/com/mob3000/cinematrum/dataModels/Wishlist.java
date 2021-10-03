@@ -8,6 +8,8 @@ public class Wishlist {
     private int wishlist_id;
     private int user_id;
     private int movie_id;
+    private Movie _movie;
+
 
     public int getWishlist_id() {
         return wishlist_id;
@@ -31,6 +33,15 @@ public class Wishlist {
 
     public void setMovie_id(int movie_id) {
         this.movie_id = movie_id;
+    }
+
+
+    public Movie get_movie() {
+        return _movie;
+    }
+
+    public void set_movie(Movie _movie) {
+        this._movie = _movie;
     }
 
     @Override
