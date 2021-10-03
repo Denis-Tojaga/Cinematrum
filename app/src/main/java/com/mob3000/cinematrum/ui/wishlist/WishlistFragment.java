@@ -24,6 +24,7 @@ import com.mob3000.cinematrum.dataModels.Wishlist;
 import com.mob3000.cinematrum.sqlite.DataAcessor;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 
 public class WishlistFragment extends Fragment {
@@ -90,7 +91,7 @@ _searchTextInput.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             ArrayList<Wishlist> filteredWishlist = new ArrayList<>();
             for (int i = 0; i < _fullWishlist.size(); i++) {
                 Wishlist item = _fullWishlist.get(i);
-                if (item.get_movie().getDescription().contains(text) || item.get_movie().getName().contains(text) || item.get_movie().getCategoriesNamesConcat().contains(text))
+                if (item.get_movie().getDescription().toLowerCase().contains(text.toLowerCase()) || item.get_movie().getName().toLowerCase().contains(text.toLowerCase()) || item.get_movie().getCategoriesNamesConcat().toLowerCase().contains(text.toLowerCase()))
                     filteredWishlist.add(_fullWishlist.get(i));
             }
             _wishlist = filteredWishlist;
