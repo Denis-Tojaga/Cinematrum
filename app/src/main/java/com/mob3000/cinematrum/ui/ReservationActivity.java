@@ -1,18 +1,19 @@
 package com.mob3000.cinematrum.ui;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.animation.AlphaAnimation;
-import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.Spinner;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -26,13 +27,11 @@ import com.mob3000.cinematrum.dataModels.Ticket;
 import com.mob3000.cinematrum.dataModels.User;
 import com.mob3000.cinematrum.helpers.OnItemClickListener;
 import com.mob3000.cinematrum.helpers.ReservationRecyclerViewAdapter;
-import com.mob3000.cinematrum.helpers.ReservationSpinnerAdapter;
 import com.mob3000.cinematrum.helpers.Utils;
 import com.mob3000.cinematrum.sqlite.DataAcessor;
 import com.mob3000.cinematrum.sqlite.DatabaseHelper;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class ReservationActivity extends AppCompatActivity implements OnItemClickListener {
 
@@ -41,27 +40,102 @@ public class ReservationActivity extends AppCompatActivity implements OnItemClic
     public static String SPINNER_ROW_INITIAL_TEXT = "Choose Row";
     public static String SPINNER_SEAT_INITIAL_TEXT = "Choose Seat";
     private static String LOG_TAG = "RESERVATIONACTIVITY";
-    MoviesCinemas currentMovieCinema = new MoviesCinemas();
-    ArrayList<String> spinnerRowDataSource = new ArrayList<String>(Arrays.asList(SPINNER_ROW_INITIAL_TEXT));
-    ArrayList<String> spinnerSeatDataSource = new ArrayList<>(Arrays.asList(SPINNER_SEAT_INITIAL_TEXT));
-    int spinnerRowDataSourceLength = spinnerRowDataSource.size() - 1;
-    int spinnerSeatDataSourceLength = spinnerSeatDataSource.size() - 1;
+    private MoviesCinemas currentMovieCinema = new MoviesCinemas();
+    private ArrayList<String> spinnerRowDataSource = new ArrayList<>();
+    private ArrayList<String> spinnerSeatDataSource = new ArrayList<>();
+    private int spinnerRowDataSourceLength = spinnerRowDataSource.size() - 1;
+    private int spinnerSeatDataSourceLength = spinnerSeatDataSource.size() - 1;
     private ImageButton backButton;
     private TextView txtMovieName;
     private TextView txtCinemaName;
+    private TextView txtChooseRow;
+    private TextView txtChooseSeat;
     private RecyclerView recyclerView;
     private Button btnBuyTicket;
-    private Spinner spinnerRow;
-    private Spinner spinnerSeat;
     private ArrayList<MoviesCinemas> moviesCinemas;
+    private ArrayAdapter<String> spinnerRowAdapter;
+    private ArrayAdapter<String> spinnerSeatAdapter;
     private ReservationRecyclerViewAdapter viewAdapter;
-    private ReservationSpinnerAdapter spinnerRowAdapter;
-    private ReservationSpinnerAdapter spinnerSeatAdapter;
+    private ImageView imgChooseRow;
+    private ImageView imgChooseSeat;
     private SharedPreferences sp;
     private AlphaAnimation goBackButtonClick = new AlphaAnimation(0.3F, 0.1F);
 
     private int currentSelectedRow = -1;
     private int currentSelectedSeat = -1;
+
+    View.OnClickListener chooseRowClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+
+            if (viewAdapter.getSelectedPosition() == -1) {
+                Utils.showOkAlert(ReservationActivity.this, "Choose timeslot", "Please choose a timeslot first.");
+            } else {
+                AlertDialog.Builder builderSingle = new AlertDialog.Builder(ReservationActivity.this);
+                builderSingle.setTitle("Select row");
+
+                builderSingle.setNegativeButton("cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+
+                builderSingle.setAdapter(spinnerRowAdapter, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // set currentRow
+                        currentSelectedRow = which;
+                        txtChooseRow.setText(spinnerRowDataSource.get(which));
+
+                        // Update seats
+                        int index = Integer.parseInt(spinnerRowDataSource.get(which));
+                        ArrayList<String> newFreeSeats = DataAcessor.getFreeSeatsForRow(getApplicationContext(), currentMovieCinema, index);
+                        spinnerSeatDataSource = newFreeSeats;
+                        spinnerSeatAdapter.clear();
+                        spinnerSeatAdapter.addAll(spinnerSeatDataSource);
+
+                        dialog.dismiss();
+                    }
+                });
+                builderSingle.show();
+            }
+
+        }
+    };
+
+    View.OnClickListener chooseSeatClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+
+            if (currentSelectedRow == -1) {
+                Utils.showOkAlert(ReservationActivity.this, "Choose row", "Please choose a row before selecting a seat.");
+            } else {
+
+                AlertDialog.Builder builderSingle = new AlertDialog.Builder(ReservationActivity.this);
+                builderSingle.setTitle("Select seat");
+
+                builderSingle.setNegativeButton("cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+
+                builderSingle.setAdapter(spinnerSeatAdapter, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // set currentRow
+                        currentSelectedSeat = which;
+                        txtChooseSeat.setText(spinnerSeatDataSource.get(which));
+                        dialog.dismiss();
+                    }
+                });
+                builderSingle.show();
+            }
+
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,10 +150,20 @@ public class ReservationActivity extends AppCompatActivity implements OnItemClic
         txtCinemaName = findViewById(R.id.txtCinemaName);
         recyclerView = findViewById(R.id.recyclerView);
         btnBuyTicket = findViewById(R.id.btnBuyTicket);
-        spinnerRow = findViewById(R.id.spinnerRow);
-        spinnerSeat = findViewById(R.id.spinnerSeat);
+        txtChooseRow = findViewById(R.id.txtChooseRow);
+        txtChooseSeat = findViewById(R.id.txtChooseSeat);
+
+        imgChooseRow = findViewById(R.id.imgChooseRow);
+        imgChooseSeat = findViewById(R.id.imgChooseSeat);
 
         sp = getSharedPreferences("login", MODE_PRIVATE);
+
+
+        txtChooseRow.setText(SPINNER_ROW_INITIAL_TEXT);
+        txtChooseSeat.setText(SPINNER_SEAT_INITIAL_TEXT);
+
+        spinnerRowAdapter = new ArrayAdapter<String>(ReservationActivity.this, android.R.layout.select_dialog_singlechoice);
+        spinnerSeatAdapter = new ArrayAdapter<String>(ReservationActivity.this, android.R.layout.select_dialog_singlechoice);
 
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -96,6 +180,13 @@ public class ReservationActivity extends AppCompatActivity implements OnItemClic
             }
         });
 
+
+        txtChooseRow.setOnClickListener(chooseRowClickListener);
+        txtChooseSeat.setOnClickListener(chooseSeatClickListener);
+        imgChooseRow.setOnClickListener(chooseRowClickListener);
+        imgChooseSeat.setOnClickListener(chooseSeatClickListener);
+
+
         //get data from intent
         Intent i = getIntent();
         int movieId = i.getIntExtra(INTENT_MOVIE_ID, 0);
@@ -106,8 +197,15 @@ public class ReservationActivity extends AppCompatActivity implements OnItemClic
             Toast.makeText(this, "Error loading movie and cinema. Please try again", Toast.LENGTH_LONG);
         }
 
-        Movie movie = DataAcessor.getMovies(this, DatabaseHelper.COLUMN_MOVIE_movieId, String.valueOf(movieId)).get(0);
-        Cinema cinema = DataAcessor.getCinemas(this, DatabaseHelper.COLUMN_CINEMA_cinemaId, String.valueOf(cinemaId)).get(0);
+        Movie movie = new Movie();
+        Cinema cinema = new Cinema();
+
+        try {
+            movie = DataAcessor.getMovies(this, DatabaseHelper.COLUMN_MOVIE_movieId, String.valueOf(movieId)).get(0);
+            cinema = DataAcessor.getCinemas(this, DatabaseHelper.COLUMN_CINEMA_cinemaId, String.valueOf(cinemaId)).get(0);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
 
         txtMovieName.setText(movie.getName());
         txtCinemaName.setText(cinema.getName());
@@ -120,68 +218,24 @@ public class ReservationActivity extends AppCompatActivity implements OnItemClic
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.addItemDecoration(new DividerItemDecoration(recyclerView.getContext(), DividerItemDecoration.VERTICAL));
 
-        // Setting up spinner and adapter
-        spinnerRowAdapter = new ReservationSpinnerAdapter(this, R.layout.spinner_item, spinnerRowDataSource);
-        spinnerRow.setAdapter(spinnerRowAdapter);
-        spinnerRow.setSelection(spinnerRowDataSourceLength);
-
-        spinnerSeatAdapter = new ReservationSpinnerAdapter(this, R.layout.spinner_item, spinnerSeatDataSource);
-        spinnerSeat.setAdapter(spinnerSeatAdapter);
-        spinnerSeat.setSelection(spinnerSeatDataSourceLength);
-
-
-        spinnerRow.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                currentSelectedRow = i;
-
-                try {
-                    int index = Integer.parseInt(spinnerRowDataSource.get(i));
-                    ArrayList<String> newFreeSeats = DataAcessor.getFreeSeatsForRow(getApplicationContext(), currentMovieCinema, index);
-                    spinnerSeatDataSource = newFreeSeats;
-                    spinnerSeatAdapter.updateData(newFreeSeats);
-                    spinnerSeat.setSelection(spinnerRowDataSource.size());
-
-                } catch (Exception ex) {
-                    Log.e(LOG_TAG, ex.getMessage());
-                    ex.printStackTrace();
-                }
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-
-            }
-        });
-
-        spinnerSeat.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                currentSelectedSeat = i;
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-
-            }
-        });
 
     }
 
     @Override
     public void onItemClick(int index) {
-        Toast.makeText(this, String.valueOf(index), Toast.LENGTH_LONG).show();
         viewAdapter.setSelectedPosition(index);
         viewAdapter.notifyDataSetChanged(); // Update color of selected/unselected rows.
 
-        // TODO: Load free rows for selected timeslot. Don't show row if there is now free seat in row @tt
         currentMovieCinema = moviesCinemas.get(index);
         spinnerRowDataSource = DataAcessor.getFreeRowsForMovieCinema(this, moviesCinemas.get(index));
+        spinnerRowAdapter.clear();
+        spinnerRowAdapter.addAll(spinnerRowDataSource);
 
-        spinnerRowAdapter.updateData(DataAcessor.getFreeRowsForMovieCinema(this, moviesCinemas.get(index)));
-        spinnerRow.setSelection(spinnerRowAdapter.getCount() + 1);
+        txtChooseSeat.setText(SPINNER_SEAT_INITIAL_TEXT);
+        currentSelectedSeat = -1;
+        txtChooseRow.setText(SPINNER_ROW_INITIAL_TEXT);
+        currentSelectedRow = -1;
     }
-
 
     private void onTicketBuyPressed() {
 
@@ -192,8 +246,8 @@ public class ReservationActivity extends AppCompatActivity implements OnItemClic
         // check if a timeslot has been chosen
         if (this.viewAdapter.getSelectedPosition() == -1) {
             alertMessage = "Please choose a timeslot to book a ticket.";
-        } else if (currentSelectedRow == -1 || spinnerRowDataSource.get(currentSelectedRow) == SPINNER_ROW_INITIAL_TEXT || currentSelectedSeat == -1 || spinnerSeatDataSource.get(currentSelectedSeat) == SPINNER_SEAT_INITIAL_TEXT) {
-            alertMessage = "Please choose Row and seat to book a ticket.";
+        } else if (currentSelectedRow == -1 || currentSelectedSeat == -1) {
+            alertMessage = "Please choose row and seat to book a ticket.";
         }
 
         if (alertMessage != "") {
@@ -216,7 +270,6 @@ public class ReservationActivity extends AppCompatActivity implements OnItemClic
                 Ticket ticket = new Ticket(moviesCinemas.get(this.viewAdapter.getSelectedPosition()).getMoviesCinemas_id(), rowNumber, seatNumber, currentUser.getUser_id());
 
                 boolean ticketInserted = DataAcessor.insertTicket(this, ticket);
-                ArrayList<Ticket> allTickets = DataAcessor.getTickets(this, "", "");
 
                 if (!ticketInserted) {
                     Utils.showOkAlert(this, "Error booking ticket.", "An Error accrued when booking your ticket. Please try again.");
