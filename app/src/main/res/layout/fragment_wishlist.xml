@@ -4,19 +4,23 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.wishlist.WishlistFragment">
+    tools:context=".ui.wishlist.WishlistFragment"
+    android:background="@color/background_theme">
 
-
-    <!-- TODO: Insert indiv search field!-->
-    <!--    <EditText-->
-    <!--        android:id="@+id/search_textInput"-->
-    <!--        android:layout_width="wrap_content"-->
-    <!--        android:layout_height="wrap_content"-->
-    <!--        android:layout_marginTop="16dp"-->
-    <!--        android:text="Search Movie"-->
-    <!--        app:layout_constraintEnd_toEndOf="parent"-->
-    <!--        app:layout_constraintStart_toStartOf="parent"-->
-    <!--        app:layout_constraintTop_toTopOf="parent" />-->
+    <TextView
+        android:id="@+id/txtWishlistLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/welcome_label_margin_top"
+        android:fontFamily="@font/trenda_semibold"
+        android:letterSpacing="@dimen/account_screen_labels_letter_spacing"
+        android:text="@string/label_myWishlist"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:textSize="@dimen/welcome_label_size"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ListView
         android:id="@+id/wishlist_listView"
