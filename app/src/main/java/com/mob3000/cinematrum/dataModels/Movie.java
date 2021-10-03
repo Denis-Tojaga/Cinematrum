@@ -16,8 +16,7 @@ public class Movie {
     private ArrayList<Category> categories;
     private String categoriesNamesConcat;
     private String rating;
-    private List<MoviesCinemas> moviesCinemas;
-    private List<Category> categories;
+
 
 
     public int getMovie_id() {
