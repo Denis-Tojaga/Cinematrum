@@ -51,8 +51,7 @@ public class WishlistTableAdapter extends ArrayAdapter<Wishlist> {
             descriptionView.setText(currentMovie.getDescription());
             categoriesView.setText(currentMovie.getCategoriesNamesConcat());
 
-            Picasso.with(_context).load(currentMovie.getPicture()).into(imageView);
-            // TODO: DOWNLOAD IMAGE?
+            Picasso.get().load(currentMovie.getPicture()).into(imageView);
 
         }
 
