@@ -14,10 +14,11 @@ public class Movie {
     private Date publishedDate;
     private ArrayList<MoviesCinemas> moviesCinemas;
     private ArrayList<Category> categories;
-
-
-
     private String categoriesNamesConcat;
+    private String rating;
+    private List<MoviesCinemas> moviesCinemas;
+    private List<Category> categories;
+
 
     public int getMovie_id() {
         return movie_id;
@@ -49,6 +50,14 @@ public class Movie {
 
     public void setPublishedDate(Date publishedDate) {
         this.publishedDate = publishedDate;
+    }
+
+    public String getRating() {
+        return rating;
+    }
+
+    public void setRating(String rating) {
+        this.rating = rating;
     }
 
     public List<MoviesCinemas> getMoviesCinemas() {
@@ -90,6 +99,7 @@ public class Movie {
                 ", name='" + name + '\'' +
                 ", picture='" + picture + '\'' +
                 ", publishedDate=" + publishedDate +
+                ", rating='" + rating + '\'' +
                 ", moviesCinemas=" + moviesCinemas +
                 ", categories=" + categories +
                 '}';

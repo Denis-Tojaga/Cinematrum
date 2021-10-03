@@ -8,7 +8,7 @@
     <fragment
         android:id="@+id/navigation_wishlist"
         android:name="com.mob3000.cinematrum.ui.wishlist.WishlistFragment"
-        android:label="@string/wishlist"
+        android:label="@string/title_wishlist"
         tools:layout="@layout/fragment_wishlist" />
 
     <fragment
@@ -18,8 +18,8 @@
         tools:layout="@layout/fragment_home" />
 
     <fragment
-        android:id="@+id/navigation_notifications"
-        android:name="com.mob3000.cinematrum.ui.account.NotificationsFragment"
-        android:label="@string/title_notifications"
-        tools:layout="@layout/fragment_notifications" />
+        android:id="@+id/navigation_account"
+        android:name="com.mob3000.cinematrum.ui.account.AccountFragment"
+        android:label="@string/title_account"
+        tools:layout="@layout/fragment_account" />
 </navigation>

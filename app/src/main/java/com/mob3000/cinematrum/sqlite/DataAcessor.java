@@ -10,6 +10,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.mob3000.cinematrum.dataModels.Category;
+import com.mob3000.cinematrum.dataModels.Cinema;
 import com.mob3000.cinematrum.dataModels.Hall;
 import com.mob3000.cinematrum.dataModels.Movie;
 import com.mob3000.cinematrum.dataModels.MoviesCinemas;
@@ -102,7 +103,7 @@ public class DataAcessor {
                     tmpUser.setName(cursor.getString(nameIndex));
                     tmpUser.setEmail(cursor.getString(emailIndex));
                     tmpUser.setPasswordHash(cursor.getString(passwordIndex));
-                    tmpUser.setSalt(cursor.getString(saltIndex));// TODO Update for Salt and hash
+                    tmpUser.setSalt(cursor.getString(saltIndex));
                     tmpUser.setTelephone(cursor.getString(telephoneIndex));
                     tmpUser.setTickets(getTickets(ctx, DatabaseHelper.COLUMN_TICKET_userID, String.valueOf(tmpUser.getUser_id())));
                     tmpUser.setWishlist(getWishlists(ctx, DatabaseHelper.COLUMN_WISHLIST_userId, String.valueOf(tmpUser.getUser_id())));
@@ -120,7 +121,7 @@ public class DataAcessor {
         }
     }
 
-    private static ArrayList<Ticket> getTickets(Context ctx, String selectColumn, String selectValue) {
+    public static ArrayList<Ticket> getTickets(Context ctx, String selectColumn, String selectValue) {
         ArrayList<Ticket> tickets = new ArrayList<>();
         DatabaseHelper dbhelper = new DatabaseHelper(ctx);
 
@@ -265,7 +266,7 @@ public class DataAcessor {
         }
     }
 
-    private static ArrayList<MoviesCinemas> getMoviesCinemas(Context ctx, String selectColumn, String selectValue) {
+    public static ArrayList<MoviesCinemas> getMoviesCinemas(Context ctx, String selectColumn, String selectValue) {
         ArrayList<MoviesCinemas> moviesCinemas = new ArrayList<>();
         DatabaseHelper dbhelper = new DatabaseHelper(ctx);
         try {
@@ -311,13 +312,106 @@ public class DataAcessor {
         }
     }
 
+    public static ArrayList<MoviesCinemas> getMoviesCinemasByCinemaId(Context ctx, int movieId, int cinemaId) {
+        ArrayList<MoviesCinemas> moviesCinemas = new ArrayList();
+        try {
+
+            DatabaseHelper dbhelper = new DatabaseHelper(ctx);
+            SQLiteDatabase db = dbhelper.getReadableDatabase();
+
+            String sql = "SELECT * FROM " + DatabaseHelper.TABLENAME_MOVIES_CINEMAS
+                    + " LEFT JOIN " + DatabaseHelper.TABLENAME_HALL + " on " + DatabaseHelper.TABLENAME_HALL + "." + DatabaseHelper.COLUMN_HALL_hallId
+                    + " = " + DatabaseHelper.TABLENAME_MOVIES_CINEMAS + "." + DatabaseHelper.COLUMN_MOVIESCINEMAS_hallId
+                    + " LEFT JOIN " + DatabaseHelper.TABLENAME_CINEMA + " on " + DatabaseHelper.TABLENAME_CINEMA + "." + DatabaseHelper.COLUMN_CINEMA_cinemaId
+                    + " = " + DatabaseHelper.TABLENAME_HALL + "." + DatabaseHelper.COLUMN_HALL_hallId
+                    + " where " + DatabaseHelper.TABLENAME_MOVIES_CINEMAS + "." + DatabaseHelper.COLUMN_MOVIESCINEMAS_movieID + "=? AND "
+                    + DatabaseHelper.TABLENAME_CINEMA + "." + DatabaseHelper.COLUMN_CINEMA_cinemaId + " =?;";
+            String[] sqlArgs = new String[]{String.valueOf(movieId), String.valueOf(cinemaId)};
+
+            Cursor c = db.rawQuery(sql, sqlArgs);
+
+            if (c.moveToFirst()) {
+                int indexMoviesCinemaId = c.getColumnIndex(DatabaseHelper.COLUMN_MOVIESCINEMAS_moviesCinemasID);
+                int indexMovieId = c.getColumnIndex(DatabaseHelper.COLUMN_MOVIESCINEMAS_movieID);
+                int indexHallId = c.getColumnIndex(DatabaseHelper.COLUMN_MOVIESCINEMAS_hallId);
+                int indexPrice = c.getColumnIndex(DatabaseHelper.COLUMN_MOVIESCINEMAS_price);
+                int indexSeatsAvailable = c.getColumnIndex(DatabaseHelper.COLUMN_MOVIESCINEMAS_seatsAvailable);
+                //int indexAllSeats = c.getColumnIndex(DatabaseHelper.COLUMN_MOVIESCINEMAS_allSeats);
+                int indexDate = c.getColumnIndex(DatabaseHelper.COLUMN_MOVIESCINEMAS_date);
+
+                do {
+                    MoviesCinemas tmpMoviesCinema = new MoviesCinemas();
+                    tmpMoviesCinema.setMoviesCinemas_id(c.getInt(indexMoviesCinemaId));
+                    tmpMoviesCinema.setMovie_id(c.getInt(indexMovieId));
+                    tmpMoviesCinema.setHall_id(c.getInt(indexHallId));
+                    tmpMoviesCinema.setPrice(c.getDouble(indexPrice));
+                    tmpMoviesCinema.setSeatsAvailable(c.getInt(indexSeatsAvailable));
+                    int unixTimestamp = c.getInt(indexDate);
+                    tmpMoviesCinema.setDate((new java.util.Date((long) unixTimestamp * 1000)));
+                    moviesCinemas.add(tmpMoviesCinema);
+                }
+                while (c.moveToNext());
+            }
+            c.close();
+            db.close();
+            return moviesCinemas;
+        } catch (Exception e) {
+            return moviesCinemas;
+        }
+    }
+
+    //TODO check this method
+    public static ArrayList<Cinema> getCinemas(Context ctx, String selectColumn, String selectValue) {
+        ArrayList<Cinema> cinemas = new ArrayList<>();
+        DatabaseHelper dbhelper = new DatabaseHelper(ctx);
+
+        try {
+            SQLiteDatabase db = dbhelper.getReadableDatabase();
+
+            String sql;
+            Cursor c;
+
+            if (selectColumn != "") {
+                sql = "SELECT * FROM " + DatabaseHelper.TABLENAME_CINEMA + " where " + selectColumn + "=?";
+                String[] sqlArgs = new String[]{selectValue};
+                c = db.rawQuery(sql, sqlArgs);
+            } else {
+                sql = "SELECT * FROM " + DatabaseHelper.TABLENAME_CINEMA + ";";
+                c = db.rawQuery(sql, null);
+            }
+
+            if (c.moveToFirst()) {
+                int indexCinemaId = c.getColumnIndex(DatabaseHelper.COLUMN_CINEMA_cinemaId);
+                int indexName = c.getColumnIndex(DatabaseHelper.COLUMN_CINEMA_name);
+                int indexLocation = c.getColumnIndex(DatabaseHelper.COLUMN_CINEMA_location);
+                do {
+                    Cinema tmpCinema = new Cinema();
+                    tmpCinema.setCinema_id(c.getInt(indexCinemaId));
+                    tmpCinema.setName(c.getString(indexName));
+                    tmpCinema.setLocation(c.getString(indexLocation));
+                    //TODO load halls with own function like GetHalls
+                    cinemas.add(tmpCinema);
+                }
+                while (c.moveToNext());
+            }
+            c.close();
+            db.close();
+            return cinemas;
+        } catch (Exception ex) {
+            Log.e(LOG_TAG, ex.getMessage());
+            return cinemas;
+        }
+    }
+
+
     // returns null if user is not logged in or userId is not found.
     public static User getLoggedInUser(Context ctx) {
         // Get Userid out of UserLoggedIn
         try {
             DatabaseHelper dbhelper = new DatabaseHelper(ctx);
             SQLiteDatabase db = dbhelper.getReadableDatabase();
-            String sql = "SELECT * FROM " + DatabaseHelper.TABLENAME_LOGGEDINUSER + ";";
+            String sql = "SELECT * FROM " + DatabaseHelper.TABLENAME_USER + ";";
+
             Cursor c = db.rawQuery(sql, null);
             if (c.getCount() < 1) return null;
 
@@ -406,12 +500,12 @@ public class DataAcessor {
         }
     }
 
-    public static boolean insertUser(Context ctx, User u) throws UserNameTakenException {
+    public static boolean insertUser(Context ctx, User u) throws EmailTakenException {
         try {
 
-            ArrayList<User> userWithSameName = DataAcessor.getUser(ctx, DatabaseHelper.COLUMN_USER_username, u.getName());
-            if (userWithSameName.size() > 0)
-                throw new UserNameTakenException("Username " + u.getName() + " is already taken");
+            ArrayList<User> userWithSameEmail = DataAcessor.getUser(ctx, DatabaseHelper.COLUMN_USER_email, u.getEmail());
+            if (userWithSameEmail.size() > 0)
+                throw new EmailTakenException("Email -> " + u.getEmail() + " already in use. Try again!");
 
             ContentValues values = new ContentValues();
 
@@ -423,7 +517,6 @@ public class DataAcessor {
             values.put(DatabaseHelper.COLUMN_USER_userType, u.getUserType());
             values.put(DatabaseHelper.COLUMN_USER_telephone, u.getTelephone());
 
-            //TODO new user should be inserted inside LoggedInUser table, so next time we open the app
 
             return insertData(ctx, values, DatabaseHelper.TABLENAME_USER);
         } catch (Exception ex) {
@@ -438,9 +531,7 @@ public class DataAcessor {
             ArrayList<User> dbUsers = getUser(ctx, DatabaseHelper.COLUMN_USER_email, u.getEmail());
             if (dbUsers.size() != 1) return false;
 
-            //TODO passwordWithoutSalt and password are the same but the method keeps returning false
             String hashedPasswordWithoutSalt = Validator.ExtractPasswordPart(dbUsers.get(0).getPasswordHash());
-
             return hashedPasswordWithoutSalt.equals(u.getPasswordHash());
         } catch (Exception ex) {
             Log.e(LOG_TAG, ex.getMessage());
@@ -464,7 +555,6 @@ public class DataAcessor {
     }
 
 
-    // TODO: FINISH WITH SALT?
     public static boolean updateUser(Context ctx, User u) {
         try {
             DatabaseHelper dbhelper = new DatabaseHelper(ctx);
@@ -472,7 +562,7 @@ public class DataAcessor {
 
             ContentValues values = new ContentValues();
             values.put(DatabaseHelper.COLUMN_USER_username, u.getName());
-            values.put(DatabaseHelper.COLUMN_USER_email, u.getName());
+            values.put(DatabaseHelper.COLUMN_USER_email, u.getEmail());
             values.put(DatabaseHelper.COLUMN_USER_telephone, u.getTelephone());
             values.put(DatabaseHelper.COLUMN_USER_userType, u.getUserType());
 
@@ -530,7 +620,6 @@ public class DataAcessor {
         }
     }
 
-    // TODO: FINISH;
     public static ArrayList<Movie> getMovies(Context ctx, String selectColumn, String selectValue) {
         ArrayList<Movie> movies = new ArrayList<>();
 
@@ -556,6 +645,8 @@ public class DataAcessor {
                 int indexPicture = c.getColumnIndex(DatabaseHelper.COLUMN_MOVIE_picture);
                 int indexPlublishedDate = c.getColumnIndex(DatabaseHelper.COLUMN_MOVIE_publishedDate);
                 int indexDescription = c.getColumnIndex(DatabaseHelper.COLUMN_MOVIE_description);
+                int indexRating = c.getColumnIndex(DatabaseHelper.COLUMN_MOVIE_rating);
+
 
                 do {
                     Movie tmpMovie = new Movie();
@@ -568,6 +659,7 @@ public class DataAcessor {
                     tmpMovie.setMoviesCinemas(getMoviesCinemas(ctx, DatabaseHelper.COLUMN_MOVIESCINEMAS_movieID, String.valueOf(tmpMovie.getMovie_id())));
                     tmpMovie.setCategories(getCategoriesForMovie(ctx, tmpMovie.getMovie_id()));
                     tmpMovie.setCategoriesNamesConcat(concatCategoryNames(tmpMovie.getCategories()));
+                    tmpMovie.setRating(c.getString(indexRating));
                     movies.add(tmpMovie);
                 }
                 while (c.moveToNext());
@@ -581,6 +673,7 @@ public class DataAcessor {
             return movies;
         }
     }
+
 
     private static String concatCategoryNames(ArrayList<Category> categories) {
         String concattedNames = "";
@@ -596,6 +689,7 @@ public class DataAcessor {
     }
 
     // TODO FINISH!!
+
     public static ArrayList<Category> getCategories(Context ctx, String selectColumn, String selectValue) {
 
         ArrayList<Category> categories = new ArrayList<>();
@@ -640,7 +734,6 @@ public class DataAcessor {
     }
 
 
-    // TODO : FINISH!!!
     public static ArrayList<Category> getCategoriesForMovie(Context ctx, int movie_id) {
         ArrayList<Category> categories = new ArrayList<>();
         try {
@@ -680,6 +773,78 @@ public class DataAcessor {
             Log.e(LOG_TAG, ex.getMessage());
             return categories;
         }
+    }
+
+    public static ArrayList<String> getFreeRowsForMovieCinema(Context ctx, MoviesCinemas movieCinema) {
+        ArrayList<String> freeRows = new ArrayList<>();
+        try {
+            // get Tickets for movieCinema
+            ArrayList<Ticket> tickets = getTickets(ctx, DatabaseHelper.COLUMN_TICKET_moviesCinemaID, String.valueOf(movieCinema.getMoviesCinemas_id()));
+
+
+            // get number of Rows for hall in movieCinema
+            Hall hall = getHalls(ctx, DatabaseHelper.COLUMN_HALL_hallId, String.valueOf(movieCinema.getHall_id())).get(0);
+            int numberOfRows = hall.getRows();
+            int seatsPerRow = hall.getSeatsPerRow();
+
+            for (int i = 0; i < numberOfRows; i++) {
+                if (checkFreeSeatsInRow(tickets, i + 1, seatsPerRow))
+                    freeRows.add(String.valueOf(i + 1));
+            }
+
+            return freeRows;
+        } catch (Exception ex) {
+            Log.e(LOG_TAG, ex.getMessage());
+            return freeRows;
+        }
+    }
+
+    public static boolean checkFreeSeatsInRow(ArrayList<Ticket> tickets, int rowNumber, int seatsPerRow){
+
+      ArrayList<Ticket> ticketsInRow = getTicketsForRow(tickets, rowNumber);
+      return ticketsInRow.size() < seatsPerRow;
+    }
+
+    public static ArrayList<String> getFreeSeatsForRow(Context ctx, MoviesCinemas movieCinema, int rowNumber){
+        ArrayList<String> freeSeats = new ArrayList<>();
+
+        try{
+            // get Tickets for movieCinema
+            ArrayList<Ticket> tickets = getTickets(ctx, DatabaseHelper.COLUMN_TICKET_moviesCinemaID, String.valueOf(movieCinema.getMoviesCinemas_id()));
+            ArrayList<Ticket> ticketsInRow = getTicketsForRow(tickets, rowNumber);
+
+            Hall hall = getHalls(ctx, DatabaseHelper.COLUMN_HALL_hallId, String.valueOf(movieCinema.getHall_id())).get(0);
+            int seatsPerRow = hall.getSeatsPerRow();
+
+            for (int i = 0; i < seatsPerRow; i++){
+                // check if there is a ticket in row
+                if (!checkSeatInTickets(ticketsInRow, i + 1))
+                    freeSeats.add(String.valueOf(i+1));
+            }
+
+            return freeSeats;
+        }
+        catch(Exception ex){
+            Log.e(LOG_TAG, ex.getMessage());
+            return freeSeats;
+        }
+    }
+
+    private static ArrayList<Ticket> getTicketsForRow(ArrayList<Ticket> tickets, int rowNumber){
+        ArrayList<Ticket> filteredTickets = new ArrayList<>();
+
+        for(Ticket t :  tickets){
+            if (t.getRowNumber() == rowNumber)
+                filteredTickets.add(t);
+        }
+        return filteredTickets;
+    }
+    private static boolean checkSeatInTickets(ArrayList<Ticket> tickets, int seatNumber){
+        for(Ticket t : tickets) {
+            if (t.getSeatNumber() == seatNumber)
+                return true;
+        }
+        return false;
     }
 
 

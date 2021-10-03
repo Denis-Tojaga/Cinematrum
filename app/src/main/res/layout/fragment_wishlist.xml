@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".ui.wishlist.WishlistFragment">
 
+
     <!-- TODO: Insert indiv search field!-->
     <!--    <EditText-->
     <!--        android:id="@+id/search_textInput"-->
@@ -42,6 +43,7 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

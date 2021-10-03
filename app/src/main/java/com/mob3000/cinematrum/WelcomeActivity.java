@@ -11,6 +11,8 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 
+import java.io.File;
+
 public class WelcomeActivity extends AppCompatActivity {
 
     //custom animations for button click because it isn't from MaterialDesign (it's from android.widget.button)
@@ -23,7 +25,7 @@ public class WelcomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome);
 
-        sharedPreferences = getSharedPreferences("login",MODE_PRIVATE);
+        sharedPreferences = this.getSharedPreferences("login",MODE_PRIVATE);
 
         //checks if the user is already logged in
         TryAutoLogin();
@@ -36,33 +38,6 @@ public class WelcomeActivity extends AppCompatActivity {
         //loading all activity views
         LoadViews();
         //setting up the touch listeners
-        SetOnTouchListeners();
-    }
-
-    private void TryAutoLogin() {
-        if(GetIsLogged())
-            GoToMainActivity();
-    }
-
-    private boolean GetIsLogged() {
-        return sharedPreferences.getBoolean("logged",true);
-    }
-
-    private void GoToMainActivity() {
-        Intent intent = new Intent(WelcomeActivity.this,MainActivity.class);
-        startActivity(intent);
-    }
-
-
-    //loading all the views from activity
-    private void LoadViews() {
-        btnSignIn = findViewById(R.id.btnSignIn);
-        btnSignUp = findViewById(R.id.btnSignUp);
-    }
-
-
-    //setting touch listeners on both buttons to activate the touch animations and navigating to corresponding activity
-    private void SetOnTouchListeners() {
         btnSignIn.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
@@ -88,9 +63,37 @@ public class WelcomeActivity extends AppCompatActivity {
 
                 Intent intent = new Intent(WelcomeActivity.this,SignUpActivity.class);
                 startActivity(intent);
-                return false;
+                return true;
             }
         });
+    }
+
+
+    //method that will try to auto login a user if he is already signed in
+    private void TryAutoLogin() {
+        File f = new File("/data/data/com.mob3000.cinematrum/shared_prefs/login.xml");
+        boolean fileExists = f.exists();
+        boolean userLoggedIn = GetIsLogged();
+        if(fileExists && userLoggedIn)
+            GoToMainActivity();
+    }
+
+    private boolean GetIsLogged() {
+        return sharedPreferences.getBoolean("logged",true);
+    }
+
+
+    //navigates to main activity
+    private void GoToMainActivity() {
+        Intent intent = new Intent(WelcomeActivity.this,MainActivity.class);
+        startActivity(intent);
+    }
+
+
+    //loading all the views from activity
+    private void LoadViews() {
+        btnSignIn = findViewById(R.id.btnSignIn);
+        btnSignUp = findViewById(R.id.btnSignUp);
     }
 
 
@@ -99,6 +102,4 @@ public class WelcomeActivity extends AppCompatActivity {
         scale_up_animation = AnimationUtils.loadAnimation(this,R.anim.scale_up);
         scale_down_animation = AnimationUtils.loadAnimation(this,R.anim.scale_down);
     }
-
-
 }

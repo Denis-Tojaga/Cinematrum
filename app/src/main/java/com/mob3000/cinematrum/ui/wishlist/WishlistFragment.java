@@ -1,6 +1,7 @@
 package com.mob3000.cinematrum.ui.wishlist;
 
 import android.os.Bundle;
+
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -13,9 +14,11 @@ import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.Toast;
 
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+
 
 import com.mob3000.cinematrum.R;
 import com.mob3000.cinematrum.adapter.WishlistTableAdapter;
@@ -131,5 +134,7 @@ _searchTextInput.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
 //                }
 //            }
 //        });
+
+
     }
 }
