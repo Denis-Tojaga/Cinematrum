@@ -1,4 +1,4 @@
-package com.mob3000.cinematrum.adapter;
+package com.mob3000.cinematrum.helpers;
 
 import android.content.Context;
 import android.util.Log;

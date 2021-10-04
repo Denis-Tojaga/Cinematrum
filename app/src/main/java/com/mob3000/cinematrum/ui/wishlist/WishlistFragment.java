@@ -18,7 +18,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.mob3000.cinematrum.R;
-import com.mob3000.cinematrum.adapter.WishlistTableAdapter;
+import com.mob3000.cinematrum.helpers.WishlistTableAdapter;
 import com.mob3000.cinematrum.dataModels.User;
 import com.mob3000.cinematrum.dataModels.Wishlist;
 import com.mob3000.cinematrum.sqlite.DataAcessor;
