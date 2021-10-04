@@ -1,33 +1,30 @@
 package com.mob3000.cinematrum.ui.wishlist;
 
-import android.os.Bundle;
+import static android.content.Context.MODE_PRIVATE;
 
-import android.text.Editable;
+import android.content.SharedPreferences;
+import android.os.Bundle;
 import android.text.TextUtils;
-import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.Toast;
 
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-
 
 import com.mob3000.cinematrum.R;
 import com.mob3000.cinematrum.adapter.WishlistTableAdapter;
 import com.mob3000.cinematrum.dataModels.User;
 import com.mob3000.cinematrum.dataModels.Wishlist;
 import com.mob3000.cinematrum.sqlite.DataAcessor;
+import com.mob3000.cinematrum.sqlite.DatabaseHelper;
 
 import java.util.ArrayList;
-import java.util.Locale;
 
 
 public class WishlistFragment extends Fragment {
@@ -40,6 +37,7 @@ public class WishlistFragment extends Fragment {
     private ListView _wishlistListView;
 
     private WishlistTableAdapter _wishlistAdapter;
+    private SharedPreferences sp;
 
 
     @Override
@@ -53,12 +51,24 @@ public class WishlistFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        sp = getActivity().getSharedPreferences("login", MODE_PRIVATE);
+
+
         // INIT VIEW
         _searchTextInput = view.findViewById(R.id.search_textInput);
-
         _wishlistListView = view.findViewById(R.id.wishlist_listView);
 
-        _currentUser = DataAcessor.getLoggedInUser(getActivity().getApplicationContext());
+
+        String userMail = sp.getString("email", "default");
+
+        if (userMail != "default") {
+            ArrayList<User> users = DataAcessor.getUser(getActivity(), DatabaseHelper.COLUMN_USER_email, userMail);
+            if (users.size() == 1)
+                _currentUser = users.get(0);
+        }
+
+
+        //_currentUser = DataAcessor.getLoggedInUser(getActivity().getApplicationContext());
         _wishlist = _currentUser.getWishlist();
 
         if (_wishlist == null)
@@ -79,62 +89,32 @@ public class WishlistFragment extends Fragment {
             }
         });
 
-_searchTextInput.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-    @Override
-    public boolean onQueryTextSubmit(String s) {
-        return false;
-    }
-
-    @Override
-    public boolean onQueryTextChange(String s) {
-
-        String text = _searchTextInput.getQuery().toString();
-
-        if (!TextUtils.isEmpty(text)) {
-            ArrayList<Wishlist> filteredWishlist = new ArrayList<>();
-            for (int i = 0; i < _fullWishlist.size(); i++) {
-                Wishlist item = _fullWishlist.get(i);
-                if (item.get_movie().getDescription().toLowerCase().contains(text.toLowerCase()) || item.get_movie().getName().toLowerCase().contains(text.toLowerCase()) || item.get_movie().getCategoriesNamesConcat().toLowerCase().contains(text.toLowerCase()))
-                    filteredWishlist.add(_fullWishlist.get(i));
+        _searchTextInput.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+                return false;
             }
-            _wishlist = filteredWishlist;
-            _wishlistAdapter.updateData(filteredWishlist);
-        } else {
-            _wishlist = _fullWishlist;
-            _wishlistAdapter.updateData(_fullWishlist);
-        }
-        return false;
-    }
-});
-//        _searchTextInput.addTextChangedListener(new TextWatcher() {
-//            @Override
-//            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-//            }
-//
-//            @Override
-//            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-//            }
-//
-//            @Override
-//            public void afterTextChanged(Editable editable) {
-//                String text = _searchTextInput.getQuery().toString();
-//
-//                if (!TextUtils.isEmpty(text)) {
-//                    ArrayList<Wishlist> filteredWishlist = new ArrayList<>();
-//                    for (int i = 0; i < _fullWishlist.size(); i++) {
-//                        Wishlist item = _fullWishlist.get(i);
-//                        if (item.get_movie().getDescription().contains(text) || item.get_movie().getName().contains(text) || item.get_movie().getCategoriesNamesConcat().contains(text))
-//                            filteredWishlist.add(_fullWishlist.get(i));
-//                    }
-//                    _wishlist = filteredWishlist;
-//                    _wishlistAdapter.updateData(filteredWishlist);
-//                } else {
-//                    _wishlist = _fullWishlist;
-//                    _wishlistAdapter.updateData(_fullWishlist);
-//                }
-//            }
-//        });
 
+            @Override
+            public boolean onQueryTextChange(String s) {
 
+                String text = _searchTextInput.getQuery().toString();
+
+                if (!TextUtils.isEmpty(text)) {
+                    ArrayList<Wishlist> filteredWishlist = new ArrayList<>();
+                    for (int i = 0; i < _fullWishlist.size(); i++) {
+                        Wishlist item = _fullWishlist.get(i);
+                        if (item.get_movie().getDescription().toLowerCase().contains(text.toLowerCase()) || item.get_movie().getName().toLowerCase().contains(text.toLowerCase()) || item.get_movie().getCategoriesNamesConcat().toLowerCase().contains(text.toLowerCase()))
+                            filteredWishlist.add(_fullWishlist.get(i));
+                    }
+                    _wishlist = filteredWishlist;
+                    _wishlistAdapter.updateData(filteredWishlist);
+                } else {
+                    _wishlist = _fullWishlist;
+                    _wishlistAdapter.updateData(_fullWishlist);
+                }
+                return false;
+            }
+        });
     }
 }

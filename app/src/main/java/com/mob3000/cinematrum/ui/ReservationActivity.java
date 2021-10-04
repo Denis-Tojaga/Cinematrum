@@ -145,6 +145,7 @@ public class ReservationActivity extends AppCompatActivity implements OnItemClic
         // hide action bar
         getSupportActionBar().hide();
 
+        // initalise views
         backButton = findViewById(R.id.btnGoBack);
         txtMovieName = findViewById(R.id.txtMovieName);
         txtCinemaName = findViewById(R.id.txtCinemaName);
@@ -152,19 +153,21 @@ public class ReservationActivity extends AppCompatActivity implements OnItemClic
         btnBuyTicket = findViewById(R.id.btnBuyTicket);
         txtChooseRow = findViewById(R.id.txtChooseRow);
         txtChooseSeat = findViewById(R.id.txtChooseSeat);
-
         imgChooseRow = findViewById(R.id.imgChooseRow);
         imgChooseSeat = findViewById(R.id.imgChooseSeat);
-
-        sp = getSharedPreferences("login", MODE_PRIVATE);
-
 
         txtChooseRow.setText(SPINNER_ROW_INITIAL_TEXT);
         txtChooseSeat.setText(SPINNER_SEAT_INITIAL_TEXT);
 
+        sp = getSharedPreferences("login", MODE_PRIVATE);
+
+
+
         spinnerRowAdapter = new ArrayAdapter<String>(ReservationActivity.this, android.R.layout.select_dialog_singlechoice);
         spinnerSeatAdapter = new ArrayAdapter<String>(ReservationActivity.this, android.R.layout.select_dialog_singlechoice);
 
+
+        // set up listener
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -179,7 +182,6 @@ public class ReservationActivity extends AppCompatActivity implements OnItemClic
                 onTicketBuyPressed();
             }
         });
-
 
         txtChooseRow.setOnClickListener(chooseRowClickListener);
         txtChooseSeat.setOnClickListener(chooseSeatClickListener);
