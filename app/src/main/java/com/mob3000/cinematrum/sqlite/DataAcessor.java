@@ -5,10 +5,10 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.mob3000.cinematrum.R;
 import com.mob3000.cinematrum.dataModels.Category;
 import com.mob3000.cinematrum.dataModels.Cinema;
 import com.mob3000.cinematrum.dataModels.Hall;
@@ -18,12 +18,8 @@ import com.mob3000.cinematrum.dataModels.Ticket;
 import com.mob3000.cinematrum.dataModels.User;
 import com.mob3000.cinematrum.dataModels.Wishlist;
 import com.mob3000.cinematrum.helpers.Validator;
-import com.mob3000.cinematrum.ui.ReservationActivity;
 
-import java.sql.Array;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
 
 
 public class DataAcessor {
@@ -59,6 +55,7 @@ public class DataAcessor {
                 tmpUser.setPasswordHash(cursor.getString(passwordIndex));
                 tmpUser.setSalt(cursor.getString(saltIndex));
                 tmpUser.setTelephone(cursor.getString(telephoneIndex));
+                tmpUser.setWishlist(getWishlists(ctx, DatabaseHelper.COLUMN_WISHLIST_userId, String.valueOf(tmpUser.getUser_id())));
                 user = tmpUser;
 
             }
@@ -204,6 +201,13 @@ public class DataAcessor {
                     tmpWishlist.setWishlist_id(c.getInt(indexWishlistId));
                     tmpWishlist.setUser_id(c.getInt(indexUserId));
                     tmpWishlist.setMovie_id(c.getInt(indexMovieId));
+
+                    ArrayList<Movie> wishlistMovies = getMovies(ctx, DatabaseHelper.COLUMN_MOVIE_movieId, String.valueOf(tmpWishlist.getMovie_id()));
+                    if (wishlistMovies.size() == 1)
+                        tmpWishlist.set_movie(wishlistMovies.get(0));
+                    else
+                        tmpWishlist.set_movie(new Movie());
+
                     wishlists.add(tmpWishlist);
                 }
                 while (c.moveToNext());
@@ -640,17 +644,21 @@ public class DataAcessor {
                 int indexName = c.getColumnIndex(DatabaseHelper.COLUMN_MOVIE_name);
                 int indexPicture = c.getColumnIndex(DatabaseHelper.COLUMN_MOVIE_picture);
                 int indexPlublishedDate = c.getColumnIndex(DatabaseHelper.COLUMN_MOVIE_publishedDate);
+                int indexDescription = c.getColumnIndex(DatabaseHelper.COLUMN_MOVIE_description);
                 int indexRating = c.getColumnIndex(DatabaseHelper.COLUMN_MOVIE_rating);
+
 
                 do {
                     Movie tmpMovie = new Movie();
                     tmpMovie.setMovie_id(c.getInt(indexMovieId));
                     tmpMovie.setName(c.getString(indexName));
+                    tmpMovie.setDescription(c.getString(indexDescription));
                     tmpMovie.setPicture(c.getString(indexPicture));
                     int unixTimestamp = c.getInt(indexPlublishedDate);
                     tmpMovie.setPublishedDate((new java.util.Date((long) unixTimestamp * 1000)));
                     tmpMovie.setMoviesCinemas(getMoviesCinemas(ctx, DatabaseHelper.COLUMN_MOVIESCINEMAS_movieID, String.valueOf(tmpMovie.getMovie_id())));
                     tmpMovie.setCategories(getCategoriesForMovie(ctx, tmpMovie.getMovie_id()));
+                    tmpMovie.setCategoriesNamesConcat(concatCategoryNames(tmpMovie.getCategories()));
                     tmpMovie.setRating(c.getString(indexRating));
                     movies.add(tmpMovie);
                 }
@@ -665,6 +673,22 @@ public class DataAcessor {
             return movies;
         }
     }
+
+
+    private static String concatCategoryNames(ArrayList<Category> categories) {
+        String concattedNames = "";
+        for (int i = 0; i < categories.size(); i++) {
+            if (!TextUtils.isEmpty(categories.get(i).getName())) {
+                if (i > 0) {
+                    concattedNames += ", ";
+                }
+                concattedNames += categories.get(i).getName();
+            }
+        }
+        return concattedNames;
+    }
+
+    // TODO FINISH!!
 
     public static ArrayList<Category> getCategories(Context ctx, String selectColumn, String selectValue) {
 
@@ -717,9 +741,11 @@ public class DataAcessor {
             SQLiteDatabase db = dbhelper.getWritableDatabase();
 
             String sql = "SELECT * FROM " + DatabaseHelper.TABLENAME_CATEGORIE_MOVIE
-                    + " LEFT JOIN " + DatabaseHelper.TABLENAME_CATEGORIE + " on " + DatabaseHelper.TABLENAME_CATEGORIE_MOVIE + "." + DatabaseHelper.COLUMN_CATEGORIESMOVIES_movieId
+                    + " LEFT JOIN " + DatabaseHelper.TABLENAME_CATEGORIE + " on " + DatabaseHelper.TABLENAME_CATEGORIE_MOVIE + "." + DatabaseHelper.COLUMN_CATEGORIESMOVIES_categoryId
                     + " = " + DatabaseHelper.TABLENAME_CATEGORIE + "." + DatabaseHelper.COLUMN_CATEGORY_categoryId
                     + " where " + DatabaseHelper.COLUMN_CATEGORIESMOVIES_movieId + "=?;";
+
+
             String[] sqlArgs = new String[]{String.valueOf(movie_id)};
 
             Cursor c = db.rawQuery(sql, sqlArgs);
@@ -751,26 +777,32 @@ public class DataAcessor {
 
     public static ArrayList<String> getFreeRowsForMovieCinema(Context ctx, MoviesCinemas movieCinema) {
         ArrayList<String> freeRows = new ArrayList<>();
-        try{
+        try {
             // get Tickets for movieCinema
             ArrayList<Ticket> tickets = getTickets(ctx, DatabaseHelper.COLUMN_TICKET_moviesCinemaID, String.valueOf(movieCinema.getMoviesCinemas_id()));
+
 
             // get number of Rows for hall in movieCinema
             Hall hall = getHalls(ctx, DatabaseHelper.COLUMN_HALL_hallId, String.valueOf(movieCinema.getHall_id())).get(0);
             int numberOfRows = hall.getRows();
+            int seatsPerRow = hall.getSeatsPerRow();
 
-            // TODO: Handle if all seats in a row are already taken!
-            for (int i = 0; i < numberOfRows; i++){
-                freeRows.add(String.valueOf(i+1));
+            for (int i = 0; i < numberOfRows; i++) {
+                if (checkFreeSeatsInRow(tickets, i + 1, seatsPerRow))
+                    freeRows.add(String.valueOf(i + 1));
             }
-            freeRows.add(ReservationActivity.SPINNER_ROW_INITIAL_TEXT);
 
             return freeRows;
-        }
-        catch(Exception ex){
+        } catch (Exception ex) {
             Log.e(LOG_TAG, ex.getMessage());
             return freeRows;
         }
+    }
+
+    public static boolean checkFreeSeatsInRow(ArrayList<Ticket> tickets, int rowNumber, int seatsPerRow){
+
+      ArrayList<Ticket> ticketsInRow = getTicketsForRow(tickets, rowNumber);
+      return ticketsInRow.size() < seatsPerRow;
     }
 
     public static ArrayList<String> getFreeSeatsForRow(Context ctx, MoviesCinemas movieCinema, int rowNumber){
@@ -779,7 +811,7 @@ public class DataAcessor {
         try{
             // get Tickets for movieCinema
             ArrayList<Ticket> tickets = getTickets(ctx, DatabaseHelper.COLUMN_TICKET_moviesCinemaID, String.valueOf(movieCinema.getMoviesCinemas_id()));
-            ArrayList<Ticket> ticketsInRow = getTicketsWithRow(tickets, rowNumber);
+            ArrayList<Ticket> ticketsInRow = getTicketsForRow(tickets, rowNumber);
 
             Hall hall = getHalls(ctx, DatabaseHelper.COLUMN_HALL_hallId, String.valueOf(movieCinema.getHall_id())).get(0);
             int seatsPerRow = hall.getSeatsPerRow();
@@ -789,7 +821,6 @@ public class DataAcessor {
                 if (!checkSeatInTickets(ticketsInRow, i + 1))
                     freeSeats.add(String.valueOf(i+1));
             }
-            freeSeats.add(ReservationActivity.SPINNER_SEAT_INITIAL_TEXT);
 
             return freeSeats;
         }
@@ -799,7 +830,7 @@ public class DataAcessor {
         }
     }
 
-    private static ArrayList<Ticket> getTicketsWithRow(ArrayList<Ticket> tickets, int rowNumber){
+    private static ArrayList<Ticket> getTicketsForRow(ArrayList<Ticket> tickets, int rowNumber){
         ArrayList<Ticket> filteredTickets = new ArrayList<>();
 
         for(Ticket t :  tickets){
@@ -815,5 +846,6 @@ public class DataAcessor {
         }
         return false;
     }
+
 
 }

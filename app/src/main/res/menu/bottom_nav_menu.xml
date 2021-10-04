@@ -9,11 +9,11 @@
     <item
         android:id="@+id/navigation_home"
         android:icon="@drawable/ic_home_black_24dp"
-        android:title="@string/title_home" />
+        android:title="@string/wishlist" />
 
     <item
+
         android:id="@+id/navigation_account"
         android:icon="@drawable/account"
         android:title="@string/title_account" />
-
 </menu>
