@@ -28,13 +28,15 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
-public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder>
+public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> implements Filterable
     {
 
         private ArrayList<Movie> MovieList;
         private MovieClickListener listener;
         private Context context;
+        private ArrayList<Movie> MovieListAll;
 
 
         public MovieAdapter(ArrayList<Movie> movies, Context context, MovieClickListener listener)
@@ -42,6 +44,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder>
             this.MovieList = movies;
             this.context = context;
             this.listener = listener;
+            MovieListAll = new ArrayList<>(MovieList);
         }
 
         @NonNull
@@ -66,6 +69,72 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder>
         public int getItemCount() {
             return MovieList.size();
         }
+
+        @Override
+        public Filter getFilter() {
+            return filteredList;
+        }
+        private Filter filteredList = new Filter() {
+            @Override
+            protected FilterResults performFiltering(CharSequence constraint) {
+                ArrayList<Movie> filteredList = new ArrayList<>();
+                if(constraint == null || constraint.length()==0)
+                {
+                    filteredList.addAll(MovieListAll);
+                }
+                else {
+                    String filterPattern = constraint.toString().toLowerCase().trim();
+                    for (Movie item : MovieListAll)
+                    {
+                        if(item.getName().toLowerCase().contains(filterPattern))
+                        filteredList.add(item);
+                    }
+                }
+                FilterResults results = new FilterResults();
+                results.values = filteredList;
+                return results;
+            }
+
+            @Override
+            protected void publishResults(CharSequence constraint, FilterResults results) {
+                MovieList.clear();
+                MovieList.addAll((List) results.values);
+                notifyDataSetChanged();
+            }
+        };
+
+        public Filter filterCategories()
+        {
+            return categoryFilter;
+        }
+
+        public Filter categoryFilter = new Filter() {
+            @Override
+            protected FilterResults performFiltering(CharSequence constraint) {
+                ArrayList<Movie> filteredList = new ArrayList<>();
+                String filterPattern = constraint.toString().toLowerCase().trim();
+                for (Movie item : MovieListAll)
+                {
+                    for (int i=0; i<item.getCategories().size(); i++)
+                    {
+                        if(item.getCategories().get(i).getName().toLowerCase().contains(filterPattern))
+                        {
+                            filteredList.add(item);
+                        }
+                    }
+                }
+            FilterResults results = new FilterResults();
+            results.values = filteredList;
+                return results;
+            }
+
+            @Override
+            protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
+                MovieList.clear();
+                MovieList.addAll((List) filterResults.values);
+                notifyDataSetChanged();
+            }
+        };
 
         public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener
         {

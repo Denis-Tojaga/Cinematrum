@@ -15,9 +15,9 @@
         android:text="Romance"
         android:textAlignment="center"
         android:textColor="#FFFFFF"
-        app:layout_constraintEnd_toEndOf="@+id/imageButton"
-        app:layout_constraintStart_toStartOf="@+id/imageButton"
-        app:layout_constraintTop_toBottomOf="@+id/imageButton" />
+        app:layout_constraintEnd_toEndOf="@+id/romanceButton"
+        app:layout_constraintStart_toStartOf="@+id/romanceButton"
+        app:layout_constraintTop_toBottomOf="@+id/romanceButton" />
 
     <TextView
         android:id="@+id/textView4"
@@ -27,9 +27,9 @@
         android:text="Comedy"
         android:textAlignment="center"
         android:textColor="#FFFFFF"
-        app:layout_constraintEnd_toEndOf="@+id/imageButton2"
-        app:layout_constraintStart_toStartOf="@+id/imageButton2"
-        app:layout_constraintTop_toBottomOf="@+id/imageButton2" />
+        app:layout_constraintEnd_toEndOf="@+id/comedyButton"
+        app:layout_constraintStart_toStartOf="@+id/comedyButton"
+        app:layout_constraintTop_toBottomOf="@+id/comedyButton" />
 
     <TextView
         android:id="@+id/textView6"
@@ -38,9 +38,9 @@
         android:layout_marginTop="9dp"
         android:text="Horror"
         android:textColor="#FFFFFF"
-        app:layout_constraintEnd_toEndOf="@+id/imageButton4"
-        app:layout_constraintStart_toStartOf="@+id/imageButton4"
-        app:layout_constraintTop_toBottomOf="@+id/imageButton4" />
+        app:layout_constraintEnd_toEndOf="@+id/horrorButton"
+        app:layout_constraintStart_toStartOf="@+id/horrorButton"
+        app:layout_constraintTop_toBottomOf="@+id/horrorButton" />
 
     <TextView
         android:id="@+id/textView5"
@@ -50,26 +50,12 @@
         android:text="Drama"
         android:textAlignment="center"
         android:textColor="#FFFFFF"
-        app:layout_constraintEnd_toEndOf="@+id/imageButton3"
-        app:layout_constraintStart_toStartOf="@+id/imageButton3"
-        app:layout_constraintTop_toBottomOf="@+id/imageButton3" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_begin="155dp" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_end="506dp" />
+        app:layout_constraintEnd_toEndOf="@+id/dramaButton"
+        app:layout_constraintStart_toStartOf="@+id/dramaButton"
+        app:layout_constraintTop_toBottomOf="@+id/dramaButton" />
 
     <com.google.android.material.imageview.ShapeableImageView
-        android:id="@+id/imageButton"
+        android:id="@+id/romanceButton"
         android:layout_width="60dp"
         android:layout_height="60dp"
         android:layout_marginStart="6dp"
@@ -77,13 +63,13 @@
         android:background="@drawable/custom_background_icons"
         android:contentDescription="Romance"
         android:scaleType="fitXY"
-        app:layout_constraintBottom_toTopOf="@+id/guideline3"
-        app:layout_constraintEnd_toStartOf="@+id/imageButton2"
+        app:layout_constraintEnd_toStartOf="@+id/comedyButton"
         app:layout_constraintStart_toStartOf="@+id/guideline4"
-        app:layout_constraintTop_toTopOf="@+id/guideline2"
+        app:layout_constraintTop_toTopOf="@+id/comedyButton"
         app:shapeAppearanceOverlay="@style/rounded" />
+
     <com.google.android.material.imageview.ShapeableImageView
-        android:id="@+id/imageButton2"
+        android:id="@+id/comedyButton"
         android:layout_width="60dp"
         android:layout_height="60dp"
         android:layout_marginStart="30dp"
@@ -92,40 +78,38 @@
         android:background="@drawable/custom_background_icons"
         android:contentDescription="Comedy"
         android:scaleType="fitXY"
-        app:layout_constraintBottom_toTopOf="@+id/guideline3"
-        app:layout_constraintEnd_toStartOf="@+id/imageButton3"
-        app:layout_constraintStart_toEndOf="@+id/imageButton"
-        app:layout_constraintTop_toTopOf="@+id/guideline2"
+        app:layout_constraintEnd_toStartOf="@+id/dramaButton"
+        app:layout_constraintStart_toEndOf="@+id/romanceButton"
+        app:layout_constraintTop_toTopOf="@+id/dramaButton"
         app:shapeAppearanceOverlay="@style/rounded" />
 
     <com.google.android.material.imageview.ShapeableImageView
-        android:id="@+id/imageButton3"
+        android:id="@+id/dramaButton"
         android:layout_width="60dp"
         android:layout_height="60dp"
         android:adjustViewBounds="true"
         android:background="@drawable/custom_background_icons"
         android:contentDescription="Drama"
         android:scaleType="fitXY"
-        app:layout_constraintBottom_toTopOf="@+id/guideline3"
-        app:layout_constraintEnd_toStartOf="@+id/imageButton4"
-        app:layout_constraintStart_toEndOf="@+id/imageButton2"
-        app:layout_constraintTop_toTopOf="@+id/guideline2"
+        app:layout_constraintEnd_toStartOf="@+id/horrorButton"
+        app:layout_constraintStart_toEndOf="@+id/comedyButton"
+        app:layout_constraintTop_toTopOf="@+id/horrorButton"
         app:shapeAppearanceOverlay="@style/rounded" />
 
     <com.google.android.material.imageview.ShapeableImageView
-        android:id="@+id/imageButton4"
+        android:id="@+id/horrorButton"
         android:layout_width="60dp"
         android:layout_height="60dp"
         android:layout_marginStart="30dp"
+        android:layout_marginTop="12dp"
         android:layout_marginEnd="6dp"
         android:adjustViewBounds="true"
         android:background="@drawable/custom_background_icons"
         android:contentDescription="Horror"
         android:scaleType="fitXY"
-        app:layout_constraintBottom_toTopOf="@+id/guideline3"
         app:layout_constraintEnd_toStartOf="@+id/guideline6"
-        app:layout_constraintStart_toEndOf="@+id/imageButton3"
-        app:layout_constraintTop_toTopOf="@+id/guideline2"
+        app:layout_constraintStart_toEndOf="@+id/dramaButton"
+        app:layout_constraintTop_toBottomOf="@+id/button"
         app:shapeAppearanceOverlay="@style/rounded" />
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline4"
@@ -140,81 +124,74 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         app:layout_constraintGuide_begin="376dp" />
+
     <SearchView
         android:id="@+id/searchbar"
         android:layout_width="340dp"
         android:layout_height="40dp"
+        android:layout_marginTop="10dp"
         android:background="@drawable/searchviewbackground"
         android:iconifiedByDefault="false"
         android:queryHint="@string/SW"
-        app:layout_constraintBottom_toTopOf="@+id/guideline2"
         app:layout_constraintEnd_toStartOf="@+id/guideline6"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="@+id/guideline4"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.434" />
+        app:layout_constraintTop_toBottomOf="@+id/textView" />
+
     <TextView
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="4dp"
+        android:layout_marginTop="16dp"
         android:text="Welcome, pick a movie"
         android:textColor="#FFFFFF"
         android:textSize="15sp"
-        app:layout_constraintBottom_toTopOf="@+id/guideline2"
         app:layout_constraintEnd_toStartOf="@+id/guideline6"
-        app:layout_constraintHorizontal_bias="0.014"
+        app:layout_constraintHorizontal_bias="0.005"
         app:layout_constraintStart_toStartOf="@+id/guideline4"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.118" />
+        app:layout_constraintTop_toTopOf="parent" />
+
 
     <TextView
         android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="20dp"
         android:text="Airing this month:"
         android:textColor="#FFFFFF"
         android:textSize="15sp"
         app:layout_constraintEnd_toStartOf="@+id/guideline6"
+        app:layout_constraintHorizontal_bias="0.513"
         app:layout_constraintStart_toStartOf="@+id/guideline4"
-        app:layout_constraintTop_toTopOf="@+id/guideline3" />
-
+        app:layout_constraintTop_toBottomOf="@+id/textView4" />
 
     <TextView
         android:id="@+id/textView12"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="33dp"
-        android:layout_marginBottom="25dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="128dp"
         android:text="Select a Category"
         android:textColor="#FFFFFF"
         android:textSize="15sp"
-        app:layout_constraintBottom_toTopOf="@+id/imageButton"
-        app:layout_constraintEnd_toStartOf="@+id/guideline6"
-        app:layout_constraintHorizontal_bias="0.026"
-        app:layout_constraintStart_toStartOf="@+id/guideline4"
-        app:layout_constraintTop_toBottomOf="@+id/searchbar"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintEnd_toStartOf="@+id/button"
+        app:layout_constraintTop_toBottomOf="@+id/searchbar" />
 
     <Button
         android:id="@+id/button"
         style="@style/Widget.AppCompat.Button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="25dp"
-        android:layout_marginEnd="6dp"
-        android:layout_marginBottom="11dp"
+        android:layout_marginTop="12dp"
         android:background="@drawable/filter_button"
         android:text="Filter"
         android:textAlignment="center"
         app:backgroundTint="@color/tint"
-        app:layout_constraintBottom_toTopOf="@+id/imageButton4"
         app:layout_constraintEnd_toStartOf="@+id/guideline6"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="@+id/guideline4"
         app:layout_constraintTop_toBottomOf="@+id/searchbar"
-        app:layout_constraintVertical_bias="0.0"
         app:rippleColor="#FBFAFA" />
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
@@ -236,13 +213,14 @@
 
 
         android:layout_width="410dp"
-        android:layout_height="388dp"
+        android:layout_height="363dp"
 
+        android:layout_marginTop="17dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.833" />
+        app:layout_constraintTop_toBottomOf="@+id/textView2"
+        app:layout_constraintVertical_bias="0.111" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -2,8 +2,12 @@ package com.mob3000.cinematrum;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.SearchView;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DefaultItemAnimator;
@@ -28,6 +32,13 @@ public class HomeScreenActivity extends AppCompatActivity {
     private ArrayList<Movie> MovieList;
     private ImageView imageView;
     private LinearLayoutManager layoutManager;
+    private SearchView searchView;
+    private MovieAdapter adapter;
+    private ImageView comedy;
+    private ImageView horror;
+    private ImageView drama;
+    private ImageView romance;
+
 
 
 
@@ -65,11 +76,53 @@ public class HomeScreenActivity extends AppCompatActivity {
     private void initData()
     {
         MovieList = DataAcessor.getMovies(this.getApplicationContext(),"","");
+        comedy = findViewById(R.id.comedyButton);
+        drama = findViewById(R.id.dramaButton);
+        horror = findViewById(R.id.horrorButton);
+        romance = findViewById(R.id.romanceButton);
+        comedy.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                adapter.categoryFilter.filter("Comedy");
+            }
+        });
+        drama.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                adapter.categoryFilter.filter("Drama");
+            }
+        });
+        horror.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                adapter.categoryFilter.filter("Horror");
+            }
+        });
+        romance.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                adapter.categoryFilter.filter("Romance");
+            }
+        });
+
     }
 
     private void setAdapter() {
         setOnClickListener();
-        MovieAdapter adapter = new MovieAdapter(MovieList, this, listener);
+        searchView= findViewById(R.id.searchbar);
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String s) {
+                adapter.getFilter().filter(s);
+                return false;
+            }
+        });
+        adapter = new MovieAdapter(MovieList, this, listener);
         layoutManager = new LinearLayoutManager(this);
         layoutManager.setOrientation(RecyclerView.HORIZONTAL);
         recyclerView.setLayoutManager(layoutManager);
@@ -87,18 +140,19 @@ public class HomeScreenActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         };
+
     }
 
 
     void LoadCategoryImages()
     {
-        imageView=findViewById(R.id.imageButton);
+        imageView=findViewById(R.id.romanceButton);
         Picasso.get().load("https://thoughtcatalog.com/wp-content/uploads/2013/09/istock_000015777770medium2.jpg").placeholder(R.drawable.category_icons).into(imageView);
-        imageView=findViewById(R.id.imageButton2);
+        imageView=findViewById(R.id.comedyButton);
         Picasso.get().load("https://i.pinimg.com/originals/ef/f8/b9/eff8b9e41133bd9b2b8b733c56b2cbea.jpg").placeholder(R.drawable.category_icons).into(imageView);
-        imageView=findViewById(R.id.imageButton3);
+        imageView=findViewById(R.id.dramaButton);
         Picasso.get().load("https://miro.medium.com/max/1000/1*T-544XBLkxSr4y_aAo5OfQ.jpeg").placeholder(R.drawable.category_icons).into(imageView);
-        imageView=findViewById(R.id.imageButton4);
+        imageView=findViewById(R.id.horrorButton);
         Picasso.get().load("https://i.insider.com/5e5036b5a9f40c18895e8d88?width=700").placeholder(R.drawable.category_icons).into(imageView);
     }
 }
