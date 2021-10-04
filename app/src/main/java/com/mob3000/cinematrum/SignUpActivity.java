@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Base64;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.Animation;
@@ -119,7 +120,7 @@ public class SignUpActivity extends AppCompatActivity {
                     throw new EmailTakenException("Email -> " + newUser.getEmail() + " already in use. Try again!");
 
             } catch (Exception e) {
-                Toast.makeText(this, e.getMessage().toString(), Toast.LENGTH_SHORT).show();
+                Log.d("Exception",e.getMessage().toString());
             }
         } else
             SetWarningLabels();

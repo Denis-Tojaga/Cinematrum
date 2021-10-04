@@ -60,7 +60,6 @@ public class TicketHistoryActivity extends AppCompatActivity {
         //removes the UI actionBar at the top of the screen
         getSupportActionBar().hide();
 
-        CreateNotificationChannel();
         InitViews();
         LoadLoggedUser();
         LoadTickets(loggedUser.getTickets());
@@ -138,24 +137,7 @@ public class TicketHistoryActivity extends AppCompatActivity {
         }
     }
 
-    //creating a notification channel
-    private void CreateNotificationChannel() {
-        //if the API level is 26 or higher we need to make a notification channel
-        Toast.makeText(this, "The notification channel is creating!", Toast.LENGTH_SHORT).show();
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
 
-            CharSequence notificationChannelName = "MovieNotificationChannel";
-            String description = "Channel for user notifications";
-            int importance = NotificationManager.IMPORTANCE_HIGH;
-
-            NotificationChannel channel = new NotificationChannel("MovieNotification", notificationChannelName, importance);
-            channel.setDescription(description);
-
-
-            NotificationManager notificationManager = getSystemService(NotificationManager.class);
-            notificationManager.createNotificationChannel(channel);
-        }
-    }
     //logic for triggering the alarm when the notification needs to be sent
     //TODO implement this logic when the user books the ticket and then call it for every movie that he didn't watched
     private void MethodForNotifying(long timeForNotifying) {
