@@ -8,6 +8,7 @@ import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -67,20 +68,31 @@ public class HomeFragment extends Fragment {
         });
 
 
-
         //opening movie trailer logic
         btnOpenYoutube = root.findViewById(R.id.btnOpenYoutube);
         btnOpenYoutube.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent webIntent = new Intent(getContext(), WebActivity.class);
-                webIntent.putExtra("url", "https://www.youtube.com/watch?v=K_8yRH2KPVo&list=RDMM0sca9FP6zl8&index=6");
-                startActivity(webIntent);
+                //TODO Mirza implement this same logic on another button
+                String movieTrailerURL = "Get a movie trailer URL from the movie object here!!";
+                OpenYoutubeTrailer(movieTrailerURL);
             }
         });
+
+
         return root;
     }
 
+
+    //method that opens a new activity for showing movie trailer
+    private void OpenYoutubeTrailer(String movieTrailerURL) {
+        if (movieTrailerURL.contains("youtube.com")) {
+            Intent webIntent = new Intent(getContext(), WebActivity.class);
+            webIntent.putExtra("url", movieTrailerURL);
+            startActivity(webIntent);
+        } else
+            Log.d("TAG", "Invalid movie trailer URL!");
+    }
 
 
     @Override

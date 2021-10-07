@@ -16,8 +16,14 @@ public class Movie {
     private ArrayList<Category> categories;
     private String categoriesNamesConcat;
     private String rating;
+    private String movieTrailerURL;
 
-
+    public String getMovieTrailerURL() {
+        return movieTrailerURL;
+    }
+    public void setMovieTrailerURL(String movieTrailerURL) {
+        this.movieTrailerURL = movieTrailerURL;
+    }
 
     public int getMovie_id() {
         return movie_id;
