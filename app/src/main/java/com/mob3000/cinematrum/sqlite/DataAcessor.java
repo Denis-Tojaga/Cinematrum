@@ -646,6 +646,8 @@ public class DataAcessor {
                 int indexPlublishedDate = c.getColumnIndex(DatabaseHelper.COLUMN_MOVIE_publishedDate);
                 int indexDescription = c.getColumnIndex(DatabaseHelper.COLUMN_MOVIE_description);
                 int indexRating = c.getColumnIndex(DatabaseHelper.COLUMN_MOVIE_rating);
+                //Denis 7.10.2021
+                int indexMovieTrailerURL = c.getColumnIndex(DatabaseHelper.COLUMN_MOVIE_movieTrailerURL);
 
 
                 do {
@@ -660,6 +662,8 @@ public class DataAcessor {
                     tmpMovie.setCategories(getCategoriesForMovie(ctx, tmpMovie.getMovie_id()));
                     tmpMovie.setCategoriesNamesConcat(concatCategoryNames(tmpMovie.getCategories()));
                     tmpMovie.setRating(c.getString(indexRating));
+                    //Denis 7.10.2021
+                    tmpMovie.setMovieTrailerURL(c.getString(indexMovieTrailerURL));
                     movies.add(tmpMovie);
                 }
                 while (c.moveToNext());

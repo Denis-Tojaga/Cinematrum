@@ -1,7 +1,14 @@
 package com.mob3000.cinematrum.ui.home;
 
+import android.content.ActivityNotFoundException;
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
+import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,10 +23,13 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.mob3000.cinematrum.MainActivity;
 import com.mob3000.cinematrum.R;
+import com.mob3000.cinematrum.WebActivity;
 import com.mob3000.cinematrum.dataModels.User;
 import com.mob3000.cinematrum.databinding.FragmentHomeBinding;
 import com.mob3000.cinematrum.sqlite.DataAcessor;
 import com.mob3000.cinematrum.ui.ReservationActivity;
+
+import java.util.List;
 
 
 public class HomeFragment extends Fragment {
@@ -27,6 +37,7 @@ public class HomeFragment extends Fragment {
     private HomeViewModel homeViewModel;
     private FragmentHomeBinding binding;
     private Button btnOpenReservation;
+    private Button btnOpenYoutube;
 
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -50,14 +61,39 @@ public class HomeFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getContext(), ReservationActivity.class);
-                intent.putExtra(ReservationActivity.INTENT_CINEMA_ID,1);
-                intent.putExtra(ReservationActivity.INTENT_MOVIE_ID,1);
+                intent.putExtra(ReservationActivity.INTENT_CINEMA_ID, 1);
+                intent.putExtra(ReservationActivity.INTENT_MOVIE_ID, 1);
                 startActivity(intent);
             }
         });
 
+
+        //opening movie trailer logic
+        btnOpenYoutube = root.findViewById(R.id.btnOpenYoutube);
+        btnOpenYoutube.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //TODO Mirza implement this same logic on another button
+                String movieTrailerURL = "Get a movieTrailerURL from the movie object here!!";
+                OpenYoutubeTrailer(movieTrailerURL);
+            }
+        });
+
+
         return root;
     }
+
+
+    //method that opens a new activity for showing movie trailer
+    private void OpenYoutubeTrailer(String movieTrailerURL) {
+        if (movieTrailerURL.contains("youtube.com")) {
+            Intent webIntent = new Intent(getContext(), WebActivity.class);
+            webIntent.putExtra("url", movieTrailerURL);
+            startActivity(webIntent);
+        } else
+            Log.d("TAG", "Invalid movie trailer URL!");
+    }
+
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {

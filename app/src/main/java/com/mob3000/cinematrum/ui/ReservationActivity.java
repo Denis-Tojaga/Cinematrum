@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.animation.AlphaAnimation;
 import android.widget.ArrayAdapter;
@@ -173,7 +174,6 @@ public class ReservationActivity extends AppCompatActivity implements OnItemClic
         txtChooseSeat.setText(SPINNER_SEAT_INITIAL_TEXT);
 
         sp = getSharedPreferences("login", MODE_PRIVATE);
-
 
 
         spinnerRowAdapter = new ArrayAdapter<String>(ReservationActivity.this, android.R.layout.select_dialog_singlechoice);
@@ -369,4 +369,4 @@ public class ReservationActivity extends AppCompatActivity implements OnItemClic
     }
 
 }
-}
+
