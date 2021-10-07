@@ -74,7 +74,7 @@ public class HomeFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 //TODO Mirza implement this same logic on another button
-                String movieTrailerURL = "Get a movie trailer URL from the movie object here!!";
+                String movieTrailerURL = "Get a movieTrailerURL from the movie object here!!";
                 OpenYoutubeTrailer(movieTrailerURL);
             }
         });
