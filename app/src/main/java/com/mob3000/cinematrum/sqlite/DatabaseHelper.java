@@ -97,7 +97,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             + "VALUES (1, 1,1), (1,2,1); ";
     public static final String INSERT_MOVIESCINEMAS_TABLE = "INSERT INTO " + TABLENAME_MOVIES_CINEMAS + " (" + COLUMN_MOVIESCINEMAS_movieID + ", " + COLUMN_MOVIESCINEMAS_hallId + ", " + COLUMN_MOVIESCINEMAS_price + ", " + COLUMN_MOVIESCINEMAS_seatsAvailable + ", " + COLUMN_MOVIESCINEMAS_allSeats + ", " + COLUMN_MOVIESCINEMAS_date + ") "
             + "VALUES (1,1,13.99,20,100,1631451990),"
-            + "(1,1,14.99,20,100,1632655355), "
+            + "(1,2,14.99,20,100,1632655355), "
             + "(2,2,20.99,20,100,1631451990),"
             + "(1,2,10.99,20,100,1631451990);";
     public static final String INSERT_CATEGORIES_TABLE = "INSERT INTO " + TABLENAME_CATEGORIE + " (" + COLUMN_CATEGORY_name + ", " + COLUMN_CATEGORY_unicodeIcon + ") "

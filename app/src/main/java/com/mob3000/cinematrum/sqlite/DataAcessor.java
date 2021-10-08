@@ -679,10 +679,67 @@ public class DataAcessor {
         }
     }
 
+    public static ArrayList<Cinema> getCinemasForMovieFromLocation(Context ctx, Location location, int movieId, int radius) {
+        ArrayList<Cinema> cinemas = new ArrayList<>();
+
+        try {
+
+            DatabaseHelper dbhelper = new DatabaseHelper(ctx);
+            SQLiteDatabase db = dbhelper.getReadableDatabase();
+
+            // Load all CinemaMovies by movieId grouped by cinemaId
+            String sql = "SELECT * FROM " + DatabaseHelper.TABLENAME_MOVIES_CINEMAS
+                    + " LEFT JOIN "  + DatabaseHelper.TABLENAME_HALL
+                    + " on " + DatabaseHelper.TABLENAME_HALL + "." + DatabaseHelper.COLUMN_HALL_hallId + " = " + DatabaseHelper.TABLENAME_MOVIES_CINEMAS + "." + DatabaseHelper.COLUMN_MOVIESCINEMAS_hallId
+                    + " LEFT JOIN " + DatabaseHelper.TABLENAME_CINEMA
+                    + " on " + DatabaseHelper.TABLENAME_CINEMA + "." + DatabaseHelper.COLUMN_CINEMA_cinemaId + " = " + DatabaseHelper.TABLENAME_HALL + "." + DatabaseHelper.COLUMN_HALL_cinemaId
+                    + " where " + DatabaseHelper.TABLENAME_MOVIES_CINEMAS + "." + DatabaseHelper.COLUMN_MOVIESCINEMAS_movieID + "=?"
+                    + " group by " + DatabaseHelper.TABLENAME_CINEMA + "." + DatabaseHelper.COLUMN_CINEMA_cinemaId + ";";
+            String[] sqlArgs = new String[]{String.valueOf(movieId)};
+
+            Cursor c = db.rawQuery(sql, sqlArgs);
+
+            if (c.moveToFirst()) {
+
+                int indexCinemaId = c.getColumnIndex(DatabaseHelper.COLUMN_CINEMA_cinemaId);
+                int indexName = c.getColumnIndex(DatabaseHelper.COLUMN_CINEMA_name);
+                int indexLatitude = c.getColumnIndex(DatabaseHelper.COLUMN_CINEMA_latitude);
+                int indexLongitude = c.getColumnIndex(DatabaseHelper.COLUMN_CINEMA_longitude);
+
+                ArrayList<Cinema> allCinemas = new ArrayList<>();
+
+                do {
+                    Cinema tmpCinema = new Cinema();
+                    tmpCinema.setCinema_id(c.getInt(indexCinemaId));
+                    tmpCinema.setName(c.getString(indexName));
+                    tmpCinema.setLatitude(c.getFloat(indexLatitude));
+                    tmpCinema.setLongitude(c.getFloat(indexLongitude));
+                    allCinemas.add(tmpCinema);
+
+                } while (c.moveToNext());
+
+                //Compare distances
+                for (Cinema cinema : allCinemas) {
+                    Location cinemaLocation = new Location("tmpLocation");
+                    cinemaLocation.setLatitude(cinema.getLatitude());
+                    cinemaLocation.setLongitude(cinema.getLongitude());
+                    float distance = cinemaLocation.distanceTo(location) / 1000; // distance in km;
+                    if (distance <= radius) {
+                        cinemas.add(cinema);
+                    }
+                }
+            }
+            return cinemas;
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return cinemas;
+        }
+    }
+
     public static ArrayList<Movie> getMoviesFromLocation(Context ctx, Location location, int radius) {
 
         ArrayList<Movie> finalResult = new ArrayList<>();
-        try{
+        try {
             // Load all cinemas
             ArrayList<Cinema> allCinemas = getCinemas(ctx, "", "");
             ArrayList<Cinema> cinemasInRadius = new ArrayList<>();
@@ -690,12 +747,12 @@ public class DataAcessor {
             // select cinemas by radius
             String sqlInStatement = "";
             int counter = 0;
-            for(Cinema c : allCinemas){
+            for (Cinema c : allCinemas) {
                 Location cinemaLocation = new Location("tmpLocation");
                 cinemaLocation.setLatitude(c.getLatitude());
                 cinemaLocation.setLongitude(c.getLongitude());
                 float distance = cinemaLocation.distanceTo(location) / 1000; // distance in km;
-                if (distance <= radius){
+                if (distance <= radius) {
                     //cinemasInRadius.add(c);
                     if (counter > 0)
                         sqlInStatement += "," + c.getCinema_id();
@@ -713,16 +770,16 @@ public class DataAcessor {
 
             // select movieCinemas with movieId, Join movie, Group by movieId
             DatabaseHelper dbhelper = new DatabaseHelper(ctx);
-            SQLiteDatabase db = dbhelper.getWritableDatabase();
+            SQLiteDatabase db = dbhelper.getReadableDatabase();
 
             String sql = "SELECT * FROM " + DatabaseHelper.TABLENAME_MOVIES_CINEMAS
-                    + " LEFT JOIN "  + DatabaseHelper.TABLENAME_MOVIE
+                    + " LEFT JOIN " + DatabaseHelper.TABLENAME_MOVIE
                     + " on " + DatabaseHelper.TABLENAME_MOVIE + "." + DatabaseHelper.COLUMN_MOVIE_movieId + " = " + DatabaseHelper.TABLENAME_MOVIES_CINEMAS + "." + DatabaseHelper.COLUMN_MOVIESCINEMAS_movieID
                     + " where " + DatabaseHelper.TABLENAME_MOVIE + "." + DatabaseHelper.COLUMN_MOVIE_movieId + " in (" + sqlInStatement + ")"
                     + " group by " + DatabaseHelper.TABLENAME_MOVIE + "." + DatabaseHelper.COLUMN_MOVIE_movieId + ";";
             Cursor c = db.rawQuery(sql, null);
 
-            if (c.moveToFirst()){
+            if (c.moveToFirst()) {
 
 
                 int indexMovieId = c.getColumnIndex(DatabaseHelper.COLUMN_MOVIE_movieId);
@@ -754,26 +811,24 @@ public class DataAcessor {
             db.close();
 
             return finalResult;
-        }
-        catch(Exception ex){
+        } catch (Exception ex) {
             ex.printStackTrace();
             return finalResult;
         }
     }
 
 
-
     private static String concatCategoryNames(ArrayList<Category> categories) {
-        String concattedNames = "";
+        String contactedNames = "";
         for (int i = 0; i < categories.size(); i++) {
             if (!TextUtils.isEmpty(categories.get(i).getName())) {
                 if (i > 0) {
-                    concattedNames += ", ";
+                    contactedNames += ", ";
                 }
-                concattedNames += categories.get(i).getName();
+                contactedNames += categories.get(i).getName();
             }
         }
-        return concattedNames;
+        return contactedNames;
     }
 
     // TODO FINISH!!
@@ -887,16 +942,16 @@ public class DataAcessor {
         }
     }
 
-    public static boolean checkFreeSeatsInRow(ArrayList<Ticket> tickets, int rowNumber, int seatsPerRow){
+    public static boolean checkFreeSeatsInRow(ArrayList<Ticket> tickets, int rowNumber, int seatsPerRow) {
 
-      ArrayList<Ticket> ticketsInRow = getTicketsForRow(tickets, rowNumber);
-      return ticketsInRow.size() < seatsPerRow;
+        ArrayList<Ticket> ticketsInRow = getTicketsForRow(tickets, rowNumber);
+        return ticketsInRow.size() < seatsPerRow;
     }
 
-    public static ArrayList<String> getFreeSeatsForRow(Context ctx, MoviesCinemas movieCinema, int rowNumber){
+    public static ArrayList<String> getFreeSeatsForRow(Context ctx, MoviesCinemas movieCinema, int rowNumber) {
         ArrayList<String> freeSeats = new ArrayList<>();
 
-        try{
+        try {
             // get Tickets for movieCinema
             ArrayList<Ticket> tickets = getTickets(ctx, DatabaseHelper.COLUMN_TICKET_moviesCinemaID, String.valueOf(movieCinema.getMoviesCinemas_id()));
             ArrayList<Ticket> ticketsInRow = getTicketsForRow(tickets, rowNumber);
@@ -904,31 +959,31 @@ public class DataAcessor {
             Hall hall = getHalls(ctx, DatabaseHelper.COLUMN_HALL_hallId, String.valueOf(movieCinema.getHall_id())).get(0);
             int seatsPerRow = hall.getSeatsPerRow();
 
-            for (int i = 0; i < seatsPerRow; i++){
+            for (int i = 0; i < seatsPerRow; i++) {
                 // check if there is a ticket in row
                 if (!checkSeatInTickets(ticketsInRow, i + 1))
-                    freeSeats.add(String.valueOf(i+1));
+                    freeSeats.add(String.valueOf(i + 1));
             }
 
             return freeSeats;
-        }
-        catch(Exception ex){
+        } catch (Exception ex) {
             Log.e(LOG_TAG, ex.getMessage());
             return freeSeats;
         }
     }
 
-    private static ArrayList<Ticket> getTicketsForRow(ArrayList<Ticket> tickets, int rowNumber){
+    private static ArrayList<Ticket> getTicketsForRow(ArrayList<Ticket> tickets, int rowNumber) {
         ArrayList<Ticket> filteredTickets = new ArrayList<>();
 
-        for(Ticket t :  tickets){
+        for (Ticket t : tickets) {
             if (t.getRowNumber() == rowNumber)
                 filteredTickets.add(t);
         }
         return filteredTickets;
     }
-    private static boolean checkSeatInTickets(ArrayList<Ticket> tickets, int seatNumber){
-        for(Ticket t : tickets) {
+
+    private static boolean checkSeatInTickets(ArrayList<Ticket> tickets, int seatNumber) {
+        for (Ticket t : tickets) {
             if (t.getSeatNumber() == seatNumber)
                 return true;
         }
