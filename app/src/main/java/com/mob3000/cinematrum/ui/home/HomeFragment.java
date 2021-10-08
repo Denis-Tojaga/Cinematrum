@@ -1,5 +1,11 @@
 package com.mob3000.cinematrum.ui.home;
 
+
+import android.app.ProgressDialog;
+import android.content.Intent;
+import android.location.Location;
+import android.location.LocationListener;
+
 import android.content.ActivityNotFoundException;
 import android.content.ComponentName;
 import android.content.Context;
@@ -7,6 +13,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.net.Uri;
+
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -23,21 +30,29 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.mob3000.cinematrum.MainActivity;
 import com.mob3000.cinematrum.R;
+import com.mob3000.cinematrum.dataModels.Cinema;
+import com.mob3000.cinematrum.dataModels.Movie;
 import com.mob3000.cinematrum.WebActivity;
 import com.mob3000.cinematrum.dataModels.User;
 import com.mob3000.cinematrum.databinding.FragmentHomeBinding;
+import com.mob3000.cinematrum.helpers.LocationTracker;
 import com.mob3000.cinematrum.sqlite.DataAcessor;
 import com.mob3000.cinematrum.ui.ReservationActivity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
-public class HomeFragment extends Fragment {
+
+
+public class HomeFragment extends Fragment implements LocationListener {
 
     private HomeViewModel homeViewModel;
     private FragmentHomeBinding binding;
     private Button btnOpenReservation;
     private Button btnOpenYoutube;
+
+    private LocationTracker _locationTracker;
 
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -103,11 +118,40 @@ public class HomeFragment extends Fragment {
         // Login in user
         User u = DataAcessor.getSingleUser(getActivity().getApplicationContext(), 1);
         DataAcessor.logInUser(getActivity().getApplicationContext(), u);
+
+        //Location
+        _locationTracker = new LocationTracker(getActivity(), this);
+        if (!_locationTracker.checkPermissions()){
+            // TODO: Load movie directly because missing permission for location services
+
+            Log.d("HOMEFRAGMENT", "LOADING MOVIES DIRECTLY");
+        }
+        else {
+            // Wait for Location. Load movies in onLocationChanged while passing location - maybe display some loading indicator?
+
+            Log.d("HOMEFRAGMENT", "WAITING FOR LOCATION");
+        }
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
         binding = null;
+        _locationTracker.stopTracking();
     }
+
+    @Override
+    public void onLocationChanged(@NonNull Location location) {
+        Log.d("HOMEFRAGMENT", location.getLongitude() + " " + location.getLatitude());
+
+        // load Cinemas and Movies nearby - Example for @Mirza for Home and Movie Detail Screen.
+        ArrayList<Cinema> cinemas1 = DataAcessor.getCinemasForMovieFromLocation(getActivity(), location, 1, 2);
+        ArrayList<Cinema> cinemas2 = DataAcessor.getCinemasForMovieFromLocation(getActivity(), location, 1, 50);
+
+        ArrayList<Movie> movies1 = DataAcessor.getMoviesFromLocation(getActivity(), location, 1);
+        ArrayList<Movie> movies2 = DataAcessor.getMoviesFromLocation(getActivity(), location, 50);
+
+    }
+
+
 }
