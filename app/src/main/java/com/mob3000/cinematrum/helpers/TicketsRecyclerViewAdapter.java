@@ -101,7 +101,7 @@ public class TicketsRecyclerViewAdapter extends RecyclerView.Adapter<TicketsRecy
 
 
         //loading required data from different objects into corresponding views
-        Glide.with(mContext).asBitmap().load(movieObject.getPicture()).into(holder.imgMovieWallpaper);
+        Glide.with(mContext).load(movieObject.getPicture()).placeholder(R.drawable.no_image).dontAnimate().into(holder.imgMovieWallpaper);
         holder.txtMovieTitle.setText(movieObject.getName());
         holder.txtMoviePrice.setText(Double.toString(mcObject.getPrice()) + "€");
         holder.txtMovieRowNumber.setText(Integer.toString(userTickets.get(position).getRowNumber()));
@@ -112,47 +112,10 @@ public class TicketsRecyclerViewAdapter extends RecyclerView.Adapter<TicketsRecy
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MMM/yyyy");
         String ticketDate = dateFormat.format(userTickets.get(position).getReservedAt());
         holder.txtMovieReservedAt.setText(ticketDate);
-        NotifyTheUser(ticketDate);
     }
 
 
-    //TODO implement this method when the user buys a ticket
-    private void NotifyTheUser(String ticketDate) {
-        try{
-            //first make the formatter we want
-            SimpleDateFormat formatter = new SimpleDateFormat("dd.MM.yyyy, HH:mm");
-            formatter.setLenient(false);
 
-            //getting the current date and it's millis
-            Date currentDate = new Date();
-            long currentMillis = currentDate.getTime();
-
-            //formatting the ticketDate and getting it's millis
-            String formattedTicketDate = formatter.format(ticketDate);
-            Date ticketDateTime = formatter.parse(formattedTicketDate);
-            long ticketDateMillis = ticketDateTime.getTime();
-
-            if(currentMillis < ticketDateMillis)
-            {
-                Log.d("TAG", "NotifyTheUser: Datum karte je stariji");
-                //TODO set the notification for this millis
-
-                //the difference between this data and ticketDate is at what time a notification should pop up minus 60 minutes
-                //because a notification should be an hour before the movie starts
-                long timeForNotifying = ticketDateMillis - currentMillis - (60 * (60 * 1000));
-
-
-                //TODO call the method for notifying
-
-            }else{
-                //TODO dont do anything
-            }
-
-        }catch (ParseException e)
-        {
-            e.printStackTrace();
-        }
-    }
 
 
     //returns the number of tickets inside an arrayList
@@ -195,7 +158,6 @@ public class TicketsRecyclerViewAdapter extends RecyclerView.Adapter<TicketsRecy
                         filteredList.add(item);
                 }
             }
-
 
             //we return our filtered list to out method publishResults which takes it as an argument
             FilterResults results = new FilterResults();

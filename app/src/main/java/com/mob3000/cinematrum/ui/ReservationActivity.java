@@ -1,9 +1,15 @@
 package com.mob3000.cinematrum.ui;
 
+import android.app.AlarmManager;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.animation.AlphaAnimation;
 import android.widget.ArrayAdapter;
@@ -28,10 +34,15 @@ import com.mob3000.cinematrum.dataModels.User;
 import com.mob3000.cinematrum.helpers.OnItemClickListener;
 import com.mob3000.cinematrum.helpers.ReservationRecyclerViewAdapter;
 import com.mob3000.cinematrum.helpers.Utils;
+import com.mob3000.cinematrum.notification.NotificationReminderBroadcast;
 import com.mob3000.cinematrum.sqlite.DataAcessor;
 import com.mob3000.cinematrum.sqlite.DatabaseHelper;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
 
 public class ReservationActivity extends AppCompatActivity implements OnItemClickListener {
 
@@ -145,6 +156,9 @@ public class ReservationActivity extends AppCompatActivity implements OnItemClic
         // hide action bar
         getSupportActionBar().hide();
 
+        //creating notification channel
+        CreateNotificationChannel();
+
         // initalise views
         backButton = findViewById(R.id.btnGoBack);
         txtMovieName = findViewById(R.id.txtMovieName);
@@ -160,7 +174,6 @@ public class ReservationActivity extends AppCompatActivity implements OnItemClic
         txtChooseSeat.setText(SPINNER_SEAT_INITIAL_TEXT);
 
         sp = getSharedPreferences("login", MODE_PRIVATE);
-
 
 
         spinnerRowAdapter = new ArrayAdapter<String>(ReservationActivity.this, android.R.layout.select_dialog_singlechoice);
@@ -269,19 +282,91 @@ public class ReservationActivity extends AppCompatActivity implements OnItemClic
                 int rowNumber = Integer.parseInt(spinnerRowDataSource.get(currentSelectedRow));
                 int seatNumber = Integer.parseInt(spinnerSeatDataSource.get(currentSelectedSeat));
 
-                Ticket ticket = new Ticket(moviesCinemas.get(this.viewAdapter.getSelectedPosition()).getMoviesCinemas_id(), rowNumber, seatNumber, currentUser.getUser_id());
+                int movies_cinemas_id = moviesCinemas.get(this.viewAdapter.getSelectedPosition()).getMoviesCinemas_id();
+                Ticket ticket = new Ticket(movies_cinemas_id, rowNumber, seatNumber, currentUser.getUser_id());
 
                 boolean ticketInserted = DataAcessor.insertTicket(this, ticket);
 
                 if (!ticketInserted) {
                     Utils.showOkAlert(this, "Error booking ticket.", "An Error accrued when booking your ticket. Please try again.");
                 } else {
+                    //Extract the date of movie showing for this ticket
+                    ArrayList<MoviesCinemas> list = DataAcessor.getMoviesCinemas(this, "moviesCienemas_id", Integer.toString(movies_cinemas_id));
+                    MoviesCinemas object = list.get(0);
+                    //Converting movie showing date and calling the notifying method
+                    ConvertTheDate(object.getDate());
+
                     finish();
-                    // TODO: Initialize notification @denis
                 }
             } catch (Exception ex) {
                 Utils.showOkAlert(this, "Error booking ticket.", "An Error accrued when booking your ticket. Please try again.");
             }
         }
     }
+
+    //NOTIFICATION METHODS
+
+    //creating a notification channel
+    private void CreateNotificationChannel() {
+        //if the API level is 26 or higher we need to make a notification channel
+        Toast.makeText(this, "The notification channel is creating!", Toast.LENGTH_SHORT).show();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+
+            CharSequence notificationChannelName = "MovieNotificationChannel";
+            String description = "Channel for user notifications";
+            int importance = NotificationManager.IMPORTANCE_HIGH;
+
+            NotificationChannel channel = new NotificationChannel("MovieNotification", notificationChannelName, importance);
+            channel.setDescription(description);
+
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
+        }
+    }
+
+    //creating a method that will convert the date to time and calculate the time for notifying the user
+    private void ConvertTheDate(Date ticketDate) {
+        try {
+            //first make the formatter we want
+            SimpleDateFormat formatter = new SimpleDateFormat("dd.MM.yyyy, HH:mm");
+            formatter.setLenient(false);
+
+            //getting the current date and it's millis
+            Date currentDate = new Date();
+            long currentMillis = currentDate.getTime();
+
+            //formatting the ticketDate and getting it's millis
+            String formattedTicketDate = formatter.format(ticketDate);
+            Date ticketDateTime = formatter.parse(formattedTicketDate);
+            long ticketDateMillis = ticketDateTime.getTime();
+
+            if (currentMillis < ticketDateMillis) {
+                //the difference between this data and ticketDate is at what time a notification should pop up minus 60 minutes
+                long timeForNotifying = ticketDateMillis - currentMillis - (60 * (60 * 1000));
+                //method that will notify the user in this time
+                MethodForNotifying(timeForNotifying);
+            } else {
+                Log.d("ErrorTAG", "Wrong date of showing a movie!");
+            }
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+    }
+
+    //creating a method for notifying the user - setting the timer for the given time
+    private void MethodForNotifying(long timeForNotifying) {
+        Intent intent = new Intent(ReservationActivity.this, NotificationReminderBroadcast.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(ReservationActivity.this, 0, intent, 0);
+
+        //we get the alarm manager that will actually notify us
+        AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+        long time = System.currentTimeMillis();
+
+        //not we call the alarm, which type is it, the time in which will we get notified, and what happens when we get notified
+        //RTC_WAKEUP - wakes up the device to fire the pending intent at the specified time
+        alarmManager.set(AlarmManager.RTC_WAKEUP, time + timeForNotifying, pendingIntent);
+    }
+
 }
+
