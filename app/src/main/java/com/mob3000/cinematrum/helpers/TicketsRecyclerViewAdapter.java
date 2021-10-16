@@ -95,12 +95,12 @@ public class TicketsRecyclerViewAdapter extends RecyclerView.Adapter<TicketsRecy
 
 
         //loading required data from different objects into corresponding views
-        Glide.with(mContext).asBitmap().load(movieObject.getPicture()).into(holder.imgMovieWallpaper);
+        Glide.with(mContext).load(movieObject.getPicture()).placeholder(R.drawable.no_image).dontAnimate().into(holder.imgMovieWallpaper);
         holder.txtMovieTitle.setText(movieObject.getName());
         holder.txtMoviePrice.setText(Double.toString(mcObject.getPrice()) + "€");
         holder.txtMovieRowNumber.setText(Integer.toString(userTickets.get(position).getRowNumber()));
         holder.txtMovieSeatNumber.setText(Integer.toString(userTickets.get(position).getSeatNumber()));
-        holder.txtMovieCinema.setText(cinemaObject.getName() + " " + cinemaObject.getLocation());
+        holder.txtMovieCinema.setText(cinemaObject.getName() + " " + cinemaObject.getName());
 
         //extracting only date without time from this value
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MMM/yyyy");
