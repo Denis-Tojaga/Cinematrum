@@ -3,12 +3,12 @@ package com.mob3000.cinematrum.helpers;
 import android.text.TextUtils;
 import android.util.Base64;
 import android.view.View;
-import android.widget.Button;
+
 import android.widget.EditText;
 
 import java.security.MessageDigest;
 import java.security.SecureRandom;
-import java.util.ArrayList;
+
 
 import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
@@ -56,17 +56,6 @@ public class Validator {
             return PASSWORD_LENGTH_NOT_VAlID;
         return VALID_FIELD;
     }
-
-
-
-
-
-
-
-
-
-
-
 
 
     //method for extracting only the password part from hashedPassword, we will remove salt

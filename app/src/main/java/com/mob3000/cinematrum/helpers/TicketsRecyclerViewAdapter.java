@@ -1,7 +1,7 @@
 package com.mob3000.cinematrum.helpers;
 
 import android.content.Context;
-import android.util.Log;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,24 +11,18 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.constraintlayout.helper.widget.Layer;
+
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.mob3000.cinematrum.R;
-import com.mob3000.cinematrum.dataModels.Cinema;
-import com.mob3000.cinematrum.dataModels.Hall;
-import com.mob3000.cinematrum.dataModels.Movie;
-import com.mob3000.cinematrum.dataModels.MoviesCinemas;
-import com.mob3000.cinematrum.dataModels.Ticket;
+import com.mob3000.cinematrum.dataModels.*;
+
 import com.mob3000.cinematrum.sqlite.DataAcessor;
 
-import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
+
 
 public class TicketsRecyclerViewAdapter extends RecyclerView.Adapter<TicketsRecyclerViewAdapter.ViewHolder> implements Filterable {
 
