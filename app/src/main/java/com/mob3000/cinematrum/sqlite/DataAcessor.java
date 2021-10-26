@@ -779,7 +779,9 @@ public class DataAcessor {
             String sql = "SELECT * FROM " + DatabaseHelper.TABLENAME_MOVIES_CINEMAS
                     + " LEFT JOIN " + DatabaseHelper.TABLENAME_MOVIE
                     + " on " + DatabaseHelper.TABLENAME_MOVIE + "." + DatabaseHelper.COLUMN_MOVIE_movieId + " = " + DatabaseHelper.TABLENAME_MOVIES_CINEMAS + "." + DatabaseHelper.COLUMN_MOVIESCINEMAS_movieID
-                    + " where " + DatabaseHelper.TABLENAME_MOVIE + "." + DatabaseHelper.COLUMN_MOVIE_movieId + " in (" + sqlInStatement + ")"
+                    + " LEFT JOIN " + DatabaseHelper.TABLENAME_HALL
+                    + " on " + DatabaseHelper.TABLENAME_HALL + "." + DatabaseHelper.COLUMN_HALL_hallId + " = "+ DatabaseHelper.TABLENAME_MOVIES_CINEMAS + "." + DatabaseHelper.COLUMN_MOVIESCINEMAS_hallId
+                    + " where " + DatabaseHelper.TABLENAME_HALL + "." + DatabaseHelper.COLUMN_HALL_cinemaId + " in (" + sqlInStatement + ") AND " + DatabaseHelper.TABLENAME_MOVIES_CINEMAS + "." + DatabaseHelper.COLUMN_MOVIESCINEMAS_date + " > strftime('%s', 'now') "
                     + " group by " + DatabaseHelper.TABLENAME_MOVIE + "." + DatabaseHelper.COLUMN_MOVIE_movieId + ";";
             Cursor c = db.rawQuery(sql, null);
 
