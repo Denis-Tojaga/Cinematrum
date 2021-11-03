@@ -1,9 +1,8 @@
 package com.mob3000.cinematrum.dataModels;
 
-import java.io.Serializable;
 import java.util.Date;
 
-public class Ticket implements Serializable {
+public class Ticket {
 
     private int ticket_id;
     private int moviesCinemas_id;
@@ -23,7 +22,17 @@ public class Ticket implements Serializable {
         this.user_id = user_id;
     }
 
-
+    @Override
+    public String toString() {
+        return "Ticket{" +
+                "ticket_id=" + ticket_id +
+                ", moviesCinemas_id=" + moviesCinemas_id +
+                ", reservedAt=" + reservedAt +
+                ", rowNumber=" + rowNumber +
+                ", seatNumber=" + seatNumber +
+                ", user_id=" + user_id +
+                '}';
+    }
 
     public int getUser_id() {
         return user_id;
@@ -71,17 +80,5 @@ public class Ticket implements Serializable {
 
     public void setSeatNumber(int seatNumber) {
         this.seatNumber = seatNumber;
-    }
-
-    @Override
-    public String toString() {
-        return "Ticket{" +
-                "ticket_id=" + ticket_id +
-                ", moviesCinemas_id=" + moviesCinemas_id +
-                ", reservedAt=" + reservedAt +
-                ", rowNumber=" + rowNumber +
-                ", seatNumber=" + seatNumber +
-                ", user_id=" + user_id +
-                '}';
     }
 }

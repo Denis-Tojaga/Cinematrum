@@ -54,8 +54,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     // COLUMNS - CINEMA
     public static final String COLUMN_CINEMA_cinemaId = "cinema_id";
     public static final String COLUMN_CINEMA_name = "name";
-    public static final String COLUMN_CINEMA_latitude = "latitude";
-    public static final String COLUMN_CINEMA_longitude = "longitude";
+    public static final String COLUMN_CINEMA_location = "location";
     // COLUMNS - WHISLIST
     public static final String COLUMN_WISHLIST_wishlistId = "wishlist_id";
     public static final String COLUMN_WISHLIST_userId = "user_id";
@@ -76,41 +75,36 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String COLUMN_MOVIE_duration = "duration";
     public static final String COLUMN_MOVIE_description = "description";
     public static final String COLUMN_MOVIE_publishedDate = "publishedDate";
-    public static final String COLUMN_MOVIE_rating = "rating";
-    public static final String COLUMN_MOVIE_movieTrailerURL = "movieTrailerURL";
-
     // COLUMNS - LOGGEDINUSER
     public static final String COLUMN_LOGGEDINUSER_userId = "user_id";
     // INSERT DATA
+    public static final String INSERT_MOVIE_TABLE = "INSERT INTO " + TABLENAME_MOVIE + " (" + COLUMN_MOVIE_name  + ", " + COLUMN_MOVIE_picture + ", " + COLUMN_MOVIE_video + ", " + COLUMN_MOVIE_duration + ", " + COLUMN_MOVIE_description + ", " + COLUMN_MOVIE_publishedDate + ") "
 
-    //Denis 7.10.2021
-    public static final String INSERT_MOVIE_TABLE = "INSERT INTO " + TABLENAME_MOVIE + " (" + COLUMN_MOVIE_name + ", " + COLUMN_MOVIE_picture + ", " + COLUMN_MOVIE_video + ", " + COLUMN_MOVIE_duration + ", " + COLUMN_MOVIE_description + ", " + COLUMN_MOVIE_publishedDate + ", " + COLUMN_MOVIE_rating + ", " + COLUMN_MOVIE_movieTrailerURL + ") "
-            + "VALUES (\"James Bond\",\"https://i.pinimg.com/originals/24/7c/68/247c683e0f24793e7fe2ae030c8835dc.jpg\", \"\", 1.25, \"The hero James Bond likes to fight all the evil people all over the world\", 1631451990, \"9.5/10\", \"https://www.youtube.com/watch?v=N_gD9-Oa0fg&t=2s\"),"
-            + "(\"IT\",\"https://wegotthiscovered.com/wp-content/uploads/2020/07/maxresdefault-17.jpg\", \"\", 1.9, \"It is back. The clown who comes back every 25 years. Already two kids have been missing until the group of young children find out the truth\",1631451990, \"8/10\", \"https://www.youtube.com/watch?v=hAUTdjf9rko\" )";
+            + "VALUES (\"James Bond\",\"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQy7G06j-HhGeHCUAiOwZU-gUcpvjlKnODkAJ4ZZPsaYVrAx8SKnuuQcsCboqU-WaDppNI&usqp=CAU\", \"\", 1.25, \"The hero James Bond likes to fight all the evil people all over the world\", 1631451990),"
+            + "(\"IT\",\"https://akamai.vgc.no/v2/images/f2d2f165-41ec-4cbc-9fa7-01b69dbaf4e9?fit=crop&h=1267&w=1900&s=ca937e54cedd2e14493af218e2b695de02aae573\", \"\", 1.9, \"It is back. The clown who comes back every 25 years. Already two kids have been missing until the group of young children find out the truth\",1631451990)";
     public static final String INSERT_USER_TABLE = "INSERT INTO " + TABLENAME_USER + " (" + COLUMN_USER_username + ", " + COLUMN_USER_email + ", " + COLUMN_USER_password + ", " + COLUMN_USER_salt + ", " + COLUMN_USER_userType + ", " + COLUMN_USER_telephone + ") "
             + "VALUES (\"user1\",\"email1\",\"password1\",\"salt1\",01234, \"admin\"),"
             + "(\"user3\",\"email2\",\"password3\",\"salt2\",012348790809, \"user\"),"
             + "(\"user2\",\"email3\",\"password2\",\"salt3\",012348790809, \"user\");";
     public static final String INSERT_TICKET_TABLE = "INSERT INTO " + TABLENAME_TICKET + " (" + COLUMN_TICKET_userID + ", " + COLUMN_TICKET_moviesCinemaID + ", " + COLUMN_TICKET_reservedAt + ", " + COLUMN_TICKET_rowNumber + ", " + COLUMN_TICKET_seatNumber + ") "
-            + "VALUES (1,1,1631451997,1,2),(1,1,1631451997,1,3);";
-    public static final String INSERT_CINEMA_TABLE = "INSERT INTO " + TABLENAME_CINEMA + " (" + COLUMN_CINEMA_name + ", " + COLUMN_CINEMA_latitude + ", " + COLUMN_CINEMA_longitude  + ") "
-            + "VALUES (\"Hönefoss Cinema\", 60.167459331736254, 10.256550735053501), (\"Ciname Oslo\", 59.914057645043584, 10.733265608135563), (\"Oslo Theater\", 59.87228782613781, 10.808862765353563);";
+            + "VALUES (1,1,1631451997,1,1),(1,1,1631451997,1,1);";
+    public static final String INSERT_CINEMA_TABLE = "INSERT INTO " + TABLENAME_CINEMA + " (" + COLUMN_CINEMA_name + ", " + COLUMN_CINEMA_location + ") "
+            + "VALUES (\"Hönefoss Cinema\", \"\"), (\"Ciname Oslo\", \"\"), (\"Oslo Theater\", \"\");";
     public static final String INSERT_HALL_TABLE = "INSERT INTO " + TABLENAME_HALL + " (" + COLUMN_HALL_cinemaId + ", " + COLUMN_HALL_rows + ", " + COLUMN_HALL_seatsPerRow + ") "
             + "VALUES (1,10,7), (2,8,20);";
     public static final String INSERT_WISHLIST_TABLE = "INSERT INTO " + TABLENAME_WISHLIST + " ( " + COLUMN_WISHLIST_userId + ", " + COLUMN_WISHLIST_movieId + ", " + COLUMN_WISHLIST_hallId + ") "
             + "VALUES (1, 1,1), (1,2,1); ";
     public static final String INSERT_MOVIESCINEMAS_TABLE = "INSERT INTO " + TABLENAME_MOVIES_CINEMAS + " (" + COLUMN_MOVIESCINEMAS_movieID + ", " + COLUMN_MOVIESCINEMAS_hallId + ", " + COLUMN_MOVIESCINEMAS_price + ", " + COLUMN_MOVIESCINEMAS_seatsAvailable + ", " + COLUMN_MOVIESCINEMAS_allSeats + ", " + COLUMN_MOVIESCINEMAS_date + ") "
-            + "VALUES (1,1,13.99,20,100,1671451990),"
-            + "(1,1,14.99,20,100,1732655355), "
-            + "(2,1,20.99,20,100,1731451990),"
-            + "(1,2,10.99,20,100,1691451990);";
+            + "VALUES (1,1,10.99,20,100,1631451990), "
+            + "(2,1,20.99,20,100,1631451990),"
+            + "(1,2,10.99,20,100,1631451990);";
     public static final String INSERT_CATEGORIES_TABLE = "INSERT INTO " + TABLENAME_CATEGORIE + " (" + COLUMN_CATEGORY_name + ", " + COLUMN_CATEGORY_unicodeIcon + ") "
             + "VALUES (\"Comedy\", \"U+1F600\"),(\"Horror\", \"U+1F636\"),(\"Action\", \"U+1F920\"),(\"Super Hero\",\"U+1F9BE\");";
     public static final String INSERT_CATEGORIESMOVIES_TABLE = "INSERT INTO " + TABLENAME_CATEGORIE_MOVIE + " (" + COLUMN_CATEGORIESMOVIES_categoryId + ", " + COLUMN_CATEGORIESMOVIES_movieId + ") "
-            + "VALUES (1,1),(1,2), (2,1), (3,1);";
-    public static final String INSERT_USERLOGGEDIN_TABLE = "INSERT INTO " + TABLENAME_LOGGEDINUSER + " ( " + COLUMN_LOGGEDINUSER_userId + ")"
-            + "VALUES (1);";
-    /* CREATING DATABASE SCHEME*/
+            + "VALUES (1,1),(1,2);";
+public static final String INSERT_USERLOGGEDIN_TABLE = "INSERT INTO " + TABLENAME_LOGGEDINUSER + " ( " + COLUMN_LOGGEDINUSER_userId + ")"
+        + "VALUES (1);";
+     /* CREATING DATABASE SCHEME*/
     private static final String CREATE_TICKET_TABLE = "CREATE TABLE " + TABLENAME_TICKET
             + " ( " + COLUMN_TICKET_ticketID + " INTEGER NOT NULL, "
             + COLUMN_TICKET_userID + " INTEGER, "
@@ -151,8 +145,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String CREATE_CINEMA_TABLE = "CREATE TABLE " + TABLENAME_CINEMA + " ( "
             + COLUMN_CINEMA_cinemaId + " INTEGER NOT NULL, "
             + COLUMN_CINEMA_name + " TEXT NOT NULL, "
-            + COLUMN_CINEMA_latitude + " NUMERIC NOT NULL, "
-            + COLUMN_CINEMA_longitude + " NUMERIC NOT NULL, "
+            + COLUMN_CINEMA_location + " TEXT NOT NULL, "
             + "PRIMARY KEY(" + COLUMN_CINEMA_cinemaId + " AUTOINCREMENT));";
     private static final String CREATE_WISHLIST_TABLE = "CREATE TABLE " + TABLENAME_WISHLIST + " ( "
             + COLUMN_WISHLIST_wishlistId + " INTEGER NOT NULL, "
@@ -182,12 +175,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             + COLUMN_MOVIE_duration + " NUMERIC NOT NULL, "
             + COLUMN_MOVIE_description + " TEXT NOT NULL, "
             + COLUMN_MOVIE_publishedDate + " INTEGER NOT NULL, " // STORING UNIX TIMESTAMP
-            + COLUMN_MOVIE_rating + " TEXT, "
-            + COLUMN_MOVIE_movieTrailerURL + " TEXT, "
             + "PRIMARY KEY(" + COLUMN_MOVIE_movieId + " AUTOINCREMENT));";
     private static final String CREATE_LOGGEDINUSER_TABLE = "CREATE TABLE " + TABLENAME_LOGGEDINUSER + " ( "
             + COLUMN_LOGGEDINUSER_userId + " INTEGER NOT NULL, "
-            + "PRIMARY KEY(" + COLUMN_LOGGEDINUSER_userId + "));";
+            +  "PRIMARY KEY(" + COLUMN_LOGGEDINUSER_userId + "));";
 
     /**/
     public DatabaseHelper(Context context) {
@@ -218,7 +209,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(INSERT_USER_TABLE);
         db.execSQL(INSERT_CATEGORIESMOVIES_TABLE);
         db.execSQL(INSERT_HALL_TABLE);
-        db.execSQL(INSERT_WISHLIST_TABLE);
+        //db.execSQL(INSERT_WISHLIST_TABLE);
         db.execSQL(INSERT_MOVIESCINEMAS_TABLE);
         db.execSQL(INSERT_TICKET_TABLE);
         db.execSQL(INSERT_USERLOGGEDIN_TABLE);

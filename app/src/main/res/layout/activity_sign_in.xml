@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/background_theme"
-    tools:context=".SignInActivity">
+    tools:context=".SignInActivity"
+    android:background="@color/background_theme">
 
     <ImageView
         android:id="@+id/imageView"
@@ -16,29 +16,30 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@mipmap/cinematrum_logo"
-        tools:ignore="ContentDescription" />
+        tools:ignore="ContentDescription"
+        />
 
 
     <EditText
-        android:id="@+id/etxtEmailSignIn"
+        android:id="@+id/etxtEmail"
         android:layout_width="@dimen/input_field_width"
         android:layout_height="@dimen/input_field_height"
-        android:layout_marginTop="@dimen/margin_top_logo"
         android:background="@drawable/input_radius"
         android:ems="10"
         android:fontFamily="@font/trenda_regular"
         android:hint="@string/email_input_hint"
+        android:textColorHint="@color/black"
         android:inputType="textEmailAddress"
         android:padding="@dimen/input_field_padding"
         android:textColor="@color/black"
-        android:textColorHint="@color/black"
         android:textSize="@dimen/input_hint_size"
+        android:layout_marginTop="@dimen/margin_top_logo"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView" />
 
     <EditText
-        android:id="@+id/etxtPasswordSignIn"
+        android:id="@+id/etxtPassword"
         android:layout_width="@dimen/input_field_width"
         android:layout_height="@dimen/input_field_height"
         android:layout_marginTop="@dimen/margin_top_inputs"
@@ -46,50 +47,27 @@
         android:ems="10"
         android:fontFamily="@font/trenda_regular"
         android:hint="@string/password_input_hint"
+        android:textColorHint="@color/black"
         android:inputType="textPassword"
         android:padding="@dimen/input_field_padding"
-        android:textColorHint="@color/black"
         android:textSize="@dimen/input_hint_size"
-        app:layout_constraintEnd_toEndOf="@+id/etxtEmailSignIn"
-        app:layout_constraintStart_toStartOf="@+id/etxtEmailSignIn"
-        app:layout_constraintTop_toBottomOf="@+id/etxtEmailSignIn" />
+        app:layout_constraintEnd_toEndOf="@+id/etxtEmail"
+        app:layout_constraintStart_toStartOf="@+id/etxtEmail"
+        app:layout_constraintTop_toBottomOf="@+id/etxtEmail" />
 
     <android.widget.Button
-        android:id="@+id/btnSignIn"
+        android:id="@+id/btnSignUp"
         android:layout_width="@dimen/button_width"
         android:layout_height="@dimen/button_height"
         android:layout_marginTop="@dimen/button_margin_top_inputAbove"
-        android:background="@drawable/button_radius"
-        android:fontFamily="@font/moon_light"
-        android:letterSpacing="@dimen/button_letter_spacing"
         android:text="@string/button_signin"
+        android:fontFamily="@font/moon_light"
         android:textSize="@dimen/button_text_size"
-        app:layout_constraintEnd_toEndOf="@+id/etxtPasswordSignIn"
-        app:layout_constraintStart_toStartOf="@+id/etxtPasswordSignIn"
-        app:layout_constraintTop_toBottomOf="@+id/etxtPasswordSignIn" />
-
-    <TextView
-        android:id="@+id/txtEmailWarningMessage"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/trenda_semibold"
-        android:text=""
-        android:visibility="gone"
-        android:textColor="@color/warning_message"
-        app:layout_constraintStart_toStartOf="@+id/etxtEmailSignIn"
-        app:layout_constraintTop_toBottomOf="@+id/etxtEmailSignIn" />
-
-    <TextView
-        android:id="@+id/txtPasswordWarningMessage2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/trenda_semibold"
-        android:text=""
-        android:visibility="gone"
-        android:textColor="@color/warning_message"
-        app:layout_constraintStart_toStartOf="@+id/etxtPasswordSignIn"
-        app:layout_constraintTop_toBottomOf="@+id/etxtPasswordSignIn" />
-
+        app:layout_constraintEnd_toEndOf="@+id/etxtPassword"
+        app:layout_constraintStart_toStartOf="@+id/etxtPassword"
+        app:layout_constraintTop_toBottomOf="@+id/etxtPassword"
+        android:background="@drawable/button_radius"
+        android:letterSpacing="@dimen/button_letter_spacing"
+        />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
-

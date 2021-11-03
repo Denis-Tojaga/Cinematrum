@@ -1,11 +1,8 @@
 package com.mob3000.cinematrum.dataModels;
 
-import android.os.Parcelable;
-
-import java.io.Serializable;
 import java.util.ArrayList;
 
-public class User implements Serializable {
+public class User {
 
     private int user_id;
     private String name;
@@ -95,20 +92,5 @@ public class User implements Serializable {
 
     public void setWishlist(ArrayList<Wishlist> wishlist) {
         this.wishlist = wishlist;
-    }
-
-    @Override
-    public String toString() {
-        return "User{" +
-                "user_id=" + user_id +
-                ", name='" + name + '\'' +
-                ", email='" + email + '\'' +
-                ", passwordHash='" + passwordHash + '\'' +
-                ", salt='" + salt + '\'' +
-                ", telephone='" + telephone + '\'' +
-                ", userType='" + userType + '\'' +
-                ", tickets=" + tickets +
-                ", wishlist=" + wishlist +
-                '}';
     }
 }
