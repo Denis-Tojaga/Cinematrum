@@ -1,16 +1,17 @@
-package com.mob3000.cinematrum.ui.account;
+package com.mob3000.cinematrum.ui.wishlist;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-public class NotificationsViewModel extends ViewModel {
+public class WishlistViewModel extends ViewModel {
 
     private MutableLiveData<String> mText;
 
-    public NotificationsViewModel() {
+    public WishlistViewModel() {
         mText = new MutableLiveData<>();
-        mText.setValue("This is notifications fragment");
+        mText.setValue("This is wishlist fragment");
+
     }
 
     public LiveData<String> getText() {
