@@ -524,6 +524,158 @@ public class DataAcessor {
         }
     }
 
+    public static ArrayList<Cinema> getCinemasForMovieFromLocation(Context ctx, Location location, int movieId, int radius) {
+        ArrayList<Cinema> cinemas = new ArrayList<>();
+
+        try {
+
+            DatabaseHelper dbhelper = new DatabaseHelper(ctx);
+            SQLiteDatabase db = dbhelper.getReadableDatabase();
+
+            // Load all CinemaMovies by movieId grouped by cinemaId
+            String sql = "SELECT * FROM " + DatabaseHelper.TABLENAME_MOVIES_CINEMAS
+                    + " LEFT JOIN "  + DatabaseHelper.TABLENAME_HALL
+                    + " on " + DatabaseHelper.TABLENAME_HALL + "." + DatabaseHelper.COLUMN_HALL_hallId + " = " + DatabaseHelper.TABLENAME_MOVIES_CINEMAS + "." + DatabaseHelper.COLUMN_MOVIESCINEMAS_hallId
+                    + " LEFT JOIN " + DatabaseHelper.TABLENAME_CINEMA
+                    + " on " + DatabaseHelper.TABLENAME_CINEMA + "." + DatabaseHelper.COLUMN_CINEMA_cinemaId + " = " + DatabaseHelper.TABLENAME_HALL + "." + DatabaseHelper.COLUMN_HALL_cinemaId
+                    + " where " + DatabaseHelper.TABLENAME_MOVIES_CINEMAS + "." + DatabaseHelper.COLUMN_MOVIESCINEMAS_movieID + "=?"
+                    + " group by " + DatabaseHelper.TABLENAME_CINEMA + "." + DatabaseHelper.COLUMN_CINEMA_cinemaId + ";";
+            String[] sqlArgs = new String[]{String.valueOf(movieId)};
+
+            Cursor c = db.rawQuery(sql, sqlArgs);
+
+            if (c.moveToFirst()) {
+
+                int indexCinemaId = c.getColumnIndex(DatabaseHelper.COLUMN_CINEMA_cinemaId);
+                int indexName = c.getColumnIndex(DatabaseHelper.COLUMN_CINEMA_name);
+                int indexLatitude = c.getColumnIndex(DatabaseHelper.COLUMN_CINEMA_latitude);
+                int indexLongitude = c.getColumnIndex(DatabaseHelper.COLUMN_CINEMA_longitude);
+
+                ArrayList<Cinema> allCinemas = new ArrayList<>();
+
+                do {
+                    Cinema tmpCinema = new Cinema();
+                    tmpCinema.setCinema_id(c.getInt(indexCinemaId));
+                    tmpCinema.setName(c.getString(indexName));
+                    tmpCinema.setLatitude(c.getFloat(indexLatitude));
+                    tmpCinema.setLongitude(c.getFloat(indexLongitude));
+                    allCinemas.add(tmpCinema);
+
+                } while (c.moveToNext());
+
+                //Compare distances
+                for (Cinema cinema : allCinemas) {
+                    Location cinemaLocation = new Location("tmpLocation");
+                    cinemaLocation.setLatitude(cinema.getLatitude());
+                    cinemaLocation.setLongitude(cinema.getLongitude());
+                    float distance = cinemaLocation.distanceTo(location) / 1000; // distance in km;
+                    if (distance <= radius) {
+                        cinemas.add(cinema);
+                    }
+                }
+            }
+            return cinemas;
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return cinemas;
+        }
+    }
+
+    public static ArrayList<Movie> getMoviesFromLocation(Context ctx, Location location, int radius) {
+
+        ArrayList<Movie> finalResult = new ArrayList<>();
+        try {
+            // Load all cinemas
+            ArrayList<Cinema> allCinemas = getCinemas(ctx, "", "");
+            ArrayList<Cinema> cinemasInRadius = new ArrayList<>();
+
+            // select cinemas by radius
+            String sqlInStatement = "";
+            int counter = 0;
+            for (Cinema c : allCinemas) {
+                Location cinemaLocation = new Location("tmpLocation");
+                cinemaLocation.setLatitude(c.getLatitude());
+                cinemaLocation.setLongitude(c.getLongitude());
+                float distance = cinemaLocation.distanceTo(location) / 1000; // distance in km;
+                if (distance <= radius) {
+                    //cinemasInRadius.add(c);
+                    if (counter > 0)
+                        sqlInStatement += "," + c.getCinema_id();
+                    else
+                        sqlInStatement += String.valueOf(c.getCinema_id());
+
+                    counter++;
+                }
+
+            }
+
+            // no cinema found => no movie in given radius
+            if (sqlInStatement == "")
+                return finalResult;
+
+            // select movieCinemas with movieId, Join movie, Group by movieId
+            DatabaseHelper dbhelper = new DatabaseHelper(ctx);
+            SQLiteDatabase db = dbhelper.getReadableDatabase();
+
+            String sql = "SELECT * FROM " + DatabaseHelper.TABLENAME_MOVIES_CINEMAS
+                    + " LEFT JOIN " + DatabaseHelper.TABLENAME_MOVIE
+                    + " on " + DatabaseHelper.TABLENAME_MOVIE + "." + DatabaseHelper.COLUMN_MOVIE_movieId + " = " + DatabaseHelper.TABLENAME_MOVIES_CINEMAS + "." + DatabaseHelper.COLUMN_MOVIESCINEMAS_movieID
+                    + " where " + DatabaseHelper.TABLENAME_MOVIE + "." + DatabaseHelper.COLUMN_MOVIE_movieId + " in (" + sqlInStatement + ")"
+                    + " group by " + DatabaseHelper.TABLENAME_MOVIE + "." + DatabaseHelper.COLUMN_MOVIE_movieId + ";";
+            Cursor c = db.rawQuery(sql, null);
+
+            if (c.moveToFirst()) {
+
+
+                int indexMovieId = c.getColumnIndex(DatabaseHelper.COLUMN_MOVIE_movieId);
+                int indexName = c.getColumnIndex(DatabaseHelper.COLUMN_MOVIE_name);
+                int indexPicture = c.getColumnIndex(DatabaseHelper.COLUMN_MOVIE_picture);
+                int indexPlublishedDate = c.getColumnIndex(DatabaseHelper.COLUMN_MOVIE_publishedDate);
+                int indexDescription = c.getColumnIndex(DatabaseHelper.COLUMN_MOVIE_description);
+                int indexRating = c.getColumnIndex(DatabaseHelper.COLUMN_MOVIE_rating);
+
+
+                do {
+                    Movie tmpMovie = new Movie();
+                    tmpMovie.setMovie_id(c.getInt(indexMovieId));
+                    tmpMovie.setName(c.getString(indexName));
+                    tmpMovie.setDescription(c.getString(indexDescription));
+                    tmpMovie.setPicture(c.getString(indexPicture));
+                    int unixTimestamp = c.getInt(indexPlublishedDate);
+                    tmpMovie.setPublishedDate((new java.util.Date((long) unixTimestamp * 1000)));
+                    tmpMovie.setMoviesCinemas(getMoviesCinemas(ctx, DatabaseHelper.COLUMN_MOVIESCINEMAS_movieID, String.valueOf(tmpMovie.getMovie_id())));
+                    tmpMovie.setCategories(getCategoriesForMovie(ctx, tmpMovie.getMovie_id()));
+                    tmpMovie.setCategoriesNamesConcat(concatCategoryNames(tmpMovie.getCategories()));
+                    tmpMovie.setRating(c.getString(indexRating));
+                    finalResult.add(tmpMovie);
+                }
+                while (c.moveToNext());
+            }
+
+            c.close();
+            db.close();
+
+            return finalResult;
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return finalResult;
+        }
+    }
+
+
+    private static String concatCategoryNames(ArrayList<Category> categories) {
+        String contactedNames = "";
+        for (int i = 0; i < categories.size(); i++) {
+            if (!TextUtils.isEmpty(categories.get(i).getName())) {
+                if (i > 0) {
+                    contactedNames += ", ";
+                }
+                contactedNames += categories.get(i).getName();
+            }
+        }
+        return contactedNames;
+    }
+
     // TODO FINISH!!
     public static ArrayList<Category> getCategories(Context ctx, String selectColumn, String selectValue) {
 
