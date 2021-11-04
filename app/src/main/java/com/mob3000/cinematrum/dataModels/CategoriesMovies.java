@@ -20,4 +20,12 @@ public class CategoriesMovies {
     public void setMovie_id(int movie_id) {
         this.movie_id = movie_id;
     }
+
+    @Override
+    public String toString() {
+        return "CategoriesMovies{" +
+                "categorie_id=" + categorie_id +
+                ", movie_id=" + movie_id +
+                '}';
+    }
 }

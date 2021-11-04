@@ -1,6 +1,7 @@
 package com.mob3000.cinematrum.dataModels;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -8,18 +9,20 @@ public class Movie {
 
     private int movie_id;
     private String name;
+    private String description;
     private String picture;
     private Date publishedDate;
-    private List<MoviesCinemas> moviesCinemas;
-    private List<Category> categories;
+    private ArrayList<MoviesCinemas> moviesCinemas;
+    private ArrayList<Category> categories;
+    private String categoriesNamesConcat;
+    private String rating;
+    private String movieTrailerURL;
 
-    public Movie()
-    {
+    public String getMovieTrailerURL() {
+        return movieTrailerURL;
     }
-
-    public Movie(String picture, String name) {
-        this.name = name;
-        this.picture = picture;
+    public void setMovieTrailerURL(String movieTrailerURL) {
+        this.movieTrailerURL = movieTrailerURL;
     }
 
     public int getMovie_id() {
@@ -54,19 +57,56 @@ public class Movie {
         this.publishedDate = publishedDate;
     }
 
+    public String getRating() {
+        return rating;
+    }
+
+    public void setRating(String rating) {
+        this.rating = rating;
+    }
+
     public List<MoviesCinemas> getMoviesCinemas() {
         return moviesCinemas;
     }
 
-    public void setMoviesCinemas(List<MoviesCinemas> moviesCinemas) {
+    public void setMoviesCinemas(ArrayList<MoviesCinemas> moviesCinemas) {
         this.moviesCinemas = moviesCinemas;
     }
 
-    public List<Category> getCategories() {
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public ArrayList<Category> getCategories() {
         return categories;
     }
 
-    public void setCategories(List<Category> categories) {
+    public void setCategories(ArrayList<Category> categories) {
         this.categories = categories;
+    }
+
+    public String getCategoriesNamesConcat() {
+        return categoriesNamesConcat;
+    }
+
+    public void setCategoriesNamesConcat(String categoriesNamesConcat) {
+        this.categoriesNamesConcat = categoriesNamesConcat;
+    }
+
+    @Override
+    public String toString() {
+        return "Movie{" +
+                "movie_id=" + movie_id +
+                ", name='" + name + '\'' +
+                ", picture='" + picture + '\'' +
+                ", publishedDate=" + publishedDate +
+                ", rating='" + rating + '\'' +
+                ", moviesCinemas=" + moviesCinemas +
+                ", categories=" + categories +
+                '}';
     }
 }

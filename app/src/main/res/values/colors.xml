@@ -15,11 +15,8 @@
     <color name="delete_text">#FF0000</color>
     <color name="input_field_background">#C0BFBF</color>
     <color name="warning_message">#FF2424</color>
-    <color name="account_screen_label">#AEADAD</color>
+  <color name="text_light_grey">#C6BCBC</color>
+  <color name="account_screen_label">#AEADAD</color>
     <color name="hint_color">#595656</color>
-    <color name="purple">#21222D</color>
-    <color name="tint"></color>
-
-
 
 </resources>

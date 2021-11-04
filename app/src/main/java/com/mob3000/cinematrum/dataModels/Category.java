@@ -3,16 +3,16 @@ package com.mob3000.cinematrum.dataModels;
 import java.util.List;
 
 public class Category {
-    private int categorie_id;
+    private int category_id;
     private String name;
     private List<Movie> movies;
 
-    public int getCategorie_id() {
-        return categorie_id;
+    public int getCategory_id() {
+        return category_id;
     }
 
-    public void setCategorie_id(int categorie_id) {
-        this.categorie_id = categorie_id;
+    public void setCategory_id(int category_id) {
+        this.category_id = category_id;
     }
 
     public String getName() {
@@ -29,5 +29,14 @@ public class Category {
 
     public void setMovies(List<Movie> movies) {
         this.movies = movies;
+    }
+
+    @Override
+    public String toString() {
+        return "Category{" +
+                "category_id=" + category_id +
+                ", name='" + name + '\'' +
+                ", movies=" + movies +
+                '}';
     }
 }
