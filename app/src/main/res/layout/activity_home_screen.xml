@@ -8,7 +8,7 @@
     tools:context=".HomeScreenActivity">
 
     <TextView
-        android:id="@+id/textView3"
+        android:id="@+id/txtRomance"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="9dp"
@@ -20,7 +20,7 @@
         app:layout_constraintTop_toBottomOf="@+id/romanceButton" />
 
     <TextView
-        android:id="@+id/textView4"
+        android:id="@+id/txtComedy"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="9dp"
@@ -32,7 +32,7 @@
         app:layout_constraintTop_toBottomOf="@+id/comedyButton" />
 
     <TextView
-        android:id="@+id/textView6"
+        android:id="@+id/txtHorror"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="9dp"
@@ -43,7 +43,7 @@
         app:layout_constraintTop_toBottomOf="@+id/horrorButton" />
 
     <TextView
-        android:id="@+id/textView5"
+        android:id="@+id/txtDrama"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="9dp"
@@ -66,7 +66,9 @@
         app:layout_constraintEnd_toStartOf="@+id/comedyButton"
         app:layout_constraintStart_toStartOf="@+id/guideline4"
         app:layout_constraintTop_toTopOf="@+id/comedyButton"
-        app:shapeAppearanceOverlay="@style/rounded" />
+        app:shapeAppearanceOverlay="@style/rounded"
+        android:padding="0dp"
+        />
 
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/comedyButton"
@@ -101,7 +103,7 @@
         android:layout_width="60dp"
         android:layout_height="60dp"
         android:layout_marginStart="30dp"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="25dp"
         android:layout_marginEnd="6dp"
         android:adjustViewBounds="true"
         android:background="@drawable/custom_background_icons"
@@ -109,7 +111,7 @@
         android:scaleType="fitXY"
         app:layout_constraintEnd_toStartOf="@+id/guideline6"
         app:layout_constraintStart_toEndOf="@+id/dramaButton"
-        app:layout_constraintTop_toBottomOf="@+id/button"
+        app:layout_constraintTop_toBottomOf="@+id/seekBar"
         app:shapeAppearanceOverlay="@style/rounded" />
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline4"
@@ -164,15 +166,16 @@
         app:layout_constraintEnd_toStartOf="@+id/guideline6"
         app:layout_constraintHorizontal_bias="0.513"
         app:layout_constraintStart_toStartOf="@+id/guideline4"
-        app:layout_constraintTop_toBottomOf="@+id/textView4" />
+        app:layout_constraintTop_toBottomOf="@+id/txtHorror" />
 
     <TextView
         android:id="@+id/textView12"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:layout_marginEnd="128dp"
-        android:text="Select a Category"
+        android:layout_width="145dp"
+        android:layout_height="26dp"
+        android:layout_marginTop="25dp"
+        android:layout_marginEnd="192dp"
+        android:text="Choose the Distance"
+        android:textAlignment="center"
         android:textColor="#FFFFFF"
         android:textSize="15sp"
         app:layout_constraintEnd_toStartOf="@+id/button"
@@ -192,7 +195,9 @@
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="@+id/guideline4"
         app:layout_constraintTop_toBottomOf="@+id/searchbar"
-        app:rippleColor="#FBFAFA" />
+        app:rippleColor="#FBFAFA"
+        android:visibility="gone"
+        />
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/nav_view_hs"
@@ -222,5 +227,30 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView2"
         app:layout_constraintVertical_bias="0.111" />
+
+    <SeekBar
+        android:id="@+id/seekBar"
+        android:layout_width="131dp"
+        android:layout_height="26dp"
+        android:layout_marginTop="24dp"
+        android:max="100"
+        android:progress="2"
+        app:layout_constraintEnd_toStartOf="@+id/guideline6"
+        app:layout_constraintHorizontal_bias="0.098"
+        app:layout_constraintStart_toEndOf="@+id/textView12"
+        app:layout_constraintTop_toBottomOf="@+id/searchbar" />
+
+    <TextView
+        android:id="@+id/seekBarValue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="23dp"
+        android:text="TextView"
+        android:textColor="@color/white"
+        android:textSize="17sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/seekBar"
+        app:layout_constraintTop_toBottomOf="@+id/searchbar" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

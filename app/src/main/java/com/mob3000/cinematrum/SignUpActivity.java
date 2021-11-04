@@ -90,7 +90,7 @@ public class SignUpActivity extends AppCompatActivity {
 
                 if (DataAcessor.insertUser(this, newUser)) {
                     Toast.makeText(SignUpActivity.this, "You logged in successfully", Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(SignUpActivity.this, MainActivity.class);
+                    Intent intent = new Intent(SignUpActivity.this, com.mob3000.cinematrum.HomeFragment.class);
                     intent.putExtra("username", newUser.getName());
                     startActivity(intent);
                 } else {

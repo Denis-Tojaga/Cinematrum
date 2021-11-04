@@ -35,14 +35,12 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
 
         private ArrayList<Movie> MovieList;
         private MovieClickListener listener;
-        private Context context;
         private ArrayList<Movie> MovieListAll;
 
 
         public MovieAdapter(ArrayList<Movie> movies, Context context, MovieClickListener listener)
         {
             this.MovieList = movies;
-            this.context = context;
             this.listener = listener;
             MovieListAll = new ArrayList<>(MovieList);
         }
@@ -125,13 +123,16 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
                 }
             FilterResults results = new FilterResults();
             results.values = filteredList;
-                return results;
+            return results;
             }
 
             @Override
             protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
                 MovieList.clear();
-                MovieList.addAll((List) filterResults.values);
+                if(charSequence!="All")
+                    MovieList.addAll((List) filterResults.values);
+                else
+                    MovieList.addAll(MovieListAll);
                 notifyDataSetChanged();
             }
         };

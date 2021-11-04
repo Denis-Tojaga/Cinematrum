@@ -122,15 +122,15 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_marginStart="36dp"
-        android:layout_marginTop="40dp"
-        android:layout_marginBottom="106dp"
+        android:layout_marginBottom="112dp"
         android:background="@android:color/transparent"
         android:scaleType="fitXY"
         app:layout_constraintBottom_toTopOf="@+id/txtMovieTitle"
         app:layout_constraintEnd_toStartOf="@+id/txtDuration"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.535"
         app:layout_constraintStart_toEndOf="@+id/moviePoster"
-        app:layout_constraintTop_toBottomOf="@+id/imageButton6"
+        app:layout_constraintTop_toBottomOf="@+id/button4"
+        app:layout_constraintVertical_bias="0.647"
         app:srcCompat="@drawable/duration_icon" />
 
     <TextView
@@ -139,7 +139,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_marginTop="3dp"
-        android:layout_marginEnd="36dp"
+        android:layout_marginEnd="44dp"
         android:layout_marginBottom="192dp"
         android:layout_toEndOf="@+id/imageButton5"
         android:text="90 min"
@@ -148,35 +148,6 @@
         app:layout_constraintBottom_toTopOf="@+id/scv"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/imageButton5" />
-
-    <TextView
-        android:id="@+id/textView15"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="1dp"
-        android:layout_toEndOf="@+id/imageButton6"
-        android:text="Watch\nTrailer"
-        android:textColor="@color/white"
-        android:textSize="17dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.485"
-        app:layout_constraintStart_toEndOf="@+id/imageButton6"
-        app:layout_constraintTop_toTopOf="@+id/imageButton6" />
-
-    <ImageButton
-        android:id="@+id/imageButton6"
-        android:layout_width="45dp"
-        android:layout_height="45dp"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginStart="36dp"
-        android:layout_marginTop="28dp"
-        android:background="@android:color/transparent"
-        android:scaleType="fitXY"
-        app:layout_constraintStart_toEndOf="@+id/moviePoster"
-        app:layout_constraintTop_toTopOf="@+id/moviePoster"
-        app:srcCompat="@drawable/watch_trailer_icon" />
 
     <TextView
         android:id="@+id/txtMovieTitle"
@@ -194,6 +165,21 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/scv"
         app:layout_constraintTop_toBottomOf="@+id/moviePoster" />
+
+    <Button
+        android:id="@+id/btnTrailer"
+        style="@style/Widget.AppCompat.Button"
+        android:layout_width="139dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="28dp"
+        android:background="@drawable/filter_button"
+        android:text="WATCH\nTRAILER"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        app:backgroundTint="@color/tint"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/moviePoster" />
 
     <!--
           <TextView

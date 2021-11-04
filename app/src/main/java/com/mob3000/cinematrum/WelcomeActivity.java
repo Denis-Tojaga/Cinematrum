@@ -85,7 +85,7 @@ public class WelcomeActivity extends AppCompatActivity {
 
     //navigates to main activity
     private void GoToMainActivity() {
-        Intent intent = new Intent(this, HomeScreenActivity.class);
+        Intent intent = new Intent(this, com.mob3000.cinematrum.HomeFragment.class);
         startActivity(intent);
     }
 

@@ -22,7 +22,7 @@ public class SignInActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        Intent intent = new Intent(SignInActivity.this,WelcomeActivity.class);
+        Intent intent = new Intent(SignInActivity.this, com.mob3000.cinematrum.HomeFragment.class);
         startActivity(intent);
     }
 }

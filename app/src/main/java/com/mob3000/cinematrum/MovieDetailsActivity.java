@@ -2,8 +2,12 @@ package com.mob3000.cinematrum;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -18,6 +22,7 @@ public class MovieDetailsActivity extends AppCompatActivity {
     int movieID;
     TextView textView;
     ImageView imageView;
+    Button button;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +35,15 @@ public class MovieDetailsActivity extends AppCompatActivity {
         }
 
         loadData();
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.youtube.com/watch?v=N_gD9-Oa0fg"));
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.setPackage("com.google.android.youtube");
+                startActivity(intent);
+            }
+        });
 
     }
 
@@ -44,6 +58,7 @@ public class MovieDetailsActivity extends AppCompatActivity {
         textView.setText(movie.getName());
         textView=findViewById(R.id.txtMovieTitle);
         textView.setText(movie.getName());
+        button = findViewById(R.id.btnTrailer);
     }
 
 }
