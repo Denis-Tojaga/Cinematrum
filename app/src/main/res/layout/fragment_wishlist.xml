@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.wishlist.WishlistFragment"
+    android:background="@color/background_theme">
+
+    <TextView
+        android:id="@+id/txtWishlistLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/welcome_label_margin_top"
+        android:fontFamily="@font/trenda_semibold"
+        android:letterSpacing="@dimen/account_screen_labels_letter_spacing"
+        android:text="@string/label_myWishlist"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:textSize="@dimen/welcome_label_size"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ListView
+        android:id="@+id/wishlist_listView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/search_textInput" />
+
+    <SearchView
+        android:id="@+id/search_textInput"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/wishlist_screen_search_height"
+        android:layout_marginHorizontal="@dimen/wishlist_screen_search_margin_horizontal"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="@dimen/wishlist_screen_search_margin_top"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/search_field_radius"
+        android:queryHint="Search a movie"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
