@@ -49,4 +49,15 @@ public class Hall {
     public void setMoviesCinemas(List<MoviesCinemas> moviesCinemas) {
         this.moviesCinemas = moviesCinemas;
     }
+
+    @Override
+    public String toString() {
+        return "Hall{" +
+                "hall_id=" + hall_id +
+                ", cinema_id=" + cinema_id +
+                ", rows=" + rows +
+                ", seatsPerRows=" + seatsPerRows +
+                ", moviesCinemas=" + moviesCinemas +
+                '}';
+    }
 }

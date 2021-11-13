@@ -42,7 +42,7 @@ public class LocationTracker extends Service implements LocationListener {
 
     }
 
-    private void getLocation() {
+    public Location getLocation() {
         try {
 
             if (ContextCompat.checkSelfPermission(ctx, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -69,6 +69,7 @@ public class LocationTracker extends Service implements LocationListener {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        return _location;
     }
 
     public  boolean checkPermissions() {

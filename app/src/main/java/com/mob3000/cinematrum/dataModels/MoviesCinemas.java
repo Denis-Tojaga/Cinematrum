@@ -67,4 +67,17 @@ public class MoviesCinemas {
     public void setTickets(ArrayList<Ticket> tickets) {
         this.tickets = tickets;
     }
+
+    @Override
+    public String toString() {
+        return "MoviesCinemas{" +
+                "moviesCinemas_id=" + moviesCinemas_id +
+                ", movie_id=" + movie_id +
+                ", hall_id=" + hall_id +
+                ", price=" + price +
+                ", seatsAvailable=" + seatsAvailable +
+                ", date=" + date +
+                ", tickets=" + tickets +
+                '}';
+    }
 }

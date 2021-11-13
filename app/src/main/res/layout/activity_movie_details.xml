@@ -9,22 +9,22 @@
 
 
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/button2"
+        android:id="@+id/btnBuy"
         android:layout_width="237dp"
         android:layout_height="50dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginTop="30dp"
+        android:layout_marginBottom="10dp"
         android:background="@drawable/custom_background_icons"
         android:backgroundTint="#F68957"
         android:fontFamily="sans-serif"
         android:text="BUY TICKET"
         android:textSize="25sp"
         android:theme="@style/orange"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/scv" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/textView13"
@@ -33,7 +33,7 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="20dp"
         android:text="Movie Details"
         android:textAlignment="center"
         android:textColor="@color/white"
@@ -44,21 +44,24 @@
 
     <ScrollView
         android:id="@+id/scv"
-        android:layout_width="349dp"
-        android:layout_height="198dp"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
+        android:layout_marginStart="40dp"
+        android:layout_marginEnd="40dp"
+        android:layout_marginBottom="10dp"
         android:contentDescription="Something"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView14">
+        app:layout_constraintTop_toBottomOf="@+id/textDescription">
 
 
         <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:orientation="vertical"
             android:textAlignment="center">
 
@@ -84,86 +87,53 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
 
+        android:layout_marginStart="40dp"
         android:layout_marginTop="20dp"
         android:layout_marginBottom="96dp"
         android:background="@drawable/custom_bacground"
         android:scaleType="fitXY"
         app:layout_constraintBottom_toTopOf="@+id/scv"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.131"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView13"
         app:layout_constraintVertical_bias="1.0"
         app:shapeAppearanceOverlay="@style/rounded" />
 
     <TextView
-        android:id="@+id/textView14"
+        android:id="@+id/textDescription"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
+        android:layout_marginStart="40dp"
         android:layout_marginTop="16dp"
         android:text="Description:"
         android:textAlignment="center"
         android:textColor="@color/white"
         android:textSize="25dp"
         android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.113"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txtMovieTitle" />
 
-    <ImageButton
-        android:id="@+id/imageButton5"
-        android:layout_width="45dp"
-        android:layout_height="45dp"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginStart="36dp"
-        android:layout_marginBottom="112dp"
-        android:background="@android:color/transparent"
-        android:scaleType="fitXY"
-        app:layout_constraintBottom_toTopOf="@+id/txtMovieTitle"
-        app:layout_constraintEnd_toStartOf="@+id/txtDuration"
-        app:layout_constraintHorizontal_bias="0.535"
-        app:layout_constraintStart_toEndOf="@+id/moviePoster"
-        app:layout_constraintTop_toBottomOf="@+id/button4"
-        app:layout_constraintVertical_bias="0.647"
-        app:srcCompat="@drawable/duration_icon" />
 
-    <TextView
-        android:id="@+id/txtDuration"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="3dp"
-        android:layout_marginEnd="44dp"
-        android:layout_marginBottom="192dp"
-        android:layout_toEndOf="@+id/imageButton5"
-        android:text="90 min"
-        android:textColor="@color/white"
-        android:textSize="17dp"
-        app:layout_constraintBottom_toTopOf="@+id/scv"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/imageButton5" />
 
     <TextView
         android:id="@+id/txtMovieTitle"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_alignParentBottom="true"
+        android:layout_marginStart="40dp"
         android:layout_marginTop="24dp"
+        android:layout_marginEnd="40dp"
         android:letterSpacing="0.2"
         android:text="Despicable Me 2"
         android:textColor="@color/white"
         android:textSize="22dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/scv"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/moviePoster" />
 
     <Button
@@ -171,6 +141,7 @@
         style="@style/Widget.AppCompat.Button"
         android:layout_width="139dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="28dp"
         android:layout_marginTop="24dp"
         android:layout_marginEnd="28dp"
         android:background="@drawable/filter_button"
@@ -179,6 +150,25 @@
         android:textColor="@color/white"
         app:backgroundTint="@color/tint"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/moviePoster"
+        app:layout_constraintTop_toTopOf="@+id/moviePoster" />
+
+    <Button
+        android:id="@+id/btnDuration"
+        style="@style/Widget.AppCompat.Button"
+        android:layout_width="139dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="28dp"
+        android:layout_marginTop="92dp"
+        android:layout_marginEnd="28dp"
+        android:background="@drawable/filter_button"
+        android:text="RATING"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        app:backgroundTint="@color/tint"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@+id/moviePoster"
         app:layout_constraintTop_toTopOf="@+id/moviePoster" />
 
     <!--

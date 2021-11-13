@@ -51,7 +51,6 @@ public class HomeFragment extends AppCompatActivity {
     private TextView txtComedy;
     private TextView txtDrama;
     private TextView txtHorror;
-    private Button filterButton;
     private TextView seekBarValue;
     private SeekBar seekBar;
 
@@ -99,7 +98,6 @@ public class HomeFragment extends AppCompatActivity {
         txtComedy=findViewById(R.id.txtComedy);
         txtHorror=findViewById(R.id.txtHorror);
         txtDrama=findViewById(R.id.txtDrama);
-        filterButton=findViewById(R.id.button);
         seekBarValue=findViewById(R.id.seekBarValue);
         seekBar=findViewById(R.id.seekBar);
         seekBar.setProgress(5);
@@ -180,12 +178,6 @@ public class HomeFragment extends AppCompatActivity {
                     adapter.categoryFilter.filter("All");
                 }
 
-            }
-        });
-        filterButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //filterButton.setOnClickListener(View.GONE);
             }
         });
 
