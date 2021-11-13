@@ -60,6 +60,9 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
 
             holder.name.setText(name);
             Picasso.get().load(picture).placeholder(R.drawable.custom_bacground).into(holder.picture);
+
+            //TODO make an onClick listener on the whole card, when you click it go to the movie details screen
+
         }
 
 

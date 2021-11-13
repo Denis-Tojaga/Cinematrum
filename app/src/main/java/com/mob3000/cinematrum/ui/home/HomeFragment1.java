@@ -125,6 +125,11 @@ public class HomeFragment1 extends Fragment implements LocationListener {
 
     private void initData()
     {
+        //TODO make a recycler view for categories and set up the onClick method inside it
+        //TODO change the database schema - add the string catImgURL attribute
+
+
+        //TODO be consistent with the fonts
         moviesByLocation = DataAcessor.getMovies(getActivity(),"","");
         comedy = root.findViewById(R.id.comedyButton);
         drama = root.findViewById(R.id.dramaButton);
@@ -136,6 +141,8 @@ public class HomeFragment1 extends Fragment implements LocationListener {
         txtDrama=root.findViewById(R.id.txtDrama);
         txtWelcome = root.findViewById(R.id.txtWelcome);
         txtWelcome.setText("Welcome, "+user.getName()+" pick a movie");
+
+        //TODO when the slider is moved, take the location and use if for the method that loads all the movies inside that specific radius
         seekBarValue=root.findViewById(R.id.seekBarValue);
         seekBar=root.findViewById(R.id.seekBar);
         searchView= root.findViewById(R.id.searchbar);
@@ -253,7 +260,7 @@ public class HomeFragment1 extends Fragment implements LocationListener {
             @Override
             public void onClick(View v, int position) {
                 Intent intent = new Intent(getActivity(), MovieDetailsActivity.class);
-                intent.putExtra("movieID", MovieList.get(position).getMovie_id());
+                intent.putExtra("movieID", MovieList.get(1).getMovie_id());
                 intent.putExtra("distance", seekBar.getProgress());
                 startActivity(intent);
             }
@@ -302,5 +309,9 @@ public class HomeFragment1 extends Fragment implements LocationListener {
         ArrayList<Cinema> cinemas2 = DataAcessor.getCinemasForMovieFromLocation(getActivity(), location, 1, 50);
 
         moviesByLocation = DataAcessor.getMoviesFromLocation(getActivity(), location, seekBar.getProgress());
+
+        //TODO you already have a location and you have the movies with that location, load them into the recycler view
+
+
     }
 }

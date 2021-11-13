@@ -19,7 +19,9 @@ import com.mob3000.cinematrum.ui.ReservationActivity;
 import com.squareup.picasso.Picasso;
 
 public class MovieDetailsActivity extends AppCompatActivity {
-
+    //TODO fix the styling (fonts, same button as the others)
+    //TODO add the - addToFavourites button,goBack arrow
+    //TODO add the duration to the movie model
     Movie movie;
     int movieID;
     TextView txtDescription;
