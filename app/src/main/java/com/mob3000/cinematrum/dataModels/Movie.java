@@ -17,6 +17,7 @@ public class Movie {
     private String categoriesNamesConcat;
     private String rating;
     private String movieTrailerURL;
+    private String duration;
 
     public String getMovieTrailerURL() {
         return movieTrailerURL;
@@ -84,6 +85,14 @@ public class Movie {
     public ArrayList<Category> getCategories() {
         return categories;
     }
+    public String getCategoryNames(){
+        String string="";
+        for (int i=0; i<categories.size(); i++)
+        {
+            string=string+categories.get(i).getName()+"\n";
+        }
+        return string;
+    }
 
     public void setCategories(ArrayList<Category> categories) {
         this.categories = categories;
@@ -96,6 +105,9 @@ public class Movie {
     public void setCategoriesNamesConcat(String categoriesNamesConcat) {
         this.categoriesNamesConcat = categoriesNamesConcat;
     }
+    public String getDuration() {return duration;}
+
+    public void setDuration(String duration) {this.duration = duration;}
 
     @Override
     public String toString() {
@@ -107,6 +119,8 @@ public class Movie {
                 ", rating='" + rating + '\'' +
                 ", moviesCinemas=" + moviesCinemas +
                 ", categories=" + categories +
+                ", duration=" + duration +
+
                 '}';
     }
 }

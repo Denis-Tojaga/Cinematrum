@@ -4,123 +4,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/purple"
-    tools:context=".HomeScreenActivity">
-
-    <TextView
-        android:id="@+id/txtRomance"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="9dp"
-        android:text="Romance"
-        android:textAlignment="center"
-        android:textColor="#FFFFFF"
-        app:layout_constraintEnd_toEndOf="@+id/romanceButton"
-        app:layout_constraintStart_toStartOf="@+id/romanceButton"
-        app:layout_constraintTop_toBottomOf="@+id/romanceButton" />
-
-    <TextView
-        android:id="@+id/txtComedy"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="9dp"
-        android:text="Comedy"
-        android:textAlignment="center"
-        android:textColor="#FFFFFF"
-        app:layout_constraintEnd_toEndOf="@+id/comedyButton"
-        app:layout_constraintStart_toStartOf="@+id/comedyButton"
-        app:layout_constraintTop_toBottomOf="@+id/comedyButton" />
-
-    <TextView
-        android:id="@+id/txtHorror"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="9dp"
-        android:text="Horror"
-        android:textColor="#FFFFFF"
-        app:layout_constraintEnd_toEndOf="@+id/horrorButton"
-        app:layout_constraintStart_toStartOf="@+id/horrorButton"
-        app:layout_constraintTop_toBottomOf="@+id/horrorButton" />
-
-    <TextView
-        android:id="@+id/txtDrama"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="9dp"
-        android:text="Drama"
-        android:textAlignment="center"
-        android:textColor="#FFFFFF"
-        app:layout_constraintEnd_toEndOf="@+id/dramaButton"
-        app:layout_constraintStart_toStartOf="@+id/dramaButton"
-        app:layout_constraintTop_toBottomOf="@+id/dramaButton" />
-
-    <com.google.android.material.imageview.ShapeableImageView
-        android:id="@+id/romanceButton"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:layout_marginStart="40dp"
-        android:adjustViewBounds="true"
-        android:background="@drawable/custom_background_icons"
-        android:contentDescription="Romance"
-        android:padding="0dp"
-        android:scaleType="fitXY"
-        app:layout_constraintEnd_toStartOf="@+id/comedyButton"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/comedyButton"
-        app:shapeAppearanceOverlay="@style/rounded" />
-
-    <com.google.android.material.imageview.ShapeableImageView
-        android:id="@+id/comedyButton"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:layout_marginStart="10dp"
-        android:layout_marginEnd="10dp"
-        android:adjustViewBounds="true"
-        android:background="@drawable/custom_background_icons"
-        android:contentDescription="Comedy"
-        android:scaleType="fitXY"
-        app:layout_constraintEnd_toStartOf="@+id/dramaButton"
-        app:layout_constraintStart_toEndOf="@+id/romanceButton"
-        app:layout_constraintTop_toTopOf="@+id/dramaButton"
-        app:shapeAppearanceOverlay="@style/rounded" />
-
-    <com.google.android.material.imageview.ShapeableImageView
-        android:id="@+id/dramaButton"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:adjustViewBounds="true"
-        android:background="@drawable/custom_background_icons"
-        android:contentDescription="Drama"
-        android:scaleType="fitXY"
-        app:layout_constraintEnd_toStartOf="@+id/horrorButton"
-        app:layout_constraintStart_toEndOf="@+id/comedyButton"
-        app:layout_constraintTop_toTopOf="@+id/horrorButton"
-        app:shapeAppearanceOverlay="@style/rounded" />
-
-    <com.google.android.material.imageview.ShapeableImageView
-        android:id="@+id/horrorButton"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="25dp"
-        android:layout_marginEnd="40dp"
-        android:adjustViewBounds="true"
-        android:background="@drawable/custom_background_icons"
-        android:contentDescription="Horror"
-        android:scaleType="fitXY"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/dramaButton"
-        app:layout_constraintTop_toBottomOf="@+id/seekBar"
-        app:shapeAppearanceOverlay="@style/rounded" />
+    android:background="@color/background_theme"
+    tools:context="ui.home.HomeFragment">
 
 
     <SearchView
         android:id="@+id/searchbar"
-        android:layout_width="305dp"
-        android:layout_height="36dp"
-        android:layout_marginStart="40dp"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginStart="30dp"
         android:layout_marginTop="10dp"
-        android:layout_marginEnd="40dp"
+        android:layout_marginEnd="30dp"
         android:background="@drawable/searchviewbackground"
         android:iconifiedByDefault="false"
         android:queryHint="@string/SW"
@@ -132,6 +26,7 @@
         android:id="@+id/txtWelcome"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:fontFamily="@font/trenda_regular"
         android:layout_marginTop="16dp"
         android:text="Welcome, pick a movie"
         android:textColor="#FFFFFF"
@@ -142,16 +37,17 @@
 
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/txtAiring"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
+        android:fontFamily="@font/trenda_regular"
         android:text="Airing this month:"
         android:textColor="#FFFFFF"
         android:textSize="15sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtHorror" />
+        app:layout_constraintTop_toBottomOf="@+id/recyclerViewCategories" />
 
     <TextView
         android:id="@+id/textView12"
@@ -159,6 +55,7 @@
         android:layout_height="26dp"
         android:layout_marginStart="40dp"
         android:layout_marginTop="25dp"
+        android:fontFamily="@font/trenda_regular"
         android:text="Choose the Distance"
         android:textAlignment="center"
         android:textColor="#FFFFFF"
@@ -168,7 +65,7 @@
 
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycleViewHomeScreen"
+        android:id="@+id/recyclerViewMovies"
 
 
         android:layout_width="match_parent"
@@ -178,7 +75,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView2" />
+        app:layout_constraintTop_toBottomOf="@+id/txtAiring" />
 
     <SeekBar
         android:id="@+id/seekBar"
@@ -196,10 +93,27 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="23dp"
+        android:layout_marginEnd="40dp"
+        android:fontFamily="@font/trenda_regular"
         android:text="TextView"
         android:textColor="@color/white"
         android:textSize="17sp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/seekBar"
         app:layout_constraintTop_toBottomOf="@+id/searchbar" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerViewCategories"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_marginStart="20dp"
+        android:requiresFadingEdge="horizontal"
+        android:fadingEdgeLength="10dp"
+        android:layout_marginTop="9dp"
+        android:layout_marginEnd="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView12" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

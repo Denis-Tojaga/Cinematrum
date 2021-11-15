@@ -2,6 +2,7 @@ package com.mob3000.cinematrum.ui.wishlist;
 
 import static android.content.Context.MODE_PRIVATE;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -17,6 +18,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.mob3000.cinematrum.MovieDetailsActivity;
 import com.mob3000.cinematrum.R;
 import com.mob3000.cinematrum.helpers.WishlistTableAdapter;
 import com.mob3000.cinematrum.dataModels.User;
@@ -84,7 +86,10 @@ public class WishlistFragment extends Fragment {
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Wishlist currentEntry = _wishlist.get(i);
                 Toast.makeText(getActivity().getApplicationContext(), "Item Clicked: " + currentEntry.get_movie().getName(), Toast.LENGTH_LONG).show();
-                // TODO: FINALIZE: Navigate to Movie Detail Screen
+                Intent intent = new Intent(getActivity(), MovieDetailsActivity.class);
+                intent.putExtra("movieID", currentEntry.getMovie_id());
+                intent.putExtra("AddOrRemove", 0);
+                startActivity(intent);
 
             }
         });

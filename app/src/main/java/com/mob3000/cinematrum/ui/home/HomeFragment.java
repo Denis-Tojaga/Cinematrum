@@ -23,52 +23,53 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.SearchView;
 import android.widget.SeekBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.mob3000.cinematrum.MovieDetailsActivity;
 import com.mob3000.cinematrum.R;
+import com.mob3000.cinematrum.dataModels.Category;
 import com.mob3000.cinematrum.dataModels.Cinema;
 import com.mob3000.cinematrum.dataModels.Movie;
 import com.mob3000.cinematrum.dataModels.User;
-import com.mob3000.cinematrum.databinding.ActivityHomeScreenBinding;
-import com.mob3000.cinematrum.databinding.FragmentDashboardBinding;
 import com.mob3000.cinematrum.databinding.HomeFragment1FragmentBinding;
+import com.mob3000.cinematrum.helpers.CategoryAdapter;
 import com.mob3000.cinematrum.helpers.LocationTracker;
 import com.mob3000.cinematrum.helpers.MovieAdapter;
 import com.mob3000.cinematrum.sqlite.DataAcessor;
 import com.mob3000.cinematrum.sqlite.DatabaseHelper;
-import com.mob3000.cinematrum.ui.dashboard.DashboardViewModel;
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
-public class HomeFragment1 extends Fragment implements LocationListener {
+public class HomeFragment extends Fragment implements LocationListener {
 
-    private HomeFragment1ViewModel homeViewModel;
-    private MovieAdapter.MovieClickListener listener;
-    private RecyclerView recyclerView;
+    private HomeViewModel homeViewModel;
+    private MovieAdapter.MovieClickListener movieClickListener;
+    private CategoryAdapter.CategoryClickListener categoryClickListener;
+    private RecyclerView movieRecyclerView;
+    private RecyclerView categoryRecyclerView;
     private ArrayList<Movie> MovieList;
-    private ImageView imageView;
-    private LinearLayoutManager layoutManager;
+    private ArrayList<Category> CategoryList;
+    private LinearLayoutManager movieLayoutManager;
+    private LinearLayoutManager categoryLayoutManager;
     private SearchView searchView;
-    private MovieAdapter adapter;
+    private MovieAdapter movieAdapter;
+    private CategoryAdapter categoryAdapter;
     private TextView seekBarValue;
     private TextView txtWelcome;
     private SeekBar seekBar;
     private User user;
+    private View selectedView;
     private SharedPreferences sp;
     private LocationTracker _locationTracker;
+    private int selected;
     private ArrayList<Movie> moviesByLocation;
     View root;
 
-    public static HomeFragment1 newInstance() {
-        return new HomeFragment1();
+    public static HomeFragment newInstance() {
+        return new HomeFragment();
     }
     private HomeFragment1FragmentBinding binding;
 
@@ -79,11 +80,13 @@ public class HomeFragment1 extends Fragment implements LocationListener {
         requireActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
         sp = getActivity().getSharedPreferences("login", MODE_PRIVATE);
         homeViewModel =
-                new ViewModelProvider(this).get(HomeFragment1ViewModel.class);
+                new ViewModelProvider(this).get(HomeViewModel.class);
 
         binding = HomeFragment1FragmentBinding.inflate(inflater, container, false);
         root = inflater.inflate(R.layout.activity_home_screen, container, false);
-        recyclerView=root.findViewById(R.id.recyclerViewMovies);
+        movieRecyclerView=root.findViewById(R.id.recyclerViewMovies);
+        categoryRecyclerView = root.findViewById(R.id.recyclerViewCategories);
+        selectedView = null;
 
         String userMail = sp.getString("email", "default");
 
@@ -96,23 +99,21 @@ public class HomeFragment1 extends Fragment implements LocationListener {
         _locationTracker = new LocationTracker(getActivity(), this);
         if (!_locationTracker.checkPermissions()){
             // TODO: Load movie directly because missing permission for location services
-
             Log.d("HOMEFRAGMENT", "LOADING MOVIES DIRECTLY");
-            moviesByLocation = DataAcessor.getMovies(getActivity(),"","");
-
         }
         else {
             // Wait for Location. Load movies in onLocationChanged while passing location - maybe display some loading indicator?
-
             Log.d("HOMEFRAGMENT", "WAITING FOR LOCATION");
         }
 
 
         MovieList = new ArrayList<>();
+        CategoryList = new ArrayList<>();
         moviesByLocation = new ArrayList<>();
         //LoadCategoryImages();
         initData();
-        setAdapter();
+        setMovieAdapter();
+        setCategoryAdapter();
         return root;
     }
 
@@ -128,8 +129,8 @@ public class HomeFragment1 extends Fragment implements LocationListener {
         //TODO change the database schema - add the string catImgURL attribute
 
 
-        //TODO be consistent with the fonts
         MovieList = DataAcessor.getMovies(getActivity(),"","");
+        CategoryList = DataAcessor.getCategories(getActivity(),"", "");
         txtWelcome = root.findViewById(R.id.txtWelcome);
         txtWelcome.setText("Welcome, "+user.getName()+" pick a movie");
 
@@ -163,8 +164,8 @@ public class HomeFragment1 extends Fragment implements LocationListener {
 
 
     }
-    private void setAdapter() {
-        setOnClickListener();
+    private void setMovieAdapter() {
+        setOnClickMovieListener();
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String s) {
@@ -173,21 +174,30 @@ public class HomeFragment1 extends Fragment implements LocationListener {
 
             @Override
             public boolean onQueryTextChange(String s) {
-                adapter.getFilter().filter(s);
+                movieAdapter.getFilter().filter(s);
                 return false;
             }
         });
-        adapter = new MovieAdapter(MovieList, getActivity(), listener);
-        layoutManager = new LinearLayoutManager(getActivity());
-        layoutManager.setOrientation(RecyclerView.HORIZONTAL);
-        recyclerView.setLayoutManager(layoutManager);
-        recyclerView.setItemAnimator(new DefaultItemAnimator());
-        recyclerView.setAdapter(adapter);
+        movieAdapter = new MovieAdapter(MovieList, getActivity(), movieClickListener);
+        movieLayoutManager = new LinearLayoutManager(getActivity());
+        movieLayoutManager.setOrientation(RecyclerView.HORIZONTAL);
+        movieRecyclerView.setLayoutManager(movieLayoutManager);
+        movieRecyclerView.setItemAnimator(new DefaultItemAnimator());
+        movieRecyclerView.setAdapter(movieAdapter);
 
     }
+    private void setCategoryAdapter() {
+        setOnClickCategoryListener();
+        categoryAdapter = new CategoryAdapter(CategoryList, getActivity(), categoryClickListener);
+        categoryLayoutManager = new LinearLayoutManager(getActivity());
+        categoryLayoutManager.setOrientation(RecyclerView.HORIZONTAL);
+        categoryRecyclerView.setLayoutManager(categoryLayoutManager);
+        categoryRecyclerView.setItemAnimator(new DefaultItemAnimator());
+        categoryRecyclerView.setAdapter(categoryAdapter);
+    }
 
-    private void setOnClickListener() {
-        listener = new MovieAdapter.MovieClickListener() {
+    private void setOnClickMovieListener() {
+        movieClickListener = new MovieAdapter.MovieClickListener() {
             @Override
             public void onClick(View v, int position) {
                 Intent intent = new Intent(getActivity(), MovieDetailsActivity.class);
@@ -198,16 +208,33 @@ public class HomeFragment1 extends Fragment implements LocationListener {
                 startActivity(intent);
             }
         };
-
+    }
+    private void setOnClickCategoryListener(){
+        categoryClickListener = new CategoryAdapter.CategoryClickListener() {
+            @Override
+            public void onClick(View v, int position) {
+                if(selectedView==v)
+                {
+                    selectedView.setBackgroundResource(R.drawable.category_background);
+                    selectedView=null;
+                    movieAdapter.categoryFilter.filter("All");
+                }
+                else if (selectedView==null) {
+                    selectedView = v;
+                    selectedView.setBackgroundResource(R.drawable.category_background_light);
+                    movieAdapter.categoryFilter.filter(CategoryList.get(position).getName());
+                }
+                else if(selectedView!=v && selectedView!=null) {
+                    v.setBackgroundResource(R.drawable.category_background_light);
+                    selectedView.setBackgroundResource(R.drawable.category_background);
+                    selectedView=v;
+                    movieAdapter.categoryFilter.filter(CategoryList.get(position).getName());
+                }
+            }
+        };
     }
 
-    boolean checkDoubleTap(TextView textView)
-    {
-        if (textView.getCurrentTextColor()==Color.YELLOW)
-            return true;
-        return false;
-    }
-    
+
     /*void LoadCategoryImages()
     {
         imageView=root.findViewById(R.id.romanceButton);
@@ -222,7 +249,7 @@ public class HomeFragment1 extends Fragment implements LocationListener {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        homeViewModel = new ViewModelProvider(this).get(HomeFragment1ViewModel.class);
+        homeViewModel = new ViewModelProvider(this).get(HomeViewModel.class);
         // TODO: Use the ViewModel
     }
 

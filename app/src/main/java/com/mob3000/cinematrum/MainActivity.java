@@ -12,16 +12,12 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
-import androidx.navigation.ui.AppBarConfiguration;
-import androidx.navigation.ui.NavigationUI;
 
 import com.google.android.material.navigation.NavigationBarView;
 import com.mob3000.cinematrum.dataModels.User;
 import com.mob3000.cinematrum.databinding.ActivityMainBinding;
 import com.mob3000.cinematrum.ui.account.AccountFragment;
-import com.mob3000.cinematrum.ui.home.HomeFragment1;
+import com.mob3000.cinematrum.ui.home.HomeFragment;
 import com.mob3000.cinematrum.ui.wishlist.WishlistFragment;
 
 public class MainActivity extends AppCompatActivity {
@@ -81,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
                     selectedFragment=new WishlistFragment();
                     break;
                 case R.id.navigation_home:
-                    selectedFragment=new HomeFragment1();
+                    selectedFragment=new HomeFragment();
                     break;
                 case R.id.navigation_account:
                     selectedFragment=new AccountFragment();

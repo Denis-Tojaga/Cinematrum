@@ -13,7 +13,7 @@
 
     <fragment
         android:id="@+id/navigation_home"
-        android:name="com.mob3000.cinematrum.ui.home.HomeFragment1"
+        android:name="com.mob3000.cinematrum.ui.home.HomeFragment"
         android:label="@string/title_home"
         tools:layout="@layout/activity_home_screen" />
 
