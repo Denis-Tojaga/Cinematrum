@@ -65,6 +65,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String COLUMN_CATEGORY_categoryId = "category_id";
     public static final String COLUMN_CATEGORY_name = "name";
     public static final String COLUMN_CATEGORY_unicodeIcon = "unicodeIcon";
+    public static final String COLUMN_CATEGORY_imageUrl = "imageUrl";
     // COLUMNS - CATEGORIESMOVIES
     public static final String COLUMN_CATEGORIESMOVIES_categoryId = "category_id";
     public static final String COLUMN_CATEGORIESMOVIES_movieId = "movie_id";
@@ -104,8 +105,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             + "(1,1,14.99,20,100,1732655355), "
             + "(2,1,20.99,20,100,1731451990),"
             + "(1,2,10.99,20,100,1691451990);";
-    public static final String INSERT_CATEGORIES_TABLE = "INSERT INTO " + TABLENAME_CATEGORIE + " (" + COLUMN_CATEGORY_name + ", " + COLUMN_CATEGORY_unicodeIcon + ") "
-            + "VALUES (\"Comedy\", \"U+1F600\"),(\"Horror\", \"U+1F636\"),(\"Action\", \"U+1F920\"),(\"Super Hero\",\"U+1F9BE\");";
+    public static final String INSERT_CATEGORIES_TABLE = "INSERT INTO " + TABLENAME_CATEGORIE + " (" + COLUMN_CATEGORY_name + ", " + COLUMN_CATEGORY_imageUrl + ") "
+            + "VALUES (\"Comedy\", \"https://thoughtcatalog.com/wp-content/uploads/2013/09/istock_000015777770medium2.jpg\"),(\"Horror\", \"https://thoughtcatalog.com/wp-content/uploads/2013/09/istock_000015777770medium2.jpg\"),(\"Action\", \"https://thoughtcatalog.com/wp-content/uploads/2013/09/istock_000015777770medium2.jpg\"),(\"Super Hero\",\"https://thoughtcatalog.com/wp-content/uploads/2013/09/istock_000015777770medium2.jpg\");";
     public static final String INSERT_CATEGORIESMOVIES_TABLE = "INSERT INTO " + TABLENAME_CATEGORIE_MOVIE + " (" + COLUMN_CATEGORIESMOVIES_categoryId + ", " + COLUMN_CATEGORIESMOVIES_movieId + ") "
             + "VALUES (1,1),(1,2), (2,1), (3,1);";
     public static final String INSERT_USERLOGGEDIN_TABLE = "INSERT INTO " + TABLENAME_LOGGEDINUSER + " ( " + COLUMN_LOGGEDINUSER_userId + ")"
@@ -167,6 +168,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             + COLUMN_CATEGORY_categoryId + " INTEGER NOT NULL, "
             + COLUMN_CATEGORY_name + " TEXT NOT NULL, "
             + COLUMN_CATEGORY_unicodeIcon + " TEXT, "
+            + COLUMN_CATEGORY_imageUrl + " TEXT, "
             + "PRIMARY KEY(" + COLUMN_CATEGORY_categoryId + " AUTOINCREMENT));";
     private static final String CREATE_CATEGORIESMOVIES_TABLE = "CREATE TABLE " + TABLENAME_CATEGORIE_MOVIE + " ( "
             + COLUMN_CATEGORIESMOVIES_categoryId + " INTEGER NOT NULL, "

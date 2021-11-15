@@ -66,6 +66,7 @@ public class HomeFragment extends Fragment implements LocationListener {
     private LocationTracker _locationTracker;
     private int selected;
     private ArrayList<Movie> moviesByLocation;
+    private Location _location;
     View root;
 
     public static HomeFragment newInstance() {
@@ -158,7 +159,8 @@ public class HomeFragment extends Fragment implements LocationListener {
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-
+                ArrayList<Movie> newMovies = DataAcessor.getMoviesFromLocation(getActivity(), _location, seekBar.getProgress());
+                //TODO:  add new movies to the recycler view.
             }
         });
 
@@ -255,6 +257,7 @@ public class HomeFragment extends Fragment implements LocationListener {
 
     @Override
     public void onLocationChanged(@NonNull Location location) {
+        _location = location;
         Log.d("HOMEFRAGMENT", location.getLongitude() + " " + location.getLatitude());
 
         // load Cinemas and Movies nearby - Example for @Mirza for Home and Movie Detail Screen.

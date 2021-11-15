@@ -1,6 +1,7 @@
 package com.mob3000.cinematrum.helpers;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -46,10 +47,11 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
         //TODO picture property needs to be added to the database
-        //String picture = CategoryList.get(position).getPicture();
+        String picture = CategoryList.get(position).getImageUrl();
+        System.out.println(picture);
         String name = CategoryList.get(position).getName();
         holder.name.setText(name);
-        Picasso.get().load("https://upload.wikimedia.org/wikipedia/commons/thumb/7/70/Solid_white.svg/2048px-Solid_white.svg.png").placeholder(R.drawable.custom_bacground).into(holder.picture);
+        Picasso.get().load(picture).placeholder(R.drawable.custom_bacground).into(holder.picture);
     }
 
     @Override
