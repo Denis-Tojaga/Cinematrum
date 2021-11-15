@@ -1,37 +1,56 @@
-package com.mob3000.cinematrum;
+package com.mob3000.cinematrum.ui.home;
+
+import static android.content.Context.MODE_PRIVATE;
+
+import androidx.lifecycle.ViewModelProvider;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.location.Location;
+import android.location.LocationListener;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuInflater;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.SearchView;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
+import com.mob3000.cinematrum.MovieDetailsActivity;
+import com.mob3000.cinematrum.R;
+import com.mob3000.cinematrum.dataModels.Cinema;
 import com.mob3000.cinematrum.dataModels.Movie;
 import com.mob3000.cinematrum.dataModels.User;
 import com.mob3000.cinematrum.databinding.ActivityHomeScreenBinding;
+import com.mob3000.cinematrum.databinding.FragmentDashboardBinding;
+import com.mob3000.cinematrum.databinding.HomeFragment1FragmentBinding;
+import com.mob3000.cinematrum.helpers.LocationTracker;
 import com.mob3000.cinematrum.helpers.MovieAdapter;
 import com.mob3000.cinematrum.sqlite.DataAcessor;
+import com.mob3000.cinematrum.sqlite.DatabaseHelper;
+import com.mob3000.cinematrum.ui.dashboard.DashboardViewModel;
 import com.squareup.picasso.Picasso;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
-public class HomeFragment extends AppCompatActivity {
+public class HomeFragment1 extends Fragment implements LocationListener {
 
-    private ActivityHomeScreenBinding binding;
-    private User loggedUser;
+    private HomeFragment1ViewModel homeViewModel;
     private MovieAdapter.MovieClickListener listener;
     private RecyclerView recyclerView;
     private ArrayList<Movie> MovieList;
@@ -39,92 +58,96 @@ public class HomeFragment extends AppCompatActivity {
     private LinearLayoutManager layoutManager;
     private SearchView searchView;
     private MovieAdapter adapter;
-    private ImageView comedy;
-    private ImageView horror;
-    private ImageView drama;
-    private ImageView romance;
-    private boolean comedyClick=false;
-    private boolean horrorClick=false;
-    private boolean dramaClick=false;
-    private boolean romanceClick=false;
-    private TextView txtRomance;
-    private TextView txtComedy;
-    private TextView txtDrama;
-    private TextView txtHorror;
     private TextView seekBarValue;
+    private TextView txtWelcome;
     private SeekBar seekBar;
+    private User user;
+    private SharedPreferences sp;
+    private LocationTracker _locationTracker;
+    private ArrayList<Movie> moviesByLocation;
+    View root;
 
-
+    public static HomeFragment1 newInstance() {
+        return new HomeFragment1();
+    }
+    private HomeFragment1FragmentBinding binding;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
 
-        //binding = ActivityHomeScreenBinding.inflate(getLayoutInflater());
-        setContentView(R.layout.activity_home_screen);
+        requireActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+        sp = getActivity().getSharedPreferences("login", MODE_PRIVATE);
+        homeViewModel =
+                new ViewModelProvider(this).get(HomeFragment1ViewModel.class);
 
-        recyclerView=findViewById(R.id.recycleViewHomeScreen);
+        binding = HomeFragment1FragmentBinding.inflate(inflater, container, false);
+        root = inflater.inflate(R.layout.activity_home_screen, container, false);
+        recyclerView=root.findViewById(R.id.recyclerViewMovies);
+
+        String userMail = sp.getString("email", "default");
+
+        if (userMail != "default") {
+            ArrayList<User> users = DataAcessor.getUser(getActivity(), DatabaseHelper.COLUMN_USER_email, userMail);
+            if (users.size() == 1)
+                user = users.get(0);
+        }
+        //Location
+        _locationTracker = new LocationTracker(getActivity(), this);
+        if (!_locationTracker.checkPermissions()){
+            // TODO: Load movie directly because missing permission for location services
+
+            Log.d("HOMEFRAGMENT", "LOADING MOVIES DIRECTLY");
+            moviesByLocation = DataAcessor.getMovies(getActivity(),"","");
+
+        }
+        else {
+            // Wait for Location. Load movies in onLocationChanged while passing location - maybe display some loading indicator?
+
+            Log.d("HOMEFRAGMENT", "WAITING FOR LOCATION");
+        }
+
+
         MovieList = new ArrayList<>();
-
-        //to hide the action bar
-        getSupportActionBar().hide();
-        //to load the category images from urls
-        LoadCategoryImages();
-
+        moviesByLocation = new ArrayList<>();
+        //LoadCategoryImages();
         initData();
         setAdapter();
+        return root;
+    }
 
-        /*BottomNavigationView navView = findViewById(R.id.nav_view_hs);
-
-        AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.navigation_home, R.id.navigation_dashboard, R.id.navigation_notifications)
-                .build();
-
-        NavController navController = Navigation.findNavController(this, R.id.nav_view_hs);
-        NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
-        NavigationUI.setupWithNavController(binding.navViewHs, navController);*/
-
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
 
     }
 
     private void initData()
     {
-        MovieList = DataAcessor.getMovies(this.getApplicationContext(),"","");
-        comedy = findViewById(R.id.comedyButton);
-        drama = findViewById(R.id.dramaButton);
-        horror = findViewById(R.id.horrorButton);
-        romance = findViewById(R.id.romanceButton);
-        txtRomance=findViewById(R.id.txtRomance);
-        txtComedy=findViewById(R.id.txtComedy);
-        txtHorror=findViewById(R.id.txtHorror);
-        txtDrama=findViewById(R.id.txtDrama);
-        seekBarValue=findViewById(R.id.seekBarValue);
-        seekBar=findViewById(R.id.seekBar);
+        //TODO make a recycler view for categories and set up the onClick method inside it
+        //TODO change the database schema - add the string catImgURL attribute
+
+
+        //TODO be consistent with the fonts
+        MovieList = DataAcessor.getMovies(getActivity(),"","");
+        txtWelcome = root.findViewById(R.id.txtWelcome);
+        txtWelcome.setText("Welcome, "+user.getName()+" pick a movie");
+
+        //TODO when the slider is moved, take the location and use if for the method that loads all the movies inside that specific radius
+        seekBarValue=root.findViewById(R.id.seekBarValue);
+        seekBar=root.findViewById(R.id.seekBar);
+        searchView= root.findViewById(R.id.searchbar);
         seekBar.setProgress(5);
         seekBarValue.setText(String.valueOf(seekBar.getProgress()+" km"));
-        comedy.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (checkDoubleTap(txtComedy))
-                {
-                    TextColourChange();
-                    adapter.categoryFilter.filter("All");
-                }
-                else {
-                    TextColourChange();
-                    txtComedy.setTextColor(Color.YELLOW);
-                    adapter.categoryFilter.filter("Comedy");
-                }
-
-            }
-        });
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean b) {
-                if(progress==100)
+                if(progress==100) {
                     seekBarValue.setText(String.valueOf(progress + "+ km"));
-                else
+                }
+                else {
                     seekBarValue.setText(String.valueOf(progress + " km"));
+                }
             }
 
             @Override
@@ -137,55 +160,11 @@ public class HomeFragment extends AppCompatActivity {
 
             }
         });
-        drama.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (checkDoubleTap(txtDrama)) {
-                    TextColourChange();
-                    adapter.categoryFilter.filter("All");
-                }
-                else {
-                    TextColourChange();
-                    txtDrama.setTextColor(Color.YELLOW);
-                    adapter.categoryFilter.filter("Drama");
-                }
-            }
-        });
-        horror.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (checkDoubleTap(txtHorror)) {
-                    TextColourChange();
-                    adapter.categoryFilter.filter("All");
-                }
-                else {
-                    TextColourChange();
-                    txtHorror.setTextColor(Color.YELLOW);
-                    adapter.categoryFilter.filter("Horror");
-                }
-            }
-        });
-        romance.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (checkDoubleTap(txtRomance)) {
-                    TextColourChange();
-                    adapter.categoryFilter.filter("Romance");
-                }
-                else {
-                    TextColourChange();
-                    txtRomance.setTextColor(Color.YELLOW);
-                    adapter.categoryFilter.filter("All");
-                }
 
-            }
-        });
 
     }
-
     private void setAdapter() {
         setOnClickListener();
-        searchView= findViewById(R.id.searchbar);
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String s) {
@@ -198,8 +177,8 @@ public class HomeFragment extends AppCompatActivity {
                 return false;
             }
         });
-        adapter = new MovieAdapter(MovieList, this, listener);
-        layoutManager = new LinearLayoutManager(this);
+        adapter = new MovieAdapter(MovieList, getActivity(), listener);
+        layoutManager = new LinearLayoutManager(getActivity());
         layoutManager.setOrientation(RecyclerView.HORIZONTAL);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -211,9 +190,11 @@ public class HomeFragment extends AppCompatActivity {
         listener = new MovieAdapter.MovieClickListener() {
             @Override
             public void onClick(View v, int position) {
-                Intent intent = new Intent(getApplicationContext(), MovieDetailsActivity.class);
+                Intent intent = new Intent(getActivity(), MovieDetailsActivity.class);
                 intent.putExtra("movieID", MovieList.get(position).getMovie_id());
+                intent.putExtra("AddOrRemove", 1);
                 intent.putExtra("distance", seekBar.getProgress());
+                intent.putExtra("userID", user.getUser_id());
                 startActivity(intent);
             }
         };
@@ -226,23 +207,37 @@ public class HomeFragment extends AppCompatActivity {
             return true;
         return false;
     }
-
-    void TextColourChange()
+    
+    /*void LoadCategoryImages()
     {
-        txtComedy.setTextColor(Color.WHITE);
-        txtHorror.setTextColor(Color.WHITE);
-        txtRomance.setTextColor(Color.WHITE);
-        txtDrama.setTextColor(Color.WHITE);
-    }
-    void LoadCategoryImages()
-    {
-        imageView=findViewById(R.id.romanceButton);
+        imageView=root.findViewById(R.id.romanceButton);
         Picasso.get().load("https://thoughtcatalog.com/wp-content/uploads/2013/09/istock_000015777770medium2.jpg").placeholder(R.drawable.category_icons).into(imageView);
-        imageView=findViewById(R.id.comedyButton);
+        imageView=root.findViewById(R.id.comedyButton);
         Picasso.get().load("https://i.pinimg.com/originals/ef/f8/b9/eff8b9e41133bd9b2b8b733c56b2cbea.jpg").placeholder(R.drawable.category_icons).into(imageView);
-        imageView=findViewById(R.id.dramaButton);
+        imageView=root.findViewById(R.id.dramaButton);
         Picasso.get().load("https://miro.medium.com/max/1000/1*T-544XBLkxSr4y_aAo5OfQ.jpeg").placeholder(R.drawable.category_icons).into(imageView);
-        imageView=findViewById(R.id.horrorButton);
+        imageView=root.findViewById(R.id.horrorButton);
         Picasso.get().load("https://i.insider.com/5e5036b5a9f40c18895e8d88?width=700").placeholder(R.drawable.category_icons).into(imageView);
+    }*/
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        homeViewModel = new ViewModelProvider(this).get(HomeFragment1ViewModel.class);
+        // TODO: Use the ViewModel
+    }
+
+    @Override
+    public void onLocationChanged(@NonNull Location location) {
+        Log.d("HOMEFRAGMENT", location.getLongitude() + " " + location.getLatitude());
+
+        // load Cinemas and Movies nearby - Example for @Mirza for Home and Movie Detail Screen.
+        ArrayList<Cinema> cinemas1 = DataAcessor.getCinemasForMovieFromLocation(getActivity(), location, 1, 2);
+        ArrayList<Cinema> cinemas2 = DataAcessor.getCinemasForMovieFromLocation(getActivity(), location, 1, 50);
+
+        moviesByLocation = DataAcessor.getMoviesFromLocation(getActivity(), location, seekBar.getProgress());
+
+        //TODO you already have a location and you have the movies with that location, load them into the recycler view
+
+
     }
 }
