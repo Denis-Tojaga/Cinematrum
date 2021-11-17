@@ -6,7 +6,6 @@ import androidx.lifecycle.ViewModelProvider;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.location.Location;
 import android.location.LocationListener;
 import android.os.Bundle;
@@ -23,7 +22,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.widget.ImageView;
 import android.widget.SearchView;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -84,10 +82,13 @@ public class HomeFragment extends Fragment implements LocationListener {
                 new ViewModelProvider(this).get(HomeViewModel.class);
 
         binding = HomeFragment1FragmentBinding.inflate(inflater, container, false);
-        root = inflater.inflate(R.layout.activity_home_screen, container, false);
+        root = inflater.inflate(R.layout.fragment_home, container, false);
         movieRecyclerView=root.findViewById(R.id.recyclerViewMovies);
         categoryRecyclerView = root.findViewById(R.id.recyclerViewCategories);
         selectedView = null;
+        MovieList = new ArrayList<>();
+        CategoryList = new ArrayList<>();
+        moviesByLocation = new ArrayList<>();
 
         String userMail = sp.getString("email", "default");
 
@@ -96,22 +97,6 @@ public class HomeFragment extends Fragment implements LocationListener {
             if (users.size() == 1)
                 user = users.get(0);
         }
-        //Location
-        _locationTracker = new LocationTracker(getActivity(), this);
-        if (!_locationTracker.checkPermissions()){
-            // TODO: Load movie directly because missing permission for location services
-            Log.d("HOMEFRAGMENT", "LOADING MOVIES DIRECTLY");
-        }
-        else {
-            // Wait for Location. Load movies in onLocationChanged while passing location - maybe display some loading indicator?
-            Log.d("HOMEFRAGMENT", "WAITING FOR LOCATION");
-        }
-
-
-        MovieList = new ArrayList<>();
-        CategoryList = new ArrayList<>();
-        moviesByLocation = new ArrayList<>();
-        //LoadCategoryImages();
         initData();
         setMovieAdapter();
         setCategoryAdapter();
@@ -126,10 +111,6 @@ public class HomeFragment extends Fragment implements LocationListener {
 
     private void initData()
     {
-        //TODO make a recycler view for categories and set up the onClick method inside it
-        //TODO change the database schema - add the string catImgURL attribute
-
-
         MovieList = DataAcessor.getMovies(getActivity(),"","");
         CategoryList = DataAcessor.getCategories(getActivity(),"", "");
         txtWelcome = root.findViewById(R.id.txtWelcome);
@@ -159,11 +140,21 @@ public class HomeFragment extends Fragment implements LocationListener {
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-                ArrayList<Movie> newMovies = DataAcessor.getMoviesFromLocation(getActivity(), _location, seekBar.getProgress());
+                //ArrayList<Movie> newMovies = DataAcessor.getMoviesFromLocation(getActivity(), _location, seekBar.getProgress());
                 //TODO:  add new movies to the recycler view.
             }
         });
-
+        //Location
+        _locationTracker = new LocationTracker(getActivity(), this);
+        if (!_locationTracker.checkPermissions()){
+            // TODO: Load movie directly because missing permission for location services
+            MovieList = DataAcessor.getMoviesFromLocation(getActivity(), _location, seekBar.getProgress());
+            Log.d("HOMEFRAGMENT", "LOADING MOVIES DIRECTLY");
+        }
+        else {
+            // Wait for Location. Load movies in onLocationChanged while passing location - maybe display some loading indicator?
+            Log.d("HOMEFRAGMENT", "WAITING FOR LOCATION");
+        }
 
     }
     private void setMovieAdapter() {
@@ -204,9 +195,7 @@ public class HomeFragment extends Fragment implements LocationListener {
             public void onClick(View v, int position) {
                 Intent intent = new Intent(getActivity(), MovieDetailsActivity.class);
                 intent.putExtra("movieID", MovieList.get(position).getMovie_id());
-                intent.putExtra("AddOrRemove", 1);
                 intent.putExtra("distance", seekBar.getProgress());
-                intent.putExtra("userID", user.getUser_id());
                 startActivity(intent);
             }
         };
@@ -258,16 +247,26 @@ public class HomeFragment extends Fragment implements LocationListener {
     @Override
     public void onLocationChanged(@NonNull Location location) {
         _location = location;
-        Log.d("HOMEFRAGMENT", location.getLongitude() + " " + location.getLatitude());
+        Log.d("MOVIEDETAILS", location.getLongitude() + " " + location.getLatitude());
 
         // load Cinemas and Movies nearby - Example for @Mirza for Home and Movie Detail Screen.
         ArrayList<Cinema> cinemas1 = DataAcessor.getCinemasForMovieFromLocation(getActivity(), location, 1, 2);
         ArrayList<Cinema> cinemas2 = DataAcessor.getCinemasForMovieFromLocation(getActivity(), location, 1, 50);
 
-        moviesByLocation = DataAcessor.getMoviesFromLocation(getActivity(), location, seekBar.getProgress());
+        //moviesByLocation = DataAcessor.getMoviesFromLocation(getActivity(), location, seekBar.getProgress());
 
         //TODO you already have a location and you have the movies with that location, load them into the recycler view
+    }
 
+    @Override
+    public void onProviderEnabled(@NonNull String provider) {
+    }
 
+    @Override
+    public void onProviderDisabled(@NonNull String provider) {
+    }
+
+    @Override
+    public void onStatusChanged(String provider, int status, Bundle extras) {
     }
 }

@@ -89,7 +89,11 @@ public class Movie {
         String string="";
         for (int i=0; i<categories.size(); i++)
         {
-            string=string+categories.get(i).getName()+"\n";
+            if(i+1==categories.size())
+                string=string+categories.get(i).getName();
+            else
+                string=string+categories.get(i).getName()+", ";
+
         }
         return string;
     }
