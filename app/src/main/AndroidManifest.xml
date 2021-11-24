@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.mob3000.cinematrum">
 
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
@@ -8,14 +9,7 @@
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
 
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-
-
     <application
-        android:usesCleartextTraffic="true"
         android:allowBackup="false"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -23,18 +17,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Cinematrum">
         <activity
-            android:name=".WebActivity"
-            android:exported="true"
-<<<<<<< HEAD
-            android:hardwareAccelerated="true"/>
-        <activity
-            android:name=".ui.ReservationActivity"
-            android:exported="true" />
-        <activity
             android:name=".ui.TicketHistoryActivity"
             android:exported="true"
-            android:parentActivityName=".MainActivity" />
-=======
             android:parentActivityName=".MainActivity"/>
         <activity
             android:name=".ui.ReservationActivity"
@@ -51,7 +35,6 @@
             android:parentActivityName=".MainActivity">
 
         </activity>
->>>>>>> homescreen_dev
         <activity
             android:name=".SignInActivity"
             android:exported="true"
@@ -59,12 +42,8 @@
         <activity
             android:name=".MainActivity"
             android:exported="true"
-<<<<<<< HEAD
-            android:windowSoftInputMode="adjustPan" />
-=======
             android:windowSoftInputMode="stateHidden|adjustResize"
             />
->>>>>>> homescreen_dev
         <activity
             android:name=".SignUpActivity"
             android:exported="true"
@@ -76,18 +55,11 @@
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-<<<<<<< HEAD
-=======
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
->>>>>>> homescreen_dev
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
-
-        <receiver android:name=".notification.NotificationReminderBroadcast" />
     </application>
 
 </manifest>

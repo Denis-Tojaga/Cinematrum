@@ -96,11 +96,7 @@ public class WelcomeActivity extends AppCompatActivity {
 
     //navigates to main activity
     private void GoToMainActivity() {
-<<<<<<< HEAD
-        Intent intent = new Intent(WelcomeActivity.this,MainActivity.class);
-=======
         Intent intent = new Intent(this, MainActivity.class);
->>>>>>> homescreen_dev
         startActivity(intent);
     }
 

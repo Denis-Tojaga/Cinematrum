@@ -32,10 +32,8 @@
 
 
     <!-- welcome label dimensions -->
-    <dimen name ="welcome_label_size">25sp</dimen>
+    <dimen name ="welcome_label_size">25dp</dimen>
     <dimen name ="label_letter_spacing">.2</dimen>
-
-
     <!-- wishlist table item dimensions -->
     <dimen name="wishlist_item_itemViewHeight">200dp</dimen>
     <dimen name="wishlist_item_padding">20dp</dimen>
@@ -108,8 +106,4 @@
     <dimen name="reservation_fontSize_main">20sp</dimen>
     <dimen name="reservation_fontSize_labels">12sp</dimen>
 
-<<<<<<< HEAD
-
-=======
->>>>>>> homescreen_dev
 </resources>
