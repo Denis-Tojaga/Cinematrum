@@ -50,7 +50,7 @@ public class Cinema {
         this.halls = halls;
     }
 
-    @Override
+    /*@Override
     public String toString() {
         return "Cinema{" +
                 "cinema_id=" + cinema_id +
@@ -59,5 +59,9 @@ public class Cinema {
                 ", longitude='" + longitude + '\'' +
                 ", halls=" + halls +
                 '}';
+    }*/
+    @Override
+    public String toString() {
+        return name;
     }
 }

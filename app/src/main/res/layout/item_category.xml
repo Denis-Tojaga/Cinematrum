@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent"
+    android:background="@drawable/category_background"
+    android:id="@+id/categoryItem">
+
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/categoryImage"
+        android:layout_width="50dp"
+        android:layout_height="match_parent"
+        android:layout_marginStart="21dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="21dp"
+        android:layout_marginBottom="40dp"
+        android:background="@drawable/custom_bacground"
+        android:scaleType="fitXY"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:shapeAppearanceOverlay="@style/rounded" />
+
+    <TextView
+        android:id="@+id/category_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:fontFamily="@font/trenda_regular"
+        android:text="TextView"
+        android:textColor="@color/white"
+        app:layout_constraintEnd_toEndOf="@+id/categoryImage"
+        app:layout_constraintStart_toStartOf="@+id/categoryImage"
+        app:layout_constraintTop_toBottomOf="@+id/categoryImage" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

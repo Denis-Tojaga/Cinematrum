@@ -108,5 +108,8 @@
     <dimen name="reservation_fontSize_main">20sp</dimen>
     <dimen name="reservation_fontSize_labels">12sp</dimen>
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> homescreen_dev
 </resources>

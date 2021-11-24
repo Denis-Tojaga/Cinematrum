@@ -29,6 +29,27 @@
         <entry key="..\:/AndroidProjects/Cinematrum/app/src/main/res/layout/list_item_ticket.xml" value="0.5" />
         <entry key="..\:/AndroidProjects/Cinematrum/app/src/main/res/menu/bottom_nav_menu.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/Melli/Desktop/projoect/Cinematrum/app/src/main/res/layout/fragment_home.xml" value="0.28940217391304346" />
+        <entry key="..\:/Users/Mirza/Desktop/Cinematrum/app/src/main/res/drawable-v24/custom_background_icons.xml" value="0.3828125" />
+        <entry key="..\:/Users/Mirza/Desktop/Cinematrum/app/src/main/res/layout/activity_home_screen.xml" value="0.25" />
+        <entry key="..\:/Users/Mirza/Documents/Cinematrum/app/src/main/res/drawable-v24/custom_background_icons.xml" value="0.22135416666666666" />
+        <entry key="..\:/Users/Mirza/Documents/Cinematrum/app/src/main/res/drawable/category_background.xml" value="0.3828125" />
+        <entry key="..\:/Users/Mirza/Documents/Cinematrum/app/src/main/res/drawable/category_background_light.xml" value="0.22135416666666666" />
+        <entry key="..\:/Users/Mirza/Documents/Cinematrum/app/src/main/res/drawable/go_back_icon.xml" value="0.3828125" />
+        <entry key="..\:/Users/Mirza/Documents/Cinematrum/app/src/main/res/layout/activity_home_screen.xml" value="0.33" />
+        <entry key="..\:/Users/Mirza/Documents/Cinematrum/app/src/main/res/layout/activity_main.xml" value="0.2" />
+        <entry key="..\:/Users/Mirza/Documents/Cinematrum/app/src/main/res/layout/activity_movie_details.xml" value="0.33" />
+        <entry key="..\:/Users/Mirza/Documents/Cinematrum/app/src/main/res/layout/activity_reservation.xml" value="0.20520833333333333" />
+        <entry key="..\:/Users/Mirza/Documents/Cinematrum/app/src/main/res/layout/activity_ticket_history.xml" value="0.20520833333333333" />
+        <entry key="..\:/Users/Mirza/Documents/Cinematrum/app/src/main/res/layout/activity_welcome.xml" value="0.203125" />
+        <entry key="..\:/Users/Mirza/Documents/Cinematrum/app/src/main/res/layout/category_item.xml" value="0.34556159420289856" />
+        <entry key="..\:/Users/Mirza/Documents/Cinematrum/app/src/main/res/layout/category_spinner_item.xml" value="0.3066123188405797" />
+        <entry key="..\:/Users/Mirza/Documents/Cinematrum/app/src/main/res/layout/fragment_dashboard.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/Mirza/Documents/Cinematrum/app/src/main/res/layout/fragment_home.xml" value="0.5" />
+        <entry key="..\:/Users/Mirza/Documents/Cinematrum/app/src/main/res/layout/fragment_notifications.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/Mirza/Documents/Cinematrum/app/src/main/res/layout/home_fragment1_fragment.xml" value="0.20520833333333333" />
+        <entry key="..\:/Users/Mirza/Documents/Cinematrum/app/src/main/res/layout/movie_item.xml" value="0.358695652173913" />
+        <entry key="..\:/Users/Mirza/Documents/Cinematrum/app/src/main/res/layout/spinner_item.xml" value="0.3066123188405797" />
+        <entry key="..\:/Users/Mirza/Documents/Cinematrum/app/src/main/res/menu/bottom_nav_menu.xml" value="0.36666666666666664" />
       </map>
     </option>
   </component>

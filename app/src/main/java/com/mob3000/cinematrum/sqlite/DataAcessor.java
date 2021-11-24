@@ -653,6 +653,7 @@ public class DataAcessor {
                 int indexRating = c.getColumnIndex(DatabaseHelper.COLUMN_MOVIE_rating);
                 //Denis 7.10.2021
                 int indexMovieTrailerURL = c.getColumnIndex(DatabaseHelper.COLUMN_MOVIE_movieTrailerURL);
+                int indexDuration = c.getColumnIndex(DatabaseHelper.COLUMN_MOVIE_duration);
 
 
                 do {
@@ -667,6 +668,7 @@ public class DataAcessor {
                     tmpMovie.setCategories(getCategoriesForMovie(ctx, tmpMovie.getMovie_id()));
                     tmpMovie.setCategoriesNamesConcat(concatCategoryNames(tmpMovie.getCategories()));
                     tmpMovie.setRating(c.getString(indexRating));
+                    tmpMovie.setDuration(c.getString(indexDuration));
                     //Denis 7.10.2021
                     tmpMovie.setMovieTrailerURL(c.getString(indexMovieTrailerURL));
                     movies.add(tmpMovie);
@@ -794,6 +796,7 @@ public class DataAcessor {
                 int indexPlublishedDate = c.getColumnIndex(DatabaseHelper.COLUMN_MOVIE_publishedDate);
                 int indexDescription = c.getColumnIndex(DatabaseHelper.COLUMN_MOVIE_description);
                 int indexRating = c.getColumnIndex(DatabaseHelper.COLUMN_MOVIE_rating);
+                int indexDuration = c.getColumnIndex(DatabaseHelper.COLUMN_MOVIE_duration);
 
 
                 do {
@@ -808,6 +811,7 @@ public class DataAcessor {
                     tmpMovie.setCategories(getCategoriesForMovie(ctx, tmpMovie.getMovie_id()));
                     tmpMovie.setCategoriesNamesConcat(concatCategoryNames(tmpMovie.getCategories()));
                     tmpMovie.setRating(c.getString(indexRating));
+                    tmpMovie.setDuration(c.getString(indexDuration));
                     finalResult.add(tmpMovie);
                 }
                 while (c.moveToNext());
@@ -861,11 +865,13 @@ public class DataAcessor {
             if (c.moveToFirst()) {
                 int indexCategorieId = c.getColumnIndex(DatabaseHelper.COLUMN_CATEGORY_categoryId);
                 int indexName = c.getColumnIndex(DatabaseHelper.COLUMN_CATEGORY_name);
+                int indexImageUrl = c.getColumnIndex(DatabaseHelper.COLUMN_CATEGORY_imageUrl);
 
                 do {
                     Category tmpCat = new Category();
                     tmpCat.setName(c.getString(indexName));
                     tmpCat.setCategory_id(c.getInt(indexCategorieId));
+                    tmpCat.setImageUrl(c.getString(indexImageUrl));
                     // TODO: Load Movies with own function (like getMovies)
                     categories.add(tmpCat);
 

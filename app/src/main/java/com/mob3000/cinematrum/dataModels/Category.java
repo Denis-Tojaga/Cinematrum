@@ -5,6 +5,7 @@ import java.util.List;
 public class Category {
     private int category_id;
     private String name;
+    private String imageUrl;
     private List<Movie> movies;
 
     public int getCategory_id() {
@@ -31,11 +32,20 @@ public class Category {
         this.movies = movies;
     }
 
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
+
     @Override
     public String toString() {
         return "Category{" +
                 "category_id=" + category_id +
                 ", name='" + name + '\'' +
+                ", imageUrl='" + imageUrl + '\'' +
                 ", movies=" + movies +
                 '}';
     }

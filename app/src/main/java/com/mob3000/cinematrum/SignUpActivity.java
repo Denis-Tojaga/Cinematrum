@@ -113,8 +113,10 @@ public class SignUpActivity extends AppCompatActivity {
 
 
                 if (DataAcessor.insertUser(this, newUser)) {
-                    Intent intent = new Intent(SignUpActivity.this, MainActivity.class);
                     FillSharedPreferences("logged", true, "email", newUser.getEmail(), "password", newUser.getPasswordHash());
+                    Toast.makeText(SignUpActivity.this, "You logged in successfully", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(SignUpActivity.this, MainActivity.class);
+                    intent.putExtra("username", newUser.getName());
                     startActivity(intent);
                 } else
                     throw new EmailTakenException("Email -> " + newUser.getEmail() + " already in use. Try again!");

@@ -11,6 +11,7 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
@@ -28,6 +29,7 @@ public class WelcomeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome);
+        this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
         sharedPreferences = this.getSharedPreferences("login",MODE_PRIVATE);
 
@@ -94,7 +96,11 @@ public class WelcomeActivity extends AppCompatActivity {
 
     //navigates to main activity
     private void GoToMainActivity() {
+<<<<<<< HEAD
         Intent intent = new Intent(WelcomeActivity.this,MainActivity.class);
+=======
+        Intent intent = new Intent(this, MainActivity.class);
+>>>>>>> homescreen_dev
         startActivity(intent);
     }
 
