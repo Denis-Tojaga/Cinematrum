@@ -63,7 +63,7 @@ public class HomeFragment extends Fragment implements LocationListener {
     private SharedPreferences sp;
     private LocationTracker _locationTracker;
     private int selected;
-    private ArrayList<Movie> moviesByLocation;
+    private ArrayList<Movie> MoviesReplacement;
     private Location _location;
     View root;
 
@@ -88,7 +88,7 @@ public class HomeFragment extends Fragment implements LocationListener {
         selectedView = null;
         MovieList = new ArrayList<>();
         CategoryList = new ArrayList<>();
-        moviesByLocation = new ArrayList<>();
+        MoviesReplacement = new ArrayList<>();
 
         String userMail = sp.getString("email", "default");
 
@@ -98,7 +98,7 @@ public class HomeFragment extends Fragment implements LocationListener {
                 user = users.get(0);
         }
         initData();
-        setMovieAdapter();
+        setMovieAdapter(MovieList);
         setCategoryAdapter();
         return root;
     }
@@ -120,7 +120,7 @@ public class HomeFragment extends Fragment implements LocationListener {
         seekBarValue=root.findViewById(R.id.seekBarValue);
         seekBar=root.findViewById(R.id.seekBar);
         searchView= root.findViewById(R.id.searchbar);
-        seekBar.setProgress(5);
+        seekBar.setProgress(80);
         seekBarValue.setText(String.valueOf(seekBar.getProgress()+" km"));
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
@@ -141,14 +141,15 @@ public class HomeFragment extends Fragment implements LocationListener {
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
                 //ArrayList<Movie> newMovies = DataAcessor.getMoviesFromLocation(getActivity(), _location, seekBar.getProgress());
-                //TODO:  add new movies to the recycler view.
+                movieRecyclerView.setAdapter( new MovieAdapter(MovieList, getActivity(), movieClickListener));
+
             }
         });
         //Location
         _locationTracker = new LocationTracker(getActivity(), this);
         if (!_locationTracker.checkPermissions()){
             // TODO: Load movie directly because missing permission for location services
-            MovieList = DataAcessor.getMoviesFromLocation(getActivity(), _location, seekBar.getProgress());
+            //MovieList = DataAcessor.getMoviesFromLocation(getActivity(), _location, seekBar.getProgress());
             Log.d("HOMEFRAGMENT", "LOADING MOVIES DIRECTLY");
         }
         else {
@@ -157,7 +158,7 @@ public class HomeFragment extends Fragment implements LocationListener {
         }
 
     }
-    private void setMovieAdapter() {
+    private void setMovieAdapter(ArrayList<Movie> MovieList) {
         setOnClickMovieListener();
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override

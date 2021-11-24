@@ -17,6 +17,7 @@
         android:layout_marginEnd="30dp"
         android:background="@drawable/searchviewbackground"
         android:iconifiedByDefault="false"
+        android:queryBackground="@android:color/transparent"
         android:queryHint="@string/SW"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -55,11 +56,13 @@
         android:layout_height="26dp"
         android:layout_marginStart="40dp"
         android:layout_marginTop="25dp"
+        android:layout_marginEnd="1dp"
         android:fontFamily="@font/trenda_regular"
         android:text="Choose the Distance"
         android:textAlignment="center"
         android:textColor="#FFFFFF"
         android:textSize="15sp"
+        app:layout_constraintEnd_toStartOf="@+id/seekBar"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/searchbar" />
 

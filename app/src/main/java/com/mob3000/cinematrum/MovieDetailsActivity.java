@@ -61,6 +61,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements LocationL
     private Spinner spinner;
     private LocationTracker _locationTracker;
     private Location _location;
+    private ArrayList<Wishlist> wishlist;
     private List<Cinema> cinemaArrayList;
     private AlphaAnimation goBackButtonClick = new AlphaAnimation(0.3F, 0.1F);
 
@@ -84,7 +85,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements LocationL
                 user = users.get(0);
         }
         //Location
-        _locationTracker = new LocationTracker(this, this);
+        /*_locationTracker = new LocationTracker(this, this);
         if (!_locationTracker.checkPermissions()){
             cinemaArrayList = DataAcessor.getCinemasForMovieFromLocation(this, _location, movieID, distance);
             Log.d("MOVIEDETAILS", "LOADING MOVIES DIRECTLY");
@@ -92,7 +93,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements LocationL
         else {
             // Wait for Location. Load movies in onLocationChanged while passing location - maybe display some loading indicator?
             Log.d("MOVIEDETAILS", "WAITING FOR LOCATION");
-        }
+        }*/
         loadData();
     }
 
@@ -113,6 +114,8 @@ public class MovieDetailsActivity extends AppCompatActivity implements LocationL
         txtDuration.setText("Duration: " + movie.getDuration());
         txtRating.setText("Rating: " + movie.getRating());
         btnTrailer = findViewById(R.id.btnTrailer);
+        wishlist = new ArrayList<>();
+        cinemaArrayList = DataAcessor.getCinemas(this,"","");
         btnAddToWishlist = findViewById(R.id.btnAddToWishlist);
         btnOpenReservation = findViewById(R.id.btnBuy);
         spinner = findViewById(R.id.spinner);
@@ -156,7 +159,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements LocationL
                 OpenYoutubeTrailer(movieTrailerURL);
             }
         });
-        ArrayAdapter<Cinema> adapter = new ArrayAdapter<Cinema>(this, android.R.layout.simple_spinner_item, cinemaArrayList);
+        ArrayAdapter<Cinema> adapter = new ArrayAdapter<Cinema>(this, R.layout.category_spinner_item, cinemaArrayList);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
         spinner.setOnItemSelectedListener(this);
@@ -166,7 +169,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements LocationL
 
     private boolean isInWishlist(int movieID)
     {
-        ArrayList<Wishlist> wishlist = user.getWishlist();
+        wishlist = user.getWishlist();
         if (wishlist==null) return false;
         for (int i=0; i<wishlist.size(); i++)
         {
@@ -178,7 +181,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements LocationL
 
     private void OpenYoutubeTrailer(String movieTrailerURL) {
         if (movieTrailerURL.contains("youtube.com")) {
-            Intent webIntent = new Intent(getApplicationContext(), WebActivity.class);
+            Intent webIntent = new Intent(this, WebActivity.class);
             webIntent.putExtra("url", movieTrailerURL);
             startActivity(webIntent);
         } else
@@ -187,7 +190,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements LocationL
 
     @Override
     public void onLocationChanged(@NonNull Location location) {
-        _location = location;
+        /*_location = location;
         Log.d("HOMEFRAGMENT", location.getLongitude() + " " + location.getLatitude());
 
         // load Cinemas and Movies nearby - Example for @Mirza for Home and Movie Detail Screen.
@@ -196,7 +199,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements LocationL
 
         cinemaArrayList = DataAcessor.getCinemasForMovieFromLocation(this, location, movieID, distance);
 
-        //TODO you already have a location and you have the movies with that location, load them into the recycler view
+        //TODO you already have a location and you have the movies with that location, load them into the recycler view*/
     }
 
     @Override
@@ -211,13 +214,13 @@ public class MovieDetailsActivity extends AppCompatActivity implements LocationL
 
     @Override
     public void onStatusChanged(String provider, int status, Bundle extras) {
-        cinemaArrayList = DataAcessor.getCinemasForMovieFromLocation(this, _location, movieID, distance);
+        //cinemaArrayList = DataAcessor.getCinemasForMovieFromLocation(this, _location, movieID, distance);
     }
 
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
         String text = adapterView.getItemAtPosition(i).toString();
-        Toast.makeText(getParent().getApplicationContext(), text, Toast.LENGTH_SHORT).show();
+        //Toast.makeText(getParent().getApplicationContext(), text, Toast.LENGTH_SHORT).show();
         btnOpenReservation.setClickable(true);
 
     }
