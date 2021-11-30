@@ -1,11 +1,12 @@
 package com.mob3000.cinematrum.dataModels;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class Movie {
+public class Movie implements Serializable {
 
     private int movie_id;
     private String name;

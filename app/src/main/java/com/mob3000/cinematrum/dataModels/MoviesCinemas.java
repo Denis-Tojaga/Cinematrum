@@ -1,9 +1,10 @@
 package com.mob3000.cinematrum.dataModels;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 
-public class MoviesCinemas {
+public class MoviesCinemas implements Serializable {
     private int moviesCinemas_id;
     private int movie_id;
     private int hall_id;

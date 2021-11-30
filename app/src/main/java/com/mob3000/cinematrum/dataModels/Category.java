@@ -1,8 +1,9 @@
 package com.mob3000.cinematrum.dataModels;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class Category {
+public class Category implements Serializable {
     private int category_id;
     private String name;
     private String imageUrl;
