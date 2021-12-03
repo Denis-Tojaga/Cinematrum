@@ -37,7 +37,7 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MovieDetailsActivity extends AppCompatActivity implements LocationListener, AdapterView.OnItemSelectedListener {
+public class MovieDetailsActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
     private Movie movie;
     int movieID;
     private TextView txtDescription;
@@ -56,11 +56,11 @@ public class MovieDetailsActivity extends AppCompatActivity implements LocationL
     private int distance;
     private Cinema selectedCinema;
     private Spinner spinner;
-    private LocationTracker _locationTracker;
     private Location _location;
     private ArrayList<Wishlist> wishlist;
     private List<Cinema> cinemaArrayList;
     private AlphaAnimation goBackButtonClick = new AlphaAnimation(0.3F, 0.1F);
+    private boolean usingLocationService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,6 +75,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements LocationL
             //TODO have to pass the distance from the movie screen as well
             distance = extras.getInt("distance");
             _location = extras.getParcelable("location");
+            usingLocationService = extras.getBoolean("usingLocationService");
         }
         String userMail = sp.getString("email", "default");
 
@@ -83,16 +84,6 @@ public class MovieDetailsActivity extends AppCompatActivity implements LocationL
 
             if (users.size() == 1)
                 user = users.get(0);
-        }
-        _locationTracker = new LocationTracker(this, this);
-        if (!_locationTracker.checkPermissions()){
-            // TODO: Load movie directly because missing permission for location services
-            //MovieList = DataAcessor.getMoviesFromLocation(getActivity(), _location, seekBar.getProgress());
-            Log.d("HOMEFRAGMENT", "LOADING MOVIES DIRECTLY");
-        }
-        else {
-            // Wait for Location. Load movies in onLocationChanged while passing location - maybe display some loading indicator?
-            Log.d("HOMEFRAGMENT", "WAITING FOR LOCATION");
         }
         loadData();
     }
@@ -159,6 +150,12 @@ public class MovieDetailsActivity extends AppCompatActivity implements LocationL
                 OpenYoutubeTrailer(movieTrailerURL);
             }
         });
+        //setSpinnerAdapter();
+
+        // TODO: CHANGE REAL RADIUS from intent from Mainctivity
+        if (usingLocationService)
+        cinemaArrayList = DataAcessor.getCinemasForMovieFromLocation(this, _location, movieID, 10);
+        else cinemaArrayList = DataAcessor.getCinemasForMovie(this, movieID);
         setSpinnerAdapter();
 
     }
@@ -190,31 +187,6 @@ public class MovieDetailsActivity extends AppCompatActivity implements LocationL
             startActivity(webIntent);
         } else
             Log.d("TAG", "Invalid movie trailer URL!");
-    }
-
-    @Override
-    public void onLocationChanged(@NonNull Location location) {
-        _location = location;
-        Log.d("HOMEFRAGMENT", location.getLongitude() + " " + location.getLatitude());
-
-        cinemaArrayList = DataAcessor.getCinemasForMovieFromLocation(this, location, movieID, distance);
-        setSpinnerAdapter();
-
-    }
-
-    @Override
-    public void onProviderEnabled(@NonNull String provider) {
-
-    }
-
-    @Override
-    public void onProviderDisabled(@NonNull String provider) {
-
-    }
-
-    @Override
-    public void onStatusChanged(String provider, int status, Bundle extras) {
-        //cinemaArrayList = DataAcessor.getCinemasForMovieFromLocation(this, _location, movieID, distance);
     }
 
     @Override

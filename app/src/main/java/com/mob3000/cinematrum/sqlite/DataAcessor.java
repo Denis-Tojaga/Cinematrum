@@ -687,6 +687,52 @@ public class DataAcessor {
         }
     }
 
+    public static ArrayList<Cinema> getCinemasForMovie(Context ctx, int movieId) {
+        ArrayList<Cinema> cinemas = new ArrayList<>();
+
+        try {
+
+            DatabaseHelper dbhelper = new DatabaseHelper(ctx);
+            SQLiteDatabase db = dbhelper.getReadableDatabase();
+
+            // Load all CinemaMovies by movieId grouped by cinemaId
+            String sql = "SELECT * FROM " + DatabaseHelper.TABLENAME_MOVIES_CINEMAS
+                    + " LEFT JOIN "  + DatabaseHelper.TABLENAME_HALL
+                    + " on " + DatabaseHelper.TABLENAME_HALL + "." + DatabaseHelper.COLUMN_HALL_hallId + " = " + DatabaseHelper.TABLENAME_MOVIES_CINEMAS + "." + DatabaseHelper.COLUMN_MOVIESCINEMAS_hallId
+                    + " LEFT JOIN " + DatabaseHelper.TABLENAME_CINEMA
+                    + " on " + DatabaseHelper.TABLENAME_CINEMA + "." + DatabaseHelper.COLUMN_CINEMA_cinemaId + " = " + DatabaseHelper.TABLENAME_HALL + "." + DatabaseHelper.COLUMN_HALL_cinemaId
+                    + " where " + DatabaseHelper.TABLENAME_MOVIES_CINEMAS + "." + DatabaseHelper.COLUMN_MOVIESCINEMAS_movieID + "=?"
+                    + " group by " + DatabaseHelper.TABLENAME_CINEMA + "." + DatabaseHelper.COLUMN_CINEMA_cinemaId + ";";
+            String[] sqlArgs = new String[]{String.valueOf(movieId)};
+
+            Cursor c = db.rawQuery(sql, sqlArgs);
+
+            if (c.moveToFirst()) {
+
+                int indexCinemaId = c.getColumnIndex(DatabaseHelper.COLUMN_CINEMA_cinemaId);
+                int indexName = c.getColumnIndex(DatabaseHelper.COLUMN_CINEMA_name);
+                int indexLatitude = c.getColumnIndex(DatabaseHelper.COLUMN_CINEMA_latitude);
+                int indexLongitude = c.getColumnIndex(DatabaseHelper.COLUMN_CINEMA_longitude);
+
+
+                do {
+                    Cinema tmpCinema = new Cinema();
+                    tmpCinema.setCinema_id(c.getInt(indexCinemaId));
+                    tmpCinema.setName(c.getString(indexName));
+                    tmpCinema.setLatitude(c.getFloat(indexLatitude));
+                    tmpCinema.setLongitude(c.getFloat(indexLongitude));
+                    cinemas.add(tmpCinema);
+
+                } while (c.moveToNext());
+            }
+            return cinemas;
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return cinemas;
+        }
+    }
+
+
     public static ArrayList<Cinema> getCinemasForMovieFromLocation(Context ctx, Location location, int movieId, int radius) {
         ArrayList<Cinema> cinemas = new ArrayList<>();
 

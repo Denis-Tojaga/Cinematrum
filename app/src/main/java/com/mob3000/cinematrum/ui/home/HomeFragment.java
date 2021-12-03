@@ -218,7 +218,9 @@ public class HomeFragment extends Fragment {
                 Intent intent = new Intent(getActivity(), MovieDetailsActivity.class);
                 intent.putExtra("movieID", MovieList.get(position).getMovie_id());
                 intent.putExtra("distance", seekBar.getProgress());
-                intent.putExtra("location", _location);
+                MainActivity mainActivity = (MainActivity)getActivity();
+                intent.putExtra("location", mainActivity._location);
+                intent.putExtra("usingLocationService", mainActivity.usingLocationService);
                 startActivity(intent);
             }
         };

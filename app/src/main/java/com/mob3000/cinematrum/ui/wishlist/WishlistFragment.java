@@ -18,6 +18,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.mob3000.cinematrum.MainActivity;
 import com.mob3000.cinematrum.MovieDetailsActivity;
 import com.mob3000.cinematrum.R;
 import com.mob3000.cinematrum.helpers.WishlistTableAdapter;
@@ -89,6 +90,9 @@ public class WishlistFragment extends Fragment {
                 Intent intent = new Intent(getActivity(), MovieDetailsActivity.class);
                 intent.putExtra("movieID", currentEntry.getMovie_id());
                 intent.putExtra("AddOrRemove", 0);
+                MainActivity mainActivity = (MainActivity)getActivity();
+                intent.putExtra("location", mainActivity._location);
+                intent.putExtra("usingLocationService", mainActivity.usingLocationService);
                 startActivity(intent);
 
             }
