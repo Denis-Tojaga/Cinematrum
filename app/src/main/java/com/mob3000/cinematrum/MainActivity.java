@@ -12,6 +12,10 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
+import androidx.navigation.ui.AppBarConfiguration;
+import androidx.navigation.ui.NavigationUI;
 
 import com.google.android.material.navigation.NavigationBarView;
 import com.mob3000.cinematrum.dataModels.User;
@@ -34,14 +38,13 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(R.layout.activity_main);
-
 
         BottomNavigationView navView = findViewById(R.id.nav_view);
         navView.setOnItemSelectedListener(navListener);
         navView.setSelectedItemId(R.id.navigation_home);
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING);
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations
         /*AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
@@ -55,7 +58,6 @@ public class MainActivity extends AppCompatActivity {
 
         String loggeduser = getIntent().getStringExtra("username");
 
-        Toast.makeText(this, "Logged user -> " + loggeduser, Toast.LENGTH_SHORT).show();
 
         /*
          * Denis 10.9.2021

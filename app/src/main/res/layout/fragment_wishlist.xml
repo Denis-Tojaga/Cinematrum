@@ -36,6 +36,7 @@
     <SearchView
         android:id="@+id/search_textInput"
         android:layout_width="0dp"
+        android:iconifiedByDefault="false"
         android:layout_height="@dimen/wishlist_screen_search_height"
         android:layout_marginHorizontal="@dimen/wishlist_screen_search_margin_horizontal"
         android:layout_marginStart="16dp"

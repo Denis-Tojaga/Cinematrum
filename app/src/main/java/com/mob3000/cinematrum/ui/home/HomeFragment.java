@@ -6,6 +6,8 @@ import androidx.lifecycle.ViewModelProvider;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.location.Location;
 import android.location.LocationListener;
 import android.os.Bundle;
@@ -22,6 +24,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.ProgressBar;
 import android.widget.SearchView;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -65,6 +68,8 @@ public class HomeFragment extends Fragment implements LocationListener {
     private int selected;
     private ArrayList<Movie> MoviesReplacement;
     private Location _location;
+    private ProgressBar progressBar;
+    private TextView txtLoading;
     View root;
 
     public static HomeFragment newInstance() {
@@ -76,7 +81,6 @@ public class HomeFragment extends Fragment implements LocationListener {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
 
-        requireActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
         sp = getActivity().getSharedPreferences("login", MODE_PRIVATE);
         homeViewModel =
                 new ViewModelProvider(this).get(HomeViewModel.class);
@@ -89,6 +93,8 @@ public class HomeFragment extends Fragment implements LocationListener {
         MovieList = new ArrayList<>();
         CategoryList = new ArrayList<>();
         MoviesReplacement = new ArrayList<>();
+        if(_location==null)
+        movieRecyclerView.setVisibility(View.INVISIBLE);
 
         String userMail = sp.getString("email", "default");
 
@@ -121,7 +127,12 @@ public class HomeFragment extends Fragment implements LocationListener {
         seekBar=root.findViewById(R.id.seekBar);
         searchView= root.findViewById(R.id.searchbar);
         seekBar.setProgress(80);
+        seekBar.getProgressDrawable().setColorFilter(getResources().getColor(R.color.button_background), android.graphics.PorterDuff.Mode.SRC_IN);
+        seekBar.getThumb().setColorFilter(getResources().getColor(R.color.button_background), PorterDuff.Mode.SRC_ATOP);
         seekBarValue.setText(String.valueOf(seekBar.getProgress()+" km"));
+        progressBar = root.findViewById(R.id.progressBarLoading);
+        progressBar.getIndeterminateDrawable().setColorFilter(getResources().getColor(R.color.button_background), android.graphics.PorterDuff.Mode.SRC_IN);
+        txtLoading = root.findViewById(R.id.txtLoading);
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean b) {
@@ -140,8 +151,8 @@ public class HomeFragment extends Fragment implements LocationListener {
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-                //ArrayList<Movie> newMovies = DataAcessor.getMoviesFromLocation(getActivity(), _location, seekBar.getProgress());
-                movieRecyclerView.setAdapter( new MovieAdapter(MovieList, getActivity(), movieClickListener));
+                ArrayList<Movie> newMovies = DataAcessor.getMoviesFromLocation(getActivity(), _location, seekBar.getProgress());
+                movieRecyclerView.setAdapter( new MovieAdapter(newMovies, getActivity(), movieClickListener));
 
             }
         });
@@ -197,6 +208,7 @@ public class HomeFragment extends Fragment implements LocationListener {
                 Intent intent = new Intent(getActivity(), MovieDetailsActivity.class);
                 intent.putExtra("movieID", MovieList.get(position).getMovie_id());
                 intent.putExtra("distance", seekBar.getProgress());
+                intent.putExtra("location", _location);
                 startActivity(intent);
             }
         };
@@ -254,6 +266,12 @@ public class HomeFragment extends Fragment implements LocationListener {
         ArrayList<Cinema> cinemas1 = DataAcessor.getCinemasForMovieFromLocation(getActivity(), location, 1, 2);
         ArrayList<Cinema> cinemas2 = DataAcessor.getCinemasForMovieFromLocation(getActivity(), location, 1, 50);
 
+        ArrayList<Movie> newMovies = DataAcessor.getMoviesFromLocation(getActivity(), _location, seekBar.getProgress());
+        movieRecyclerView.setAdapter( new MovieAdapter(newMovies, getActivity(), movieClickListener));
+
+        progressBar.setVisibility(View.INVISIBLE);
+        txtLoading.setVisibility(View.INVISIBLE);
+        movieRecyclerView.setVisibility(View.VISIBLE);
         //moviesByLocation = DataAcessor.getMoviesFromLocation(getActivity(), location, seekBar.getProgress());
 
         //TODO you already have a location and you have the movies with that location, load them into the recycler view

@@ -38,9 +38,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MovieDetailsActivity extends AppCompatActivity implements LocationListener, AdapterView.OnItemSelectedListener {
-    //TODO fix the styling (fonts, same button as the others)
-    //TODO add the - addToFavourites button,goBack arrow
-    //TODO add the duration to the movie model
     private Movie movie;
     int movieID;
     private TextView txtDescription;
@@ -74,7 +71,10 @@ public class MovieDetailsActivity extends AppCompatActivity implements LocationL
         sp = this.getSharedPreferences("login", MODE_PRIVATE);
         if(extras!=null){
             movieID = extras.getInt("movieID");
+
+            //TODO have to pass the distance from the movie screen as well
             distance = extras.getInt("distance");
+            _location = extras.getParcelable("location");
         }
         String userMail = sp.getString("email", "default");
 
@@ -84,16 +84,16 @@ public class MovieDetailsActivity extends AppCompatActivity implements LocationL
             if (users.size() == 1)
                 user = users.get(0);
         }
-        //Location
-        /*_locationTracker = new LocationTracker(this, this);
+        _locationTracker = new LocationTracker(this, this);
         if (!_locationTracker.checkPermissions()){
-            cinemaArrayList = DataAcessor.getCinemasForMovieFromLocation(this, _location, movieID, distance);
-            Log.d("MOVIEDETAILS", "LOADING MOVIES DIRECTLY");
+            // TODO: Load movie directly because missing permission for location services
+            //MovieList = DataAcessor.getMoviesFromLocation(getActivity(), _location, seekBar.getProgress());
+            Log.d("HOMEFRAGMENT", "LOADING MOVIES DIRECTLY");
         }
         else {
             // Wait for Location. Load movies in onLocationChanged while passing location - maybe display some loading indicator?
-            Log.d("MOVIEDETAILS", "WAITING FOR LOCATION");
-        }*/
+            Log.d("HOMEFRAGMENT", "WAITING FOR LOCATION");
+        }
         loadData();
     }
 
@@ -115,7 +115,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements LocationL
         txtRating.setText("Rating: " + movie.getRating());
         btnTrailer = findViewById(R.id.btnTrailer);
         wishlist = new ArrayList<>();
-        cinemaArrayList = DataAcessor.getCinemas(this,"","");
+        cinemaArrayList = DataAcessor.getCinemasForMovieFromLocation(this, _location, movieID, distance);
         btnAddToWishlist = findViewById(R.id.btnAddToWishlist);
         btnOpenReservation = findViewById(R.id.btnBuy);
         spinner = findViewById(R.id.spinner);
@@ -159,11 +159,15 @@ public class MovieDetailsActivity extends AppCompatActivity implements LocationL
                 OpenYoutubeTrailer(movieTrailerURL);
             }
         });
+        setSpinnerAdapter();
+
+    }
+    private void setSpinnerAdapter()
+    {
         ArrayAdapter<Cinema> adapter = new ArrayAdapter<Cinema>(this, R.layout.category_spinner_item, cinemaArrayList);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
         spinner.setOnItemSelectedListener(this);
-
     }
 
 
@@ -190,16 +194,12 @@ public class MovieDetailsActivity extends AppCompatActivity implements LocationL
 
     @Override
     public void onLocationChanged(@NonNull Location location) {
-        /*_location = location;
+        _location = location;
         Log.d("HOMEFRAGMENT", location.getLongitude() + " " + location.getLatitude());
 
-        // load Cinemas and Movies nearby - Example for @Mirza for Home and Movie Detail Screen.
-        ArrayList<Cinema> cinemas1 = DataAcessor.getCinemasForMovieFromLocation(this, location, 1, 2);
-        ArrayList<Cinema> cinemas2 = DataAcessor.getCinemasForMovieFromLocation(this, location, 1, 50);
-
         cinemaArrayList = DataAcessor.getCinemasForMovieFromLocation(this, location, movieID, distance);
+        setSpinnerAdapter();
 
-        //TODO you already have a location and you have the movies with that location, load them into the recycler view*/
     }
 
     @Override
