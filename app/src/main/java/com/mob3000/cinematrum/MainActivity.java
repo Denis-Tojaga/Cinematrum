@@ -77,17 +77,6 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
 
             _locationTracker = new LocationTracker(this, this);
             usingLocationService = _locationTracker.checkPermissions();
-//            if (!usingLocationService) {
-//
-//                //Load movies directly because missing permission for location services
-//
-//                hf.loadMoviesWithoutLocation();
-//                hf.turnOffLoading();
-//
-//            } else {
-//                // Wait for Location. Load movies in onLocationChanged while passing location - maybe display some loading indicator?
-//                hf.turnOnLoading();
-//            }
         }
 
         if (savedInstanceState != null) {
@@ -95,18 +84,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
             _location = savedInstanceState.getParcelable("location");
             usingLocationService = savedInstanceState.getBoolean("usingLocationService");
 
-//            // REOPENING
-//            if (usingLocationService && _location != null){
-//                hf.loadMoviesWithLocation(_location);
-//                hf.turnOffLoading();
-//            }
-//            else {
-//                hf.loadMoviesWithoutLocation();
-//                hf.turnOffLoading();
-//            }
         }
-
-
         String loggeduser = getIntent().getStringExtra("username");
 
 
@@ -122,7 +100,14 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
 
     }
 
+    @Override
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
 
+        outState.putParcelable("location", _location);
+        outState.putBoolean("usingLocationService", usingLocationService);
+
+    }
 
     @Override
     public void onLocationChanged(@NonNull Location location) {
