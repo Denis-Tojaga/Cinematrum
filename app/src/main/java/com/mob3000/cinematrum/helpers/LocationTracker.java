@@ -109,6 +109,11 @@ public class LocationTracker extends Service implements LocationListener {
 
     }
 
+    public void removeListener(){
+        this.stopTracking();
+        this._listener = null;
+    }
+
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {

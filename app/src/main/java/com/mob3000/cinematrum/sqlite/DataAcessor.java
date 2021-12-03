@@ -625,6 +625,8 @@ public class DataAcessor {
         }
     }
 
+
+    // TODO: Refactor: Load only movies in future based on moviesCinemas IMPORTANT
     public static ArrayList<Movie> getMovies(Context ctx, String selectColumn, String selectValue) {
         ArrayList<Movie> movies = new ArrayList<>();
 

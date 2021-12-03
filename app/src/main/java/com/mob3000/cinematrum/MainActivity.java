@@ -1,39 +1,57 @@
 package com.mob3000.cinematrum;
 
 import android.location.Location;
-import android.location.LocationManager;
+import android.location.LocationListener;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.WindowManager;
-import android.widget.Toast;
-
-import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
-import androidx.navigation.ui.AppBarConfiguration;
-import androidx.navigation.ui.NavigationUI;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 import com.mob3000.cinematrum.dataModels.User;
 import com.mob3000.cinematrum.databinding.ActivityMainBinding;
+import com.mob3000.cinematrum.helpers.LocationTracker;
 import com.mob3000.cinematrum.ui.account.AccountFragment;
 import com.mob3000.cinematrum.ui.home.HomeFragment;
 import com.mob3000.cinematrum.ui.wishlist.WishlistFragment;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements LocationListener {
 
-    private ActivityMainBinding binding;
-    private User loggedUser;
-    private LocationManager _locationManager;
-    private Location _location;
-
-    private int _radius = 5; // initial radius for cinema search
     private static int LOCATION_CHANGED_MIN_DISTANCE = 10; // 10 meters
     private static int LOCATION_CHANGED_MIN_TIME = 1000 * 60; // 1 minute
+    public Location _location;
+    public boolean usingLocationService;
+    private ActivityMainBinding binding;
+    private User loggedUser;
+    private LocationTracker _locationTracker;
+    private int _radius = 5; // initial radius for cinema search
+
+
+    private NavigationBarView.OnItemSelectedListener navListener = new NavigationBarView.OnItemSelectedListener() {
+        @Override
+        public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+            Fragment selectedFragment = null;
+            switch (item.getItemId()) {
+                case R.id.navigation_wishlist:
+                    selectedFragment = new WishlistFragment();
+                    break;
+                case R.id.navigation_home:
+                    selectedFragment = new HomeFragment();
+                    break;
+                case R.id.navigation_account:
+                    selectedFragment = new AccountFragment();
+                    break;
+
+            }
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragmentLayout, selectedFragment).commit();
+            return true;
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +73,39 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupWithNavController(binding.navView, navController);*/
 
 
+        if (savedInstanceState == null) {
+
+            _locationTracker = new LocationTracker(this, this);
+            usingLocationService = _locationTracker.checkPermissions();
+//            if (!usingLocationService) {
+//
+//                //Load movies directly because missing permission for location services
+//
+//                hf.loadMoviesWithoutLocation();
+//                hf.turnOffLoading();
+//
+//            } else {
+//                // Wait for Location. Load movies in onLocationChanged while passing location - maybe display some loading indicator?
+//                hf.turnOnLoading();
+//            }
+        }
+
+        if (savedInstanceState != null) {
+
+            _location = savedInstanceState.getParcelable("location");
+            usingLocationService = savedInstanceState.getBoolean("usingLocationService");
+
+//            // REOPENING
+//            if (usingLocationService && _location != null){
+//                hf.loadMoviesWithLocation(_location);
+//                hf.turnOffLoading();
+//            }
+//            else {
+//                hf.loadMoviesWithoutLocation();
+//                hf.turnOffLoading();
+//            }
+        }
+
 
         String loggeduser = getIntent().getStringExtra("username");
 
@@ -70,25 +121,18 @@ public class MainActivity extends AppCompatActivity {
         //getSupportFragmentManager().beginTransaction().replace(R.id.fragmentLayout, new HomeFragment1()).commit();
 
     }
-    private NavigationBarView.OnItemSelectedListener navListener = new NavigationBarView.OnItemSelectedListener() {
-        @Override
-        public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-            Fragment selectedFragment = null;
-            switch (item.getItemId()){
-                case R.id.navigation_wishlist:
-                    selectedFragment=new WishlistFragment();
-                    break;
-                case R.id.navigation_home:
-                    selectedFragment=new HomeFragment();
-                    break;
-                case R.id.navigation_account:
-                    selectedFragment=new AccountFragment();
-                    break;
 
-            }
-            getSupportFragmentManager().beginTransaction().replace(R.id.fragmentLayout, selectedFragment).commit();
-            return true;
+
+
+    @Override
+    public void onLocationChanged(@NonNull Location location) {
+        _location = location;
+        Log.d("MOVIEDETAILS", location.getLongitude() + " " + location.getLatitude());
+        HomeFragment hf = (HomeFragment) getSupportFragmentManager().findFragmentById(R.id.fragmentLayout);
+        if (hf != null) {
+            hf.loadMoviesWithLocation(location);
+            hf.turnOffLoading();
         }
-    };
+   }
 
 }
