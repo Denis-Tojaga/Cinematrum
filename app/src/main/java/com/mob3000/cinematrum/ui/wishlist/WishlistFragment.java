@@ -61,27 +61,6 @@ public class WishlistFragment extends Fragment {
         _searchTextInput = view.findViewById(R.id.search_textInput);
         _wishlistListView = view.findViewById(R.id.wishlist_listView);
 
-
-        String userMail = sp.getString("email", "default");
-
-        if (userMail != "default") {
-            ArrayList<User> users = DataAcessor.getUser(getActivity(), DatabaseHelper.COLUMN_USER_email, userMail);
-            if (users.size() == 1)
-                _currentUser = users.get(0);
-        }
-
-
-        //_currentUser = DataAcessor.getLoggedInUser(getActivity().getApplicationContext());
-        _wishlist = _currentUser.getWishlist();
-
-        if (_wishlist == null)
-            _wishlist = new ArrayList<>();
-
-        _fullWishlist = new ArrayList<>(_wishlist);
-
-        _wishlistAdapter = new WishlistTableAdapter(getActivity().getApplicationContext(), _wishlist);
-        _wishlistListView.setAdapter(_wishlistAdapter);
-
         _wishlistListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
@@ -125,5 +104,32 @@ public class WishlistFragment extends Fragment {
                 return false;
             }
         });
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        loadWishlistData();
+    }
+
+    private void loadWishlistData(){
+        String userMail = sp.getString("email", "default");
+        if (userMail != "default") {
+            ArrayList<User> users = DataAcessor.getUser(getActivity(), DatabaseHelper.COLUMN_USER_email, userMail);
+            if (users.size() == 1)
+                _currentUser = users.get(0);
+        }
+
+
+        //_currentUser = DataAcessor.getLoggedInUser(getActivity().getApplicationContext());
+        _wishlist = _currentUser.getWishlist();
+
+        if (_wishlist == null)
+            _wishlist = new ArrayList<>();
+
+        _fullWishlist = new ArrayList<>(_wishlist);
+
+        _wishlistAdapter = new WishlistTableAdapter(getActivity().getApplicationContext(), _wishlist);
+        _wishlistListView.setAdapter(_wishlistAdapter);
     }
 }
