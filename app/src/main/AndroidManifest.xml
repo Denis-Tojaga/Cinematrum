@@ -20,6 +20,7 @@
             android:name=".ui.TicketHistoryActivity"
             android:exported="true"
             android:parentActivityName=".MainActivity"
+            android:launchMode = "singleTop"
             />
         <activity
             android:name=".ui.ReservationActivity"

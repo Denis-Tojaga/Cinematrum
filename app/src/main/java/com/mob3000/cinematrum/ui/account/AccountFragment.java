@@ -267,7 +267,7 @@ public class AccountFragment extends Fragment {
     private void NavigateToTicketHistory() {
         Intent intent = new Intent(getActivity(), TicketHistoryActivity.class);
         intent.putExtra("user", loggedUser);
-        intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        //intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
         startActivity(intent);
     }
 
