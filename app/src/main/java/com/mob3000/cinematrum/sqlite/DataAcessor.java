@@ -320,14 +320,19 @@ public class DataAcessor {
             DatabaseHelper dbhelper = new DatabaseHelper(ctx);
             SQLiteDatabase db = dbhelper.getReadableDatabase();
 
+            long currentUnixTime = System.currentTimeMillis() / 1000;
+
             String sql = "SELECT * FROM " + DatabaseHelper.TABLENAME_MOVIES_CINEMAS
                     + " LEFT JOIN " + DatabaseHelper.TABLENAME_HALL + " on " + DatabaseHelper.TABLENAME_HALL + "." + DatabaseHelper.COLUMN_HALL_hallId
                     + " = " + DatabaseHelper.TABLENAME_MOVIES_CINEMAS + "." + DatabaseHelper.COLUMN_MOVIESCINEMAS_hallId
                     + " LEFT JOIN " + DatabaseHelper.TABLENAME_CINEMA + " on " + DatabaseHelper.TABLENAME_CINEMA + "." + DatabaseHelper.COLUMN_CINEMA_cinemaId
                     + " = " + DatabaseHelper.TABLENAME_HALL + "." + DatabaseHelper.COLUMN_HALL_hallId
                     + " where " + DatabaseHelper.TABLENAME_MOVIES_CINEMAS + "." + DatabaseHelper.COLUMN_MOVIESCINEMAS_movieID + "=? AND "
-                    + DatabaseHelper.TABLENAME_CINEMA + "." + DatabaseHelper.COLUMN_CINEMA_cinemaId + " =?;";
-            String[] sqlArgs = new String[]{String.valueOf(movieId), String.valueOf(cinemaId)};
+                    + DatabaseHelper.TABLENAME_CINEMA + "." + DatabaseHelper.COLUMN_CINEMA_cinemaId + " =?"
+                    + " AND " + DatabaseHelper.TABLENAME_MOVIES_CINEMAS + "." + DatabaseHelper.COLUMN_MOVIESCINEMAS_date + ">=?"
+                    + " ORDER BY " + DatabaseHelper.TABLENAME_MOVIES_CINEMAS +"." + DatabaseHelper.COLUMN_MOVIESCINEMAS_date
+                    + ";";
+            String[] sqlArgs = new String[]{String.valueOf(movieId), String.valueOf(cinemaId), String.valueOf(currentUnixTime)};
 
             Cursor c = db.rawQuery(sql, sqlArgs);
 
