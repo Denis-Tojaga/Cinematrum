@@ -95,10 +95,12 @@ public class WishlistFragment extends Fragment {
                             filteredWishlist.add(_fullWishlist.get(i));
                     }
                     _wishlist = filteredWishlist;
-                    _wishlistAdapter.updateData(filteredWishlist);
+                    if(_wishlistAdapter != null)
+                        _wishlistAdapter.updateData(filteredWishlist);
                 } else {
                     _wishlist = _fullWishlist;
-                    _wishlistAdapter.updateData(_fullWishlist);
+                    if (_wishlistAdapter != null)
+                        _wishlistAdapter.updateData(_fullWishlist);
                 }
                 return false;
             }
