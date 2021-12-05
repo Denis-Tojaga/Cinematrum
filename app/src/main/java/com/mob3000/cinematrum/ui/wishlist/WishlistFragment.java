@@ -65,7 +65,6 @@ public class WishlistFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Wishlist currentEntry = _wishlist.get(i);
-                Toast.makeText(getActivity().getApplicationContext(), "Item Clicked: " + currentEntry.get_movie().getName(), Toast.LENGTH_LONG).show();
                 Intent intent = new Intent(getActivity(), MovieDetailsActivity.class);
                 intent.putExtra("movieID", currentEntry.getMovie_id());
                 intent.putExtra("AddOrRemove", 0);

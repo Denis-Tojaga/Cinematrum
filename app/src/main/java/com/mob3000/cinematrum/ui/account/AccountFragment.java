@@ -179,7 +179,6 @@ public class AccountFragment extends Fragment {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {
                     UpdateUserData(etxtAccountUsername.getText().toString(), etxtAccountEmail.getText().toString());
-                    Toast.makeText(getActivity(), getResources().getText(R.string.update_success_toast), Toast.LENGTH_SHORT).show();
                 }
             });
 

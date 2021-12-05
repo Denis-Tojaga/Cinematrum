@@ -309,7 +309,6 @@ public class ReservationActivity extends AppCompatActivity implements OnItemClic
     //creating a notification channel
     private void CreateNotificationChannel() {
         //if the API level is 26 or higher we need to make a notification channel
-        Toast.makeText(this, "The notification channel is creating!", Toast.LENGTH_SHORT).show();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
 
             CharSequence notificationChannelName = "MovieNotificationChannel";

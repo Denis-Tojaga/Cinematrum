@@ -114,7 +114,6 @@ public class SignUpActivity extends AppCompatActivity {
 
                 if (DataAcessor.insertUser(this, newUser)) {
                     FillSharedPreferences("logged", true, "email", newUser.getEmail(), "password", newUser.getPasswordHash());
-                    Toast.makeText(SignUpActivity.this, "You logged in successfully", Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(SignUpActivity.this, MainActivity.class);
                     intent.putExtra("username", newUser.getName());
                     startActivity(intent);

@@ -6,7 +6,6 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
 
-    /* See example: http://www.androidhive.info/2013/09/android-sqlite-database-with-multiple-tables/*/
 
     // Table Names
     public static final String TABLENAME_TICKET = "ticket";
