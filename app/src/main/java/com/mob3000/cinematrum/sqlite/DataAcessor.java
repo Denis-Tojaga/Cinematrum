@@ -342,7 +342,7 @@ public class DataAcessor {
                 int indexHallId = c.getColumnIndex(DatabaseHelper.COLUMN_MOVIESCINEMAS_hallId);
                 int indexPrice = c.getColumnIndex(DatabaseHelper.COLUMN_MOVIESCINEMAS_price);
                 int indexSeatsAvailable = c.getColumnIndex(DatabaseHelper.COLUMN_MOVIESCINEMAS_seatsAvailable);
-                //int indexAllSeats = c.getColumnIndex(DatabaseHelper.COLUMN_MOVIESCINEMAS_allSeats);
+                int indexAllSeats = c.getColumnIndex(DatabaseHelper.COLUMN_MOVIESCINEMAS_allSeats);
                 int indexDate = c.getColumnIndex(DatabaseHelper.COLUMN_MOVIESCINEMAS_date);
 
                 do {
@@ -351,7 +351,11 @@ public class DataAcessor {
                     tmpMoviesCinema.setMovie_id(c.getInt(indexMovieId));
                     tmpMoviesCinema.setHall_id(c.getInt(indexHallId));
                     tmpMoviesCinema.setPrice(c.getDouble(indexPrice));
-                    tmpMoviesCinema.setSeatsAvailable(c.getInt(indexSeatsAvailable));
+                    int allSeats = c.getInt(indexAllSeats);
+                    ArrayList<Ticket> tickets = getTickets(ctx, DatabaseHelper.COLUMN_TICKET_moviesCinemaID, String.valueOf(tmpMoviesCinema.getMoviesCinemas_id()));
+                    int seatsAvailable = allSeats - tickets.size();
+                    tmpMoviesCinema.setSeatsAvailable(seatsAvailable);
+
                     int unixTimestamp = c.getInt(indexDate);
                     tmpMoviesCinema.setDate((new java.util.Date((long) unixTimestamp * 1000)));
                     moviesCinemas.add(tmpMoviesCinema);
