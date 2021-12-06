@@ -216,7 +216,7 @@ public class ReservationActivity extends AppCompatActivity implements OnItemClic
         Cinema cinema = new Cinema();
 
         try {
-            movie = DataAcessor.getMovies(this, DatabaseHelper.COLUMN_MOVIE_movieId, String.valueOf(movieId)).get(0);
+            movie = DataAcessor.getMovies(this, DatabaseHelper.TABLENAME_MOVIE + "."+ DatabaseHelper.COLUMN_MOVIE_movieId, String.valueOf(movieId)).get(0);
             cinema = DataAcessor.getCinemas(this, DatabaseHelper.COLUMN_CINEMA_cinemaId, String.valueOf(cinemaId)).get(0);
         } catch (Exception ex) {
             ex.printStackTrace();

@@ -203,7 +203,7 @@ public class DataAcessor {
                     tmpWishlist.setUser_id(c.getInt(indexUserId));
                     tmpWishlist.setMovie_id(c.getInt(indexMovieId));
 
-                    ArrayList<Movie> wishlistMovies = getMovies(ctx, DatabaseHelper.COLUMN_MOVIE_movieId, String.valueOf(tmpWishlist.getMovie_id()));
+                    ArrayList<Movie> wishlistMovies = getMovies(ctx, DatabaseHelper.TABLENAME_MOVIE +"."+ DatabaseHelper.COLUMN_MOVIE_movieId, String.valueOf(tmpWishlist.getMovie_id()));
                     if (wishlistMovies.size() == 1)
                         tmpWishlist.set_movie(wishlistMovies.get(0));
                     else

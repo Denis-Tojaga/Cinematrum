@@ -90,7 +90,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements AdapterVi
 
     public void loadData()
     {
-        movie = DataAcessor.getMovies(this, DatabaseHelper.COLUMN_MOVIE_movieId, String.valueOf(movieID)).get(0);
+        movie = DataAcessor.getMovies(this, DatabaseHelper.TABLENAME_MOVIE + "." +DatabaseHelper.COLUMN_MOVIE_movieId, String.valueOf(movieID)).get(0);
         imageView = findViewById(R.id.moviePoster);
         Picasso.get().load(movie.getPicture()).placeholder(R.drawable.custom_bacground).into(imageView);
         btnGoBack = findViewById(R.id.btnGoBackMD);

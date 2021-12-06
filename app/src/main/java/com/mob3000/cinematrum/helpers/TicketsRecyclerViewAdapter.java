@@ -19,6 +19,7 @@ import com.mob3000.cinematrum.R;
 import com.mob3000.cinematrum.dataModels.*;
 
 import com.mob3000.cinematrum.sqlite.DataAcessor;
+import com.mob3000.cinematrum.sqlite.DatabaseHelper;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -78,7 +79,7 @@ public class TicketsRecyclerViewAdapter extends RecyclerView.Adapter<TicketsRecy
 
         //getting the movie object from movies_cinemas object
         String movieObjectID = Integer.toString(mcObject.getMovie_id());
-        ArrayList<Movie> movies = DataAcessor.getMovies(mContext, "movie_id", movieObjectID);
+        ArrayList<Movie> movies = DataAcessor.getMovies(mContext, DatabaseHelper.TABLENAME_MOVIE+ ".movie_id", movieObjectID);
         Movie movieObject = movies.get(0);
 
 
@@ -144,7 +145,7 @@ public class TicketsRecyclerViewAdapter extends RecyclerView.Adapter<TicketsRecy
 
                     //getting the movie object from movies_cinemas object
                     String movieObjectID = Integer.toString(mcObject.getMovie_id());
-                    ArrayList<Movie> movies = DataAcessor.getMovies(mContext, "movie_id", movieObjectID);
+                    ArrayList<Movie> movies = DataAcessor.getMovies(mContext, DatabaseHelper.TABLENAME_MOVIE+ ".movie_id", movieObjectID);
                     Movie movieObject = movies.get(0);
 
                     //if movie_name contains any letter from filter text we add that ticket to the new list
