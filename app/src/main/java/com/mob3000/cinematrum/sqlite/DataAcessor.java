@@ -635,7 +635,7 @@ public class DataAcessor {
     }
 
 
-    // TODO: Refactor: Load only movies in future based on moviesCinemas IMPORTANT
+    /* LOAD ALL MOVIES THAT ARE PLAYING IN THE FUTURE */
     public static ArrayList<Movie> getMovies(Context ctx, String selectColumn, String selectValue) {
         ArrayList<Movie> movies = new ArrayList<>();
 
@@ -646,13 +646,24 @@ public class DataAcessor {
             String sql;
             Cursor c;
 
+            long currentUnixTime = System.currentTimeMillis() / 1000;
+
             if (selectColumn != "") {
-                sql = "SELECT * FROM " + DatabaseHelper.TABLENAME_MOVIE + " where " + selectColumn + "=?";
-                String[] sqlArgs = new String[]{selectValue};
+                sql = "SELECT * FROM " + DatabaseHelper.TABLENAME_MOVIES_CINEMAS
+                        + " LEFT JOIN " + DatabaseHelper.TABLENAME_MOVIE
+                        + " ON " + DatabaseHelper.TABLENAME_MOVIES_CINEMAS + "." + DatabaseHelper.COLUMN_MOVIESCINEMAS_movieID + "=" + DatabaseHelper.TABLENAME_MOVIE + "." + DatabaseHelper.COLUMN_MOVIE_movieId
+                        + " where " + selectColumn + "=? AND " + DatabaseHelper.TABLENAME_MOVIES_CINEMAS + "." + DatabaseHelper.COLUMN_MOVIESCINEMAS_date + ">=?"
+                        + " GROUP BY " + DatabaseHelper.TABLENAME_MOVIES_CINEMAS + "." + DatabaseHelper.COLUMN_MOVIESCINEMAS_movieID;
+                String[] sqlArgs = new String[]{selectValue, String.valueOf(currentUnixTime)};
                 c = db.rawQuery(sql, sqlArgs);
             } else {
-                sql = "SELECT * FROM " + DatabaseHelper.TABLENAME_MOVIE + ";";
-                c = db.rawQuery(sql, null);
+                sql = "SELECT * FROM " + DatabaseHelper.TABLENAME_MOVIES_CINEMAS
+                        + " LEFT JOIN " + DatabaseHelper.TABLENAME_MOVIE
+                        + " ON " + DatabaseHelper.TABLENAME_MOVIES_CINEMAS + "." + DatabaseHelper.COLUMN_MOVIESCINEMAS_movieID + "=" + DatabaseHelper.TABLENAME_MOVIE + "." + DatabaseHelper.COLUMN_MOVIE_movieId
+                        + " where " + DatabaseHelper.TABLENAME_MOVIES_CINEMAS + "." + DatabaseHelper.COLUMN_MOVIESCINEMAS_date + ">=?"
+                        + " GROUP BY " + DatabaseHelper.TABLENAME_MOVIES_CINEMAS + "." + DatabaseHelper.COLUMN_MOVIESCINEMAS_movieID;
+                String[] sqlArgs = new String[]{selectValue, String.valueOf(currentUnixTime)};
+                c = db.rawQuery(sql, sqlArgs);
             }
 
             if (c.moveToFirst()) {
@@ -696,6 +707,7 @@ public class DataAcessor {
         }
     }
 
+    /* LOAD ALL CINEMAS FOR A MOVIE WHERE THE MOVIE IS PLAYING IN THE FUTURE */
     public static ArrayList<Cinema> getCinemasForMovie(Context ctx, int movieId) {
         ArrayList<Cinema> cinemas = new ArrayList<>();
 
@@ -704,6 +716,8 @@ public class DataAcessor {
             DatabaseHelper dbhelper = new DatabaseHelper(ctx);
             SQLiteDatabase db = dbhelper.getReadableDatabase();
 
+            long currentUnixTime = System.currentTimeMillis() / 1000;
+
             // Load all CinemaMovies by movieId grouped by cinemaId
             String sql = "SELECT * FROM " + DatabaseHelper.TABLENAME_MOVIES_CINEMAS
                     + " LEFT JOIN "  + DatabaseHelper.TABLENAME_HALL
@@ -711,8 +725,9 @@ public class DataAcessor {
                     + " LEFT JOIN " + DatabaseHelper.TABLENAME_CINEMA
                     + " on " + DatabaseHelper.TABLENAME_CINEMA + "." + DatabaseHelper.COLUMN_CINEMA_cinemaId + " = " + DatabaseHelper.TABLENAME_HALL + "." + DatabaseHelper.COLUMN_HALL_cinemaId
                     + " where " + DatabaseHelper.TABLENAME_MOVIES_CINEMAS + "." + DatabaseHelper.COLUMN_MOVIESCINEMAS_movieID + "=?"
+                    + " AND " + DatabaseHelper.TABLENAME_MOVIES_CINEMAS +"." + DatabaseHelper.COLUMN_MOVIESCINEMAS_date + ">=?"
                     + " group by " + DatabaseHelper.TABLENAME_CINEMA + "." + DatabaseHelper.COLUMN_CINEMA_cinemaId + ";";
-            String[] sqlArgs = new String[]{String.valueOf(movieId)};
+            String[] sqlArgs = new String[]{String.valueOf(movieId), String.valueOf(currentUnixTime)};
 
             Cursor c = db.rawQuery(sql, sqlArgs);
 
@@ -750,6 +765,8 @@ public class DataAcessor {
             DatabaseHelper dbhelper = new DatabaseHelper(ctx);
             SQLiteDatabase db = dbhelper.getReadableDatabase();
 
+            long currentUnixTime = System.currentTimeMillis() / 1000;
+
             // Load all CinemaMovies by movieId grouped by cinemaId
             String sql = "SELECT * FROM " + DatabaseHelper.TABLENAME_MOVIES_CINEMAS
                     + " LEFT JOIN "  + DatabaseHelper.TABLENAME_HALL
@@ -757,8 +774,9 @@ public class DataAcessor {
                     + " LEFT JOIN " + DatabaseHelper.TABLENAME_CINEMA
                     + " on " + DatabaseHelper.TABLENAME_CINEMA + "." + DatabaseHelper.COLUMN_CINEMA_cinemaId + " = " + DatabaseHelper.TABLENAME_HALL + "." + DatabaseHelper.COLUMN_HALL_cinemaId
                     + " where " + DatabaseHelper.TABLENAME_MOVIES_CINEMAS + "." + DatabaseHelper.COLUMN_MOVIESCINEMAS_movieID + "=?"
+                    + " AND " + DatabaseHelper.TABLENAME_MOVIES_CINEMAS+"."+ DatabaseHelper.COLUMN_MOVIESCINEMAS_date + ">=?"
                     + " group by " + DatabaseHelper.TABLENAME_CINEMA + "." + DatabaseHelper.COLUMN_CINEMA_cinemaId + ";";
-            String[] sqlArgs = new String[]{String.valueOf(movieId)};
+            String[] sqlArgs = new String[]{String.valueOf(movieId), String.valueOf(currentUnixTime)};
 
             Cursor c = db.rawQuery(sql, sqlArgs);
 
@@ -799,6 +817,7 @@ public class DataAcessor {
         }
     }
 
+    /* GET MOVIES FROM LOCATION THAT PLAY IN FUTURE*/
     public static ArrayList<Movie> getMoviesFromLocation(Context ctx, Location location, int radius) {
 
         ArrayList<Movie> finalResult = new ArrayList<>();
@@ -834,6 +853,7 @@ public class DataAcessor {
             // select movieCinemas with movieId, Join movie, Group by movieId
             DatabaseHelper dbhelper = new DatabaseHelper(ctx);
             SQLiteDatabase db = dbhelper.getReadableDatabase();
+
 
             String sql = "SELECT * FROM " + DatabaseHelper.TABLENAME_MOVIES_CINEMAS
                     + " LEFT JOIN " + DatabaseHelper.TABLENAME_MOVIE
