@@ -662,7 +662,7 @@ public class DataAcessor {
                         + " ON " + DatabaseHelper.TABLENAME_MOVIES_CINEMAS + "." + DatabaseHelper.COLUMN_MOVIESCINEMAS_movieID + "=" + DatabaseHelper.TABLENAME_MOVIE + "." + DatabaseHelper.COLUMN_MOVIE_movieId
                         + " where " + DatabaseHelper.TABLENAME_MOVIES_CINEMAS + "." + DatabaseHelper.COLUMN_MOVIESCINEMAS_date + ">=?"
                         + " GROUP BY " + DatabaseHelper.TABLENAME_MOVIES_CINEMAS + "." + DatabaseHelper.COLUMN_MOVIESCINEMAS_movieID;
-                String[] sqlArgs = new String[]{selectValue, String.valueOf(currentUnixTime)};
+                String[] sqlArgs = new String[]{ String.valueOf(currentUnixTime)};
                 c = db.rawQuery(sql, sqlArgs);
             }
 
