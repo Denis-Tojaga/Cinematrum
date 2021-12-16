@@ -7,31 +7,29 @@
     android:background="?android:attr/windowBackground"
     android:backgroundTint="@color/background_theme"
     android:isScrollContainer="false"
-    tools:context="ui.home.HomeFragment"
-    >
+    tools:context="ui.home.HomeFragment">
 
 
     <SearchView
         android:id="@+id/searchbar"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:layout_marginStart="30dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintDimensionRatio="8:1"
         android:layout_marginTop="10dp"
-        android:layout_marginEnd="30dp"
         android:background="@drawable/searchviewbackground"
         android:iconifiedByDefault="false"
         android:queryBackground="@android:color/transparent"
         android:queryHint="@string/SW"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="@id/guidelineRight"
+        app:layout_constraintStart_toStartOf="@id/guidelineLeft"
         app:layout_constraintTop_toBottomOf="@+id/txtWelcome" />
 
     <TextView
         android:id="@+id/txtWelcome"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
         android:fontFamily="@font/trenda_regular"
-        android:layout_marginTop="16dp"
         android:text="Welcome, pick a movie"
         android:textColor="#FFFFFF"
         android:textSize="15sp"
@@ -44,7 +42,6 @@
         android:id="@+id/txtAiring"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
         android:fontFamily="@font/trenda_regular"
         android:text="Airing this month:"
         android:textColor="#FFFFFF"
@@ -56,9 +53,8 @@
     <TextView
         android:id="@+id/textView12"
         android:layout_width="wrap_content"
-        android:layout_height="26dp"
-        android:layout_marginStart="40dp"
-        android:layout_marginTop="25dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
         android:layout_marginEnd="1dp"
         android:fontFamily="@font/trenda_regular"
         android:text="Choose the Distance"
@@ -66,7 +62,7 @@
         android:textColor="#FFFFFF"
         android:textSize="15sp"
         app:layout_constraintEnd_toStartOf="@+id/seekBar"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/guidelineLeft"
         app:layout_constraintTop_toBottomOf="@+id/searchbar" />
 
 
@@ -85,9 +81,9 @@
 
     <SeekBar
         android:id="@+id/seekBar"
-        android:layout_width="129dp"
+        android:layout_width="0dp"
         android:layout_height="25dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="10dp"
         android:max="100"
         android:progress="2"
         app:layout_constraintEnd_toStartOf="@+id/seekBarValue"
@@ -98,28 +94,25 @@
         android:id="@+id/seekBarValue"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="23dp"
-        android:layout_marginEnd="40dp"
+        android:layout_marginTop="10dp"
         android:fontFamily="@font/trenda_regular"
         android:text="TextView"
         android:textColor="@color/white"
-        android:textSize="17sp"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:textSize="15sp"
+        app:layout_constraintEnd_toStartOf="@+id/guidelineRight"
         app:layout_constraintStart_toEndOf="@+id/seekBar"
         app:layout_constraintTop_toBottomOf="@+id/searchbar" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewCategories"
-        android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:layout_marginStart="20dp"
-        android:requiresFadingEdge="horizontal"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="10dp"
         android:fadingEdgeLength="10dp"
-        android:layout_marginTop="9dp"
-        android:layout_marginEnd="20dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
+        android:requiresFadingEdge="horizontal"
+        app:layout_constraintDimensionRatio="3:1"
+        app:layout_constraintEnd_toEndOf="@id/guidelineRight"
+        app:layout_constraintStart_toStartOf="@id/guidelineLeft"
         app:layout_constraintTop_toBottomOf="@+id/textView12" />
 
     <ProgressBar
@@ -141,5 +134,19 @@
         app:layout_constraintEnd_toEndOf="@+id/progressBarLoading"
         app:layout_constraintStart_toStartOf="@+id/progressBarLoading"
         app:layout_constraintTop_toBottomOf="@+id/progressBarLoading" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelineLeft"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.1" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelineRight"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.9" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

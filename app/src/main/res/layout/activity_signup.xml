@@ -9,20 +9,20 @@
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="@dimen/logo_registration_width"
-        android:layout_height="@dimen/logo_registration_height"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintDimensionRatio="1:1"
+        app:layout_constraintEnd_toEndOf="@id/guideline3"
         app:layout_constraintHorizontal_bias="0.389"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/guideline2"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@mipmap/cinematrum_logo"
         tools:ignore="ContentDescription" />
 
     <EditText
         android:id="@+id/etxtUsername"
-        android:layout_width="@dimen/input_field_width"
-        android:layout_height="@dimen/input_field_height"
-        android:layout_marginTop="50dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:autofillHints="username"
         android:background="@drawable/input_radius"
         android:ems="10"
@@ -31,16 +31,17 @@
         android:inputType="textPersonName"
         android:padding="@dimen/input_field_padding"
         android:textColorHint="@color/black"
-        android:textSize="@dimen/input_hint_size"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        android:textSize="15sp"
+        app:layout_constraintDimensionRatio="4:1"
+        app:layout_constraintEnd_toStartOf="@+id/guideline3"
+        app:layout_constraintStart_toStartOf="@+id/guideline2"
         app:layout_constraintTop_toBottomOf="@+id/imageView" />
 
     <EditText
         android:id="@+id/etxtEmailSignIn"
-        android:layout_width="@dimen/input_field_width"
-        android:layout_height="@dimen/input_field_height"
-        android:layout_marginTop="@dimen/margin_top_inputs"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="15dp"
         android:autofillHints="emailAddress"
         android:background="@drawable/input_radius"
         android:ems="10"
@@ -49,16 +50,17 @@
         android:inputType="textEmailAddress"
         android:padding="@dimen/input_field_padding"
         android:textColorHint="@color/black"
-        android:textSize="@dimen/input_hint_size"
-        app:layout_constraintEnd_toEndOf="@+id/etxtUsername"
-        app:layout_constraintStart_toStartOf="@+id/etxtUsername"
+        android:textSize="15sp"
+        app:layout_constraintDimensionRatio="4:1"
+        app:layout_constraintEnd_toStartOf="@+id/guideline3"
+        app:layout_constraintStart_toStartOf="@+id/guideline2"
         app:layout_constraintTop_toBottomOf="@+id/etxtUsername" />
 
     <EditText
         android:id="@+id/etxtPasswordSignIn"
-        android:layout_width="@dimen/input_field_width"
-        android:layout_height="@dimen/input_field_height"
-        android:layout_marginTop="@dimen/margin_top_inputs"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="15dp"
         android:autofillHints="password"
         android:background="@drawable/input_radius"
         android:ems="10"
@@ -67,23 +69,25 @@
         android:inputType="textPassword"
         android:padding="@dimen/input_field_padding"
         android:textColorHint="@color/black"
-        android:textSize="@dimen/input_hint_size"
-        app:layout_constraintEnd_toEndOf="@+id/etxtEmailSignIn"
-        app:layout_constraintStart_toStartOf="@+id/etxtEmailSignIn"
+        android:textSize="15sp"
+        app:layout_constraintDimensionRatio="4:1"
+        app:layout_constraintEnd_toStartOf="@+id/guideline3"
+        app:layout_constraintStart_toStartOf="@+id/guideline2"
         app:layout_constraintTop_toBottomOf="@+id/etxtEmailSignIn" />
 
     <android.widget.Button
         android:id="@+id/btnSignUp"
-        android:layout_width="@dimen/button_width"
-        android:layout_height="@dimen/button_height"
-        android:layout_marginTop="@dimen/button_margin_top_inputAbove"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="15dp"
         android:background="@drawable/button_radius"
         android:fontFamily="@font/moon_light"
         android:letterSpacing="@dimen/button_letter_spacing"
         android:text="@string/button_signup"
         android:textSize="@dimen/button_text_size"
-        app:layout_constraintEnd_toEndOf="@+id/etxtPasswordSignIn"
-        app:layout_constraintStart_toStartOf="@+id/etxtPasswordSignIn"
+        app:layout_constraintDimensionRatio="4:1"
+        app:layout_constraintEnd_toStartOf="@+id/guideline3"
+        app:layout_constraintStart_toStartOf="@+id/guideline2"
         app:layout_constraintTop_toBottomOf="@+id/etxtPasswordSignIn" />
 
     <TextView
@@ -92,6 +96,7 @@
         android:layout_height="wrap_content"
         android:fontFamily="@font/trenda_semibold"
         android:text="Textview"
+        android:textSize="10sp"
         android:textColor="@color/warning_message"
         app:layout_constraintStart_toStartOf="@+id/etxtUsername"
         app:layout_constraintTop_toBottomOf="@+id/etxtUsername" />
@@ -102,6 +107,7 @@
         android:layout_height="wrap_content"
         android:fontFamily="@font/trenda_semibold"
         android:text="TextView"
+        android:textSize="10sp"
         android:textColor="@color/warning_message"
         app:layout_constraintStart_toStartOf="@+id/etxtEmailSignIn"
         app:layout_constraintTop_toBottomOf="@+id/etxtEmailSignIn" />
@@ -112,9 +118,23 @@
         android:layout_height="wrap_content"
         android:fontFamily="@font/trenda_semibold"
         android:text="TextView"
+        android:textSize="10sp"
         android:textColor="@color/warning_message"
         app:layout_constraintStart_toStartOf="@+id/etxtPasswordSignIn"
         app:layout_constraintTop_toBottomOf="@+id/etxtPasswordSignIn" />
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.25" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.75" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

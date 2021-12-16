@@ -2,38 +2,52 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/categoryItem"
     android:layout_width="wrap_content"
     android:layout_height="match_parent"
-    android:background="@drawable/category_background"
-    android:id="@+id/categoryItem">
+    android:background="@drawable/category_background">
 
 
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/categoryImage"
-        android:layout_width="50dp"
-        android:layout_height="match_parent"
-        android:layout_marginStart="21dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="21dp"
-        android:layout_marginBottom="40dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
         android:background="@drawable/custom_bacground"
         android:scaleType="fitXY"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/guideline11"
+        app:layout_constraintDimensionRatio="1:1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/guideline10"
         app:shapeAppearanceOverlay="@style/rounded" />
 
     <TextView
         android:id="@+id/category_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="1dp"
         android:fontFamily="@font/trenda_regular"
         android:text="TextView"
         android:textColor="@color/white"
+        android:textSize="10sp"
         app:layout_constraintEnd_toEndOf="@+id/categoryImage"
         app:layout_constraintStart_toStartOf="@+id/categoryImage"
         app:layout_constraintTop_toBottomOf="@+id/categoryImage" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline10"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.10" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline11"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.75" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
