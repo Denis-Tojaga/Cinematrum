@@ -209,7 +209,7 @@ public class ReservationActivity extends AppCompatActivity implements OnItemClic
 
         // Check passed data
         if (movieId == 0 || cinemaId == 0) {
-            Toast.makeText(this, "Error loading movie and cinema. Please try again", Toast.LENGTH_LONG);
+            Toast.makeText(this, "Error loading movie and cinema. Please try again", Toast.LENGTH_LONG).show();
         }
 
         Movie movie = new Movie();

@@ -61,6 +61,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements AdapterVi
     private List<Cinema> cinemaArrayList;
     private AlphaAnimation goBackButtonClick = new AlphaAnimation(0.3F, 0.1F);
     private boolean usingLocationService;
+    private int selectedCinemaId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -115,7 +116,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements AdapterVi
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(), ReservationActivity.class);
-                intent.putExtra(ReservationActivity.INTENT_CINEMA_ID, 1);
+                intent.putExtra(ReservationActivity.INTENT_CINEMA_ID, selectedCinemaId);
                 intent.putExtra(ReservationActivity.INTENT_MOVIE_ID, movieID);
                 startActivity(intent);
             }
@@ -193,12 +194,14 @@ public class MovieDetailsActivity extends AppCompatActivity implements AdapterVi
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
         String text = adapterView.getItemAtPosition(i).toString();
         //Toast.makeText(getParent().getApplicationContext(), text, Toast.LENGTH_SHORT).show();
+        selectedCinemaId = cinemaArrayList.get(i).getCinema_id();
         btnOpenReservation.setClickable(true);
 
     }
 
     @Override
     public void onNothingSelected(AdapterView<?> adapterView) {
+        selectedCinemaId = 0;
         btnOpenReservation.setClickable(false);
     }
 
