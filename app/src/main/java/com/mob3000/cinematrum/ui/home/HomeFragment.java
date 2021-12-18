@@ -284,6 +284,7 @@ public class HomeFragment extends Fragment {
         ArrayList<Movie> newMovies = DataAcessor.getMoviesFromLocation(getActivity(), loc, seekBar.getProgress());
         movieRecyclerView.setAdapter(new MovieAdapter(newMovies, getActivity(), movieClickListener));
         MovieList = newMovies;
+        _location = loc;
     }
 
      public void loadMoviesWithoutLocation() {
