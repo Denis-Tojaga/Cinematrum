@@ -52,6 +52,7 @@ public class TicketHistoryActivity extends AppCompatActivity {
 
     private AlphaAnimation goBackButtonClick = new AlphaAnimation(0.3F, 0.1F);
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -137,21 +138,6 @@ public class TicketHistoryActivity extends AppCompatActivity {
         }
     }
 
-
-    //logic for triggering the alarm when the notification needs to be sent
-    //TODO implement this logic when the user books the ticket and then call it for every movie that he didn't watched
-    private void MethodForNotifying(long timeForNotifying) {
-        Intent intent = new Intent(TicketHistoryActivity.this, NotificationReminderBroadcast.class);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(TicketHistoryActivity.this, 0, intent, 0);
-
-        //we get the alarm manager that will actually notify us
-        AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
-        long time = System.currentTimeMillis();
-
-        //not we call the alarm, which type is it, the time in which will we get notified, and what happens when we get notified
-        //RTC_WAKEUP - wakes up the device to fire the pending intent at the specified time
-        alarmManager.set(AlarmManager.RTC_WAKEUP, time + timeForNotifying, pendingIntent);
-    }
 
     @Override
     public void onBackPressed() {

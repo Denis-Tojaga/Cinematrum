@@ -21,6 +21,8 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -74,6 +76,8 @@ public class ReservationActivity extends AppCompatActivity implements OnItemClic
 
     private int currentSelectedRow = -1;
     private int currentSelectedSeat = -1;
+
+    int ID_AUTOINCREMENT = 1;
 
     View.OnClickListener chooseRowClickListener = new View.OnClickListener() {
         @Override
@@ -310,14 +314,7 @@ public class ReservationActivity extends AppCompatActivity implements OnItemClic
     private void CreateNotificationChannel() {
         //if the API level is 26 or higher we need to make a notification channel
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-
-            CharSequence notificationChannelName = "MovieNotificationChannel";
-            String description = "Channel for user notifications";
-            int importance = NotificationManager.IMPORTANCE_HIGH;
-
-            NotificationChannel channel = new NotificationChannel("MovieNotification", notificationChannelName, importance);
-            channel.setDescription(description);
-
+            NotificationChannel channel = new NotificationChannel("MovieNotification", "MovieNotificationChannel", NotificationManager.IMPORTANCE_DEFAULT);
             NotificationManager notificationManager = getSystemService(NotificationManager.class);
             notificationManager.createNotificationChannel(channel);
         }
@@ -325,6 +322,7 @@ public class ReservationActivity extends AppCompatActivity implements OnItemClic
 
     //creating a method that will convert the date to time and calculate the time for notifying the user
     private void ConvertTheDate(Date ticketDate) {
+
         try {
             //first make the formatter we want
             SimpleDateFormat formatter = new SimpleDateFormat("dd.MM.yyyy, HH:mm");
@@ -361,6 +359,8 @@ public class ReservationActivity extends AppCompatActivity implements OnItemClic
         //we get the alarm manager that will actually notify us
         AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
         long time = System.currentTimeMillis();
+        //tested with 10 seconds and it works
+        //long tenSeconds = 1000 * 10;
 
         //not we call the alarm, which type is it, the time in which will we get notified, and what happens when we get notified
         //RTC_WAKEUP - wakes up the device to fire the pending intent at the specified time

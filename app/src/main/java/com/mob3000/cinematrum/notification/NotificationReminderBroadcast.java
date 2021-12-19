@@ -11,7 +11,7 @@ import com.mob3000.cinematrum.R;
 
 public class NotificationReminderBroadcast extends BroadcastReceiver {
 
-    private int ID_AUTOINCREMENT = 1;
+    //private int ID_AUTOINCREMENT = 1;
     @Override
     public void onReceive(Context context, Intent intent) {
         //we are using the NotificationCompat.Builder to construct the notification details
@@ -28,8 +28,7 @@ public class NotificationReminderBroadcast extends BroadcastReceiver {
 
 
         //in order to notify us we need to set the id to be unique for each notification
-        notificationManager.notify(ID_AUTOINCREMENT,builder.build());
-        ID_AUTOINCREMENT++;
-
+        notificationManager.notify(200,builder.build());
+        //ID_AUTOINCREMENT++;
     }
 }
