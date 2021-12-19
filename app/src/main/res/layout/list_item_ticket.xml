@@ -17,6 +17,18 @@
         >
 
 
+        <TextView
+            android:id="@+id/txtMovieShowingTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:fontFamily="@font/trenda_regular"
+            android:text="Showing time"
+            android:textColor="@color/black"
+            android:textSize="@dimen/ticket_movie_row_seat_label"
+            app:layout_constraintStart_toStartOf="@+id/txtMovieReservedAt"
+            app:layout_constraintTop_toBottomOf="@+id/txtMovieReservedAt" />
+
         <ImageView
             android:id="@+id/imgMovieWallpaper"
             android:layout_width="@dimen/ticket_movie_img_width"
@@ -107,7 +119,7 @@
             android:id="@+id/txtMovieCinema"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/ticket_movie_label_marginTop"
+            android:layout_marginTop="8dp"
             android:fontFamily="@font/trenda_regular"
             android:text="Cinema"
             android:textColor="@color/black"
@@ -119,12 +131,11 @@
             android:id="@+id/txtMovieReservedAt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/ticket_movie_label_marginTop"
+            android:layout_marginTop="4dp"
             android:fontFamily="@font/trenda_regular"
             android:text="Reserved At"
             android:textColor="@color/black"
             android:textSize="@dimen/ticket_movie_row_seat_label"
-            app:layout_constraintBottom_toBottomOf="@+id/imgMovieWallpaper"
             app:layout_constraintStart_toStartOf="@+id/txtMovieCinema"
             app:layout_constraintTop_toBottomOf="@+id/txtMovieCinema" />
     </androidx.constraintlayout.widget.ConstraintLayout>

@@ -102,6 +102,8 @@ public class TicketsRecyclerViewAdapter extends RecyclerView.Adapter<TicketsRecy
         holder.txtMovieRowNumber.setText(Integer.toString(userTickets.get(position).getRowNumber()));
         holder.txtMovieSeatNumber.setText(Integer.toString(userTickets.get(position).getSeatNumber()));
         holder.txtMovieCinema.setText(cinemaObject.getName() + " " + cinemaObject.getName());
+        //TODO retrieve a timestamp from somewhere
+        holder.txtMovieShowingTime.setText("20:00h");
 
         //extracting only date without time from this value
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MMM/yyyy");
@@ -182,6 +184,7 @@ public class TicketsRecyclerViewAdapter extends RecyclerView.Adapter<TicketsRecy
         private TextView txtMovieSeatNumber;
         private TextView txtMovieCinema;
         private TextView txtMovieReservedAt;
+        private TextView txtMovieShowingTime;
 
 
         public ViewHolder(@NonNull View itemView) {
@@ -193,6 +196,7 @@ public class TicketsRecyclerViewAdapter extends RecyclerView.Adapter<TicketsRecy
             txtMovieSeatNumber = itemView.findViewById(R.id.txtMovieSeatNumber);
             txtMovieCinema = itemView.findViewById(R.id.txtMovieCinema);
             txtMovieReservedAt = itemView.findViewById(R.id.txtMovieReservedAt);
+            txtMovieShowingTime = itemView.findViewById(R.id.txtMovieShowingTime);
         }
     }
 
