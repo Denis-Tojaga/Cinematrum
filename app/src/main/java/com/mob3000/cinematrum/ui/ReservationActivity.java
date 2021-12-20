@@ -364,7 +364,7 @@ public class ReservationActivity extends AppCompatActivity implements OnItemClic
 
         //not we call the alarm, which type is it, the time in which will we get notified, and what happens when we get notified
         //RTC_WAKEUP - wakes up the device to fire the pending intent at the specified time
-        alarmManager.set(AlarmManager.RTC_WAKEUP, time + tenSeconds, pendingIntent);
+        alarmManager.set(AlarmManager.RTC_WAKEUP, time + timeForNotifying, pendingIntent);
     }
 
 }
