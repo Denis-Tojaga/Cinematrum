@@ -107,7 +107,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements AdapterVi
         txtRating.setText("Rating: " + movie.getRating());
         btnTrailer = findViewById(R.id.btnTrailer);
         wishlist = new ArrayList<>();
-        cinemaArrayList = DataAcessor.getCinemasForMovieFromLocation(this, _location, movieID, distance);
+        //cinemaArrayList = DataAcessor.getCinemasForMovieFromLocation(this, _location, movieID, distance);
         btnAddToWishlist = findViewById(R.id.btnAddToWishlist);
         btnOpenReservation = findViewById(R.id.btnBuy);
         spinner = findViewById(R.id.spinner);
@@ -153,9 +153,8 @@ public class MovieDetailsActivity extends AppCompatActivity implements AdapterVi
         });
         //setSpinnerAdapter();
 
-        // TODO: CHANGE REAL RADIUS from intent from Mainctivity
         if (usingLocationService)
-        cinemaArrayList = DataAcessor.getCinemasForMovieFromLocation(this, _location, movieID, 10);
+        cinemaArrayList = DataAcessor.getCinemasForMovieFromLocation(this, _location, movieID, distance);
         else cinemaArrayList = DataAcessor.getCinemasForMovie(this, movieID);
         setSpinnerAdapter();
 
