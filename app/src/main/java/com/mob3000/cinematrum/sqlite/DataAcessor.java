@@ -760,6 +760,9 @@ public class DataAcessor {
     public static ArrayList<Cinema> getCinemasForMovieFromLocation(Context ctx, Location location, int movieId, int radius) {
         ArrayList<Cinema> cinemas = new ArrayList<>();
 
+
+        if (radius >= 100)
+            radius = 10000;
         try {
 
             DatabaseHelper dbhelper = new DatabaseHelper(ctx);
@@ -821,6 +824,10 @@ public class DataAcessor {
     public static ArrayList<Movie> getMoviesFromLocation(Context ctx, Location location, int radius) {
 
         ArrayList<Movie> finalResult = new ArrayList<>();
+
+
+        if (radius >= 100)
+            radius = 10000;
         try {
             // Load all cinemas
             ArrayList<Cinema> allCinemas = getCinemas(ctx, "", "");
