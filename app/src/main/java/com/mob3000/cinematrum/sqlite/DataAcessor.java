@@ -22,7 +22,12 @@ import com.mob3000.cinematrum.helpers.Validator;
 
 import java.util.ArrayList;
 
-
+/*
+* Public class to access the SQLite database.
+* Static functions need current context ("this" in case of activity, "getActivity()" in case of fragment)
+* Don't create a new instance of the class, not needed.
+* Uses DatabaseHelper to access the database.
+* */
 public class DataAcessor {
 
     private static final String LOG_TAG = "DATAACESSOR";
