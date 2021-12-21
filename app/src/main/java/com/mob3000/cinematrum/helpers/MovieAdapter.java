@@ -56,11 +56,15 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
-        String picture = MovieList.get(position).getPicture();
-        String name = MovieList.get(position).getName();
+        if (MovieList.size()-1 >= position){
+            String picture = MovieList.get(position).getPicture();
+            String name = MovieList.get(position).getName();
 
-        holder.name.setText(name);
-        Picasso.get().load(picture).placeholder(R.drawable.custom_bacground).into(holder.picture);
+            holder.name.setText(name);
+            Picasso.get().load(picture).placeholder(R.drawable.custom_bacground).into(holder.picture);
+
+        }
+
     }
 
 
@@ -101,7 +105,19 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
         @Override
         protected void publishResults(CharSequence constraint, FilterResults results) {
             MovieList.clear();
-            MovieList.addAll((List) results.values);
+            if (results != null && results.values != null){
+                try{
+                    List<Movie> result = (List) results.values;
+                    if (result.size() > 0){
+                        MovieList.addAll((List) results.values);
+                    }
+                }
+                catch(Exception x){
+
+                }
+
+            }
+
             notifyDataSetChanged();
         }
     };
