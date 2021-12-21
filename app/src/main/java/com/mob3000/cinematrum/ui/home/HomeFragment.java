@@ -181,7 +181,7 @@ public class HomeFragment extends Fragment {
                 }
                 else
                 {
-                    MovieList = DataAcessor.getMovies(getActivity(), "","");
+                    MovieList = DataAcessor.getMoviesFromLocation(getActivity(), _location, seekBar.getProgress());
                     movieAdapter = new MovieAdapter(MovieList, getActivity(), movieClickListener);
                     movieRecyclerView.setAdapter(movieAdapter);
                 }
