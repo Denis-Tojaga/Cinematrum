@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background_theme"
+    tools:context=".ui.TicketHistoryActivity">
+
+    <TextView
+        android:id="@+id/txtTicketHistoryLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:fontFamily="@font/trenda_semibold"
+        android:letterSpacing="@dimen/account_screen_labels_letter_spacing"
+        android:text="@string/ticket_history_text"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:textSize="23sp"
+        app:layout_constraintEnd_toEndOf="@id/guideline16"
+        app:layout_constraintStart_toEndOf="@+id/guideline15"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <SearchView
+        android:id="@+id/svSearchInput"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintDimensionRatio="8:1"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/search_field_radius"
+        app:layout_constraintEnd_toEndOf="@id/guideline16"
+        app:layout_constraintStart_toStartOf="@id/guideline15"
+        app:layout_constraintTop_toBottomOf="@+id/txtTicketHistoryLabel" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recViewTickets"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@id/guideline16"
+        app:layout_constraintStart_toStartOf="@id/guideline15"
+        app:layout_constraintTop_toBottomOf="@+id/svSearchInput" />
+
+    <ImageButton
+        android:id="@+id/btnGoBack"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:background="@color/background_theme"
+        android:minWidth="48dp"
+        android:minHeight="48dp"
+        app:layout_constraintDimensionRatio="1:1"
+        app:layout_constraintEnd_toStartOf="@+id/guideline15"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/go_back_icon"
+        tools:ignore="ContentDescription,SpeakableTextPresentCheck" />
+
+    <ImageView
+        android:id="@+id/imgErrorIcon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/recViewTickets"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/svSearchInput"
+        app:layout_constraintVertical_bias="0.26"
+        app:srcCompat="@drawable/error_icon" />
+
+    <TextView
+        android:id="@+id/txtErrorMessage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/error_message_margin_top"
+        android:fontFamily="@font/trenda_bold"
+        android:text="@string/error_message_no_tickets"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:textSize="20sp"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="@+id/imgErrorIcon"
+        app:layout_constraintHorizontal_bias="0.502"
+        app:layout_constraintStart_toStartOf="@+id/imgErrorIcon"
+        app:layout_constraintTop_toBottomOf="@+id/imgErrorIcon" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline15"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.1" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline16"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.9" />
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="..\:/Users/lepir/Documents/Cinematrum/app/src/main/res/layout/activity_movie_details.xml" value="0.22" />
+        <entry key="..\:/Users/lepir/Documents/Cinematrum/app/src/main/res/layout/activity_ticket_history.xml" value="0.264" />
+        <entry key="..\:/Users/lepir/Documents/Cinematrum/app/src/main/res/layout/fragment_home.xml" value="0.1" />
+        <entry key="..\:/Users/lepir/Documents/Cinematrum/app/src/main/res/layout/fragment_wishlist.xml" value="0.291213768115942" />
+        <entry key="..\:/Users/lepir/Documents/Cinematrum/app/src/main/res/layout/home_fragment1_fragment.xml" value="0.291213768115942" />
+        <entry key="..\:/Users/lepir/Documents/Cinematrum/app/src/main/res/layout/list_item_reservation.xml" value="0.291213768115942" />
+        <entry key="..\:/Users/lepir/Documents/Cinematrum/app/src/main/res/layout/list_item_ticket.xml" value="0.291213768115942" />
+        <entry key="..\:/Users/lepir/Documents/Cinematrum/app/src/main/res/layout/wishlist_itemview.xml" value="0.20520833333333333" />
+      </map>
+    </option>
+  </component>
+  <component name="ExternalStorageConfigurationManager" enabled="true" />
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="11" project-jdk-type="JavaSDK" />
+</project>

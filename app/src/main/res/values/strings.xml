@@ -3,4 +3,44 @@
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
+    <string name="button_signup">Sign up</string>
+    <string name="button_signin">Sign in</string>
+    <string name="welcome_activity_label">Book your ticket</string>
+    <string name="email_input_hint">Email</string>
+    <string name="username_input_hint">Username</string>
+    <string name="password_input_hint">Password</string>
+    <string name="signin_action_title">Sign In</string>
+    <string name="signup_action_title">Sign Up</string>
+    <string name="account_screen_title">Welcome</string>
+    <string name="account_screen_subheading">Information</string>
+    <string name="ticket_button_text">Ticket history</string>
+    <string name="logout_button_text">Log out</string>
+    <string name="ticket_history_text">Ticket history</string>
+    <string name="ticket_row">Row:</string>
+    <string name="ticket_seat">Seat:</string>
+    <string name="alertdialog_title">User approval</string>
+    <string name="alertdialog_message">Some data has changed, do You want to update?</string>
+    <string name="update_success_toast">Data successfully updated!</string>
+    <string name="error_message_no_tickets">No tickets found!</string>
+    <string name="Welcome">Welcome Denis, pick a movie.</string>
+    <string name="SW">Tap To Search</string>
+    <string name="description">When Gru, the world\'s most super-bad turned super-dad has been recruited by a team of officials to stop lethal muscle and a host of Gru\'s own, He has to fight back with new gadgetry, cars, and more minion madness.</string>
+
+
+
+    <string name="title_wishlist">Wishlist</string>
+    <string name="title_account">Account</string>
+
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="wishlist">Wishlist</string>
+    <string name="label_account">Account</string>
+    <string name="buy_ticket">Buy ticket</string>
+    <string name="seats_available">Seats available:</string>
+    <string name="buy_now">Buy now</string>
+    <string name="row">Row</string>
+    <string name="seat">Seat</string>
+    <string name="label_myWishlist">My wishlist</string>
+
 </resources>
