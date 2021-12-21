@@ -3,7 +3,11 @@ package com.mob3000.cinematrum.sqlite;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-
+/*
+* Structure and definition of local SQLite database.
+* If table names or columns of tables are needed anywhere, use static strings for uniformity of names.
+* Sample data is generated thorough SQL commands in INSERT_XXX strings.
+* */
 public class DatabaseHelper extends SQLiteOpenHelper {
 
 
@@ -59,7 +63,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String COLUMN_WISHLIST_wishlistId = "wishlist_id";
     public static final String COLUMN_WISHLIST_userId = "user_id";
     public static final String COLUMN_WISHLIST_movieId = "movie_id";
-    public static final String COLUMN_WISHLIST_hallId = "hall_id"; // TODO Why so we save the hall ID for a wishilist entry?
+    public static final String COLUMN_WISHLIST_hallId = "hall_id";
     // COLUMNS - CATEGORY
     public static final String COLUMN_CATEGORY_categoryId = "category_id";
     public static final String COLUMN_CATEGORY_name = "name";
@@ -370,7 +374,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
         // super(context, null, null, DATABASE_VERSION);
         // Passing no name => Database wont be saved as a file after closing. Good for testing, no need to upgrade db everytime.
-        // TODO: Fix for final imlementation
     }
 
     @Override
@@ -387,7 +390,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(CREATE_TICKET_TABLE);
         db.execSQL(CREATE_LOGGEDINUSER_TABLE);
 
-        /* INSERT FAKE DATA*/
+        /* INSERT DEMO DATA*/
         db.execSQL(INSERT_MOVIE_TABLE);
         db.execSQL(INSERT_CINEMA_TABLE);
         db.execSQL(INSERT_CATEGORIES_TABLE);

@@ -49,7 +49,6 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
-        //TODO picture property needs to be added to the database
         String picture = CategoryList.get(position).getImageUrl();
         System.out.println(picture);
         String name = CategoryList.get(position).getName();

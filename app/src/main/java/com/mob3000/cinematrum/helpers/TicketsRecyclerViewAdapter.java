@@ -21,8 +21,11 @@ import com.mob3000.cinematrum.dataModels.*;
 import com.mob3000.cinematrum.sqlite.DataAcessor;
 import com.mob3000.cinematrum.sqlite.DatabaseHelper;
 
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 
 
 public class TicketsRecyclerViewAdapter extends RecyclerView.Adapter<TicketsRecyclerViewAdapter.ViewHolder> implements Filterable {
@@ -102,13 +105,15 @@ public class TicketsRecyclerViewAdapter extends RecyclerView.Adapter<TicketsRecy
         holder.txtMovieRowNumber.setText(Integer.toString(userTickets.get(position).getRowNumber()));
         holder.txtMovieSeatNumber.setText(Integer.toString(userTickets.get(position).getSeatNumber()));
         holder.txtMovieCinema.setText(cinemaObject.getName() + " " + cinemaObject.getName());
-        //TODO retrieve a timestamp from somewhere
-        holder.txtMovieShowingTime.setText("20:00h");
 
         //extracting only date without time from this value
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MMM/yyyy");
         String ticketDate = dateFormat.format(userTickets.get(position).getReservedAt());
         holder.txtMovieReservedAt.setText(ticketDate);
+
+
+        DateFormat timeFormat = new SimpleDateFormat("HH:mm");
+        holder.txtMovieShowingTime.setText(timeFormat.format(mcObject.getDate()));
     }
 
 

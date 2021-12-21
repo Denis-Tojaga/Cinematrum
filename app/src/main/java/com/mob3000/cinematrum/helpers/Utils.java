@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import androidx.appcompat.app.AlertDialog;
 
 public class Utils {
+    // show simple OK Alert with title and message
     public static void showOkAlert(Context ctx, String title, String message) {
         new AlertDialog.Builder(ctx)
                 .setTitle(title)

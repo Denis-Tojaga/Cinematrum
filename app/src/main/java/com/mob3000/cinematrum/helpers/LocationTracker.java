@@ -16,6 +16,13 @@ import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+
+/*
+* LOCATIONTRACKER: Class to load the current location of the device. Call checkPermission to check, if location services
+* are enabled.
+* Class implementing LocationTracker needs to implement LocationListener interface. onLocationChanged of interface
+* gets called, when location has been fetched.
+* */
 public class LocationTracker extends Service implements LocationListener {
 
     private static int LOCATION_CHANGED_MIN_DISTANCE = 10; // 10 meters

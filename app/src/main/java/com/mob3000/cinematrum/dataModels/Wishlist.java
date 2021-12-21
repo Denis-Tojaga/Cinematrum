@@ -4,9 +4,6 @@ import java.io.Serializable;
 
 public class Wishlist implements Serializable {
 
-    // TODO: user_id instead of User object?
-    // Does everyone know what one item of the wishlist represents?
-
     private int wishlist_id;
     private int user_id;
     private int movie_id;

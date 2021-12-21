@@ -22,7 +22,12 @@ import com.mob3000.cinematrum.helpers.Validator;
 
 import java.util.ArrayList;
 
-
+/*
+* Public class to access the SQLite database.
+* Static functions need current context ("this" in case of activity, "getActivity()" in case of fragment)
+* Don't create a new instance of the class, not needed.
+* Uses DatabaseHelper to access the database.
+* */
 public class DataAcessor {
 
     private static final String LOG_TAG = "DATAACESSOR";
@@ -196,7 +201,7 @@ public class DataAcessor {
                 int indexWishlistId = c.getColumnIndex(DatabaseHelper.COLUMN_WISHLIST_wishlistId);
                 int indexUserId = c.getColumnIndex(DatabaseHelper.COLUMN_WISHLIST_userId);
                 int indexMovieId = c.getColumnIndex(DatabaseHelper.COLUMN_WISHLIST_movieId);
-                int indexHallId = c.getColumnIndex(DatabaseHelper.COLUMN_WISHLIST_hallId); // TODO Do we need this?
+                int indexHallId = c.getColumnIndex(DatabaseHelper.COLUMN_WISHLIST_hallId);
                 do {
                     Wishlist tmpWishlist = new Wishlist();
                     tmpWishlist.setWishlist_id(c.getInt(indexWishlistId));
@@ -370,7 +375,6 @@ public class DataAcessor {
         }
     }
 
-    //TODO check this method
     public static ArrayList<Cinema> getCinemas(Context ctx, String selectColumn, String selectValue) {
         ArrayList<Cinema> cinemas = new ArrayList<>();
         DatabaseHelper dbhelper = new DatabaseHelper(ctx);
@@ -401,7 +405,6 @@ public class DataAcessor {
                     tmpCinema.setName(c.getString(indexName));
                     tmpCinema.setLatitude(c.getFloat(indexLatitude));
                     tmpCinema.setLongitude(c.getFloat(indexLongitude));
-                    //TODO load halls with own function like GetHalls
                     cinemas.add(tmpCinema);
                 }
                 while (c.moveToNext());
@@ -760,6 +763,9 @@ public class DataAcessor {
     public static ArrayList<Cinema> getCinemasForMovieFromLocation(Context ctx, Location location, int movieId, int radius) {
         ArrayList<Cinema> cinemas = new ArrayList<>();
 
+
+        if (radius >= 100)
+            radius = 10000;
         try {
 
             DatabaseHelper dbhelper = new DatabaseHelper(ctx);
@@ -821,6 +827,10 @@ public class DataAcessor {
     public static ArrayList<Movie> getMoviesFromLocation(Context ctx, Location location, int radius) {
 
         ArrayList<Movie> finalResult = new ArrayList<>();
+
+
+        if (radius >= 100)
+            radius = 10000;
         try {
             // Load all cinemas
             ArrayList<Cinema> allCinemas = getCinemas(ctx, "", "");
@@ -918,7 +928,6 @@ public class DataAcessor {
         return contactedNames;
     }
 
-    // TODO FINISH!!
 
     public static ArrayList<Category> getCategories(Context ctx, String selectColumn, String selectValue) {
 
@@ -949,7 +958,6 @@ public class DataAcessor {
                     tmpCat.setName(c.getString(indexName));
                     tmpCat.setCategory_id(c.getInt(indexCategorieId));
                     tmpCat.setImageUrl(c.getString(indexImageUrl));
-                    // TODO: Load Movies with own function (like getMovies)
                     categories.add(tmpCat);
 
                 } while (c.moveToNext());
@@ -991,7 +999,6 @@ public class DataAcessor {
                     Category tmpCat = new Category();
                     tmpCat.setCategory_id(c.getInt(indexCategoryId));
                     tmpCat.setName(c.getString(indexCategoryName));
-                    // TODO: LOAD ALL MOVIES FROM ONE CATEGORIE (Needs one function!!)
                     categories.add(tmpCat);
                 }
                 while (c.moveToNext());

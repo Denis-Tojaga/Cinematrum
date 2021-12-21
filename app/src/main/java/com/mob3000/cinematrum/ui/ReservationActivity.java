@@ -360,7 +360,7 @@ public class ReservationActivity extends AppCompatActivity implements OnItemClic
         AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
         long time = System.currentTimeMillis();
         //tested with 10 seconds and it works
-        //long tenSeconds = 1000 * 10;
+        long tenSeconds = 1000 * 10;
 
         //not we call the alarm, which type is it, the time in which will we get notified, and what happens when we get notified
         //RTC_WAKEUP - wakes up the device to fire the pending intent at the specified time

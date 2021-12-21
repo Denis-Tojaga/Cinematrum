@@ -57,7 +57,7 @@
         android:id="@+id/textView_categories"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="6dp"
         android:ellipsize="end"
         android:fontFamily="@font/trenda_regular"
         android:maxLines="1"
