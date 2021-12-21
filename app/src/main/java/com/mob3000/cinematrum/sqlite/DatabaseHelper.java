@@ -63,7 +63,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String COLUMN_WISHLIST_wishlistId = "wishlist_id";
     public static final String COLUMN_WISHLIST_userId = "user_id";
     public static final String COLUMN_WISHLIST_movieId = "movie_id";
-    public static final String COLUMN_WISHLIST_hallId = "hall_id"; // TODO Why so we save the hall ID for a wishilist entry?
+    public static final String COLUMN_WISHLIST_hallId = "hall_id";
     // COLUMNS - CATEGORY
     public static final String COLUMN_CATEGORY_categoryId = "category_id";
     public static final String COLUMN_CATEGORY_name = "name";

@@ -201,7 +201,7 @@ public class DataAcessor {
                 int indexWishlistId = c.getColumnIndex(DatabaseHelper.COLUMN_WISHLIST_wishlistId);
                 int indexUserId = c.getColumnIndex(DatabaseHelper.COLUMN_WISHLIST_userId);
                 int indexMovieId = c.getColumnIndex(DatabaseHelper.COLUMN_WISHLIST_movieId);
-                int indexHallId = c.getColumnIndex(DatabaseHelper.COLUMN_WISHLIST_hallId); // TODO Do we need this?
+                int indexHallId = c.getColumnIndex(DatabaseHelper.COLUMN_WISHLIST_hallId);
                 do {
                     Wishlist tmpWishlist = new Wishlist();
                     tmpWishlist.setWishlist_id(c.getInt(indexWishlistId));
@@ -375,7 +375,6 @@ public class DataAcessor {
         }
     }
 
-    //TODO check this method
     public static ArrayList<Cinema> getCinemas(Context ctx, String selectColumn, String selectValue) {
         ArrayList<Cinema> cinemas = new ArrayList<>();
         DatabaseHelper dbhelper = new DatabaseHelper(ctx);
@@ -406,7 +405,6 @@ public class DataAcessor {
                     tmpCinema.setName(c.getString(indexName));
                     tmpCinema.setLatitude(c.getFloat(indexLatitude));
                     tmpCinema.setLongitude(c.getFloat(indexLongitude));
-                    //TODO load halls with own function like GetHalls
                     cinemas.add(tmpCinema);
                 }
                 while (c.moveToNext());
@@ -930,7 +928,6 @@ public class DataAcessor {
         return contactedNames;
     }
 
-    // TODO FINISH!!
 
     public static ArrayList<Category> getCategories(Context ctx, String selectColumn, String selectValue) {
 
@@ -961,7 +958,6 @@ public class DataAcessor {
                     tmpCat.setName(c.getString(indexName));
                     tmpCat.setCategory_id(c.getInt(indexCategorieId));
                     tmpCat.setImageUrl(c.getString(indexImageUrl));
-                    // TODO: Load Movies with own function (like getMovies)
                     categories.add(tmpCat);
 
                 } while (c.moveToNext());
@@ -1003,7 +999,6 @@ public class DataAcessor {
                     Category tmpCat = new Category();
                     tmpCat.setCategory_id(c.getInt(indexCategoryId));
                     tmpCat.setName(c.getString(indexCategoryName));
-                    // TODO: LOAD ALL MOVIES FROM ONE CATEGORIE (Needs one function!!)
                     categories.add(tmpCat);
                 }
                 while (c.moveToNext());
