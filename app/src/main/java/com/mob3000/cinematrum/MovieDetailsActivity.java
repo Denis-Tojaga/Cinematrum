@@ -155,7 +155,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements AdapterVi
 
         // TODO: CHANGE REAL RADIUS from intent from Mainctivity
         if (usingLocationService)
-        cinemaArrayList = DataAcessor.getCinemasForMovieFromLocation(this, _location, movieID, 10);
+        cinemaArrayList = DataAcessor.getCinemasForMovieFromLocation(this, _location, movieID, distance);
         else cinemaArrayList = DataAcessor.getCinemasForMovie(this, movieID);
         setSpinnerAdapter();
 
@@ -193,7 +193,6 @@ public class MovieDetailsActivity extends AppCompatActivity implements AdapterVi
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
         String text = adapterView.getItemAtPosition(i).toString();
-        //Toast.makeText(getParent().getApplicationContext(), text, Toast.LENGTH_SHORT).show();
         selectedCinemaId = cinemaArrayList.get(i).getCinema_id();
         btnOpenReservation.setClickable(true);
 

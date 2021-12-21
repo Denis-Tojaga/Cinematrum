@@ -4,6 +4,7 @@ import static android.content.Context.MODE_PRIVATE;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.ModuleInfo;
 import android.graphics.PorterDuff;
 import android.location.Location;
 import android.location.LocationListener;
@@ -68,6 +69,10 @@ public class HomeFragment extends Fragment {
     private HomeFragment1FragmentBinding binding;
     private boolean usingLocationService;
     private Location _location;
+    private MainActivity mainActivity;
+    private boolean checkSearch;
+    private boolean checkCategory;
+    private int categoryPosition;
 
     public static HomeFragment newInstance() {
         return new HomeFragment();
@@ -118,7 +123,8 @@ public class HomeFragment extends Fragment {
         // 4. Fragment second time opened with location service => restore location out of savedInstanceState and reload movies directly with locationn
 
         // Reopening Fragment without closing Activity
-        MainActivity mainActivity =(MainActivity) getActivity();
+        mainActivity =(MainActivity) getActivity();
+        mainActivity.distance=80;
         if (mainActivity.usingLocationService && mainActivity._location != null){
             _location = mainActivity._location;
             loadMoviesWithLocation(mainActivity._location);
@@ -131,7 +137,6 @@ public class HomeFragment extends Fragment {
         else if (mainActivity.usingLocationService){
             turnOnLoading();
         }
-
     }
 
 
@@ -140,12 +145,12 @@ public class HomeFragment extends Fragment {
         CategoryList = DataAcessor.getCategories(getActivity(), "", "");
         txtWelcome = root.findViewById(R.id.txtWelcome);
         txtWelcome.setText("Welcome, " + user.getName() + " pick a movie");
-
-        //TODO when the slider is moved, take the location and use if for the method that loads all the movies inside that specific radius
         seekBarValue = root.findViewById(R.id.seekBarValue);
         seekBar = root.findViewById(R.id.seekBar);
         searchView = root.findViewById(R.id.searchbar);
         seekBar.setProgress(80);
+        checkSearch=false;
+        checkCategory=false;
         seekBar.getProgressDrawable().setColorFilter(getResources().getColor(R.color.button_background), android.graphics.PorterDuff.Mode.SRC_IN);
         seekBar.getThumb().setColorFilter(getResources().getColor(R.color.button_background), PorterDuff.Mode.SRC_ATOP);
         seekBarValue.setText(String.valueOf(seekBar.getProgress() + " km"));
@@ -169,9 +174,18 @@ public class HomeFragment extends Fragment {
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-                ArrayList<Movie> newMovies = DataAcessor.getMoviesFromLocation(getActivity(), _location, seekBar.getProgress());
-                movieRecyclerView.setAdapter(new MovieAdapter(newMovies, getActivity(), movieClickListener));
-
+                if(seekBar.getProgress()==100) {
+                    MovieList = DataAcessor.getMoviesFromLocation(getActivity(), _location, seekBar.getProgress());
+                    movieAdapter = new MovieAdapter(MovieList, getActivity(), movieClickListener);
+                    movieRecyclerView.setAdapter(movieAdapter);
+                }
+                else
+                {
+                    MovieList = DataAcessor.getMovies(getActivity(), "","");
+                    movieAdapter = new MovieAdapter(MovieList, getActivity(), movieClickListener);
+                    movieRecyclerView.setAdapter(movieAdapter);
+                }
+                mainActivity.distance = seekBar.getProgress();
             }
         });
 
@@ -188,7 +202,12 @@ public class HomeFragment extends Fragment {
 
             @Override
             public boolean onQueryTextChange(String s) {
-                movieAdapter.getFilter().filter(s);
+                    movieAdapter.getFilter().filter(s);
+                    movieRecyclerView.setAdapter(movieAdapter);
+
+                if(s.equals("")) checkSearch=false;
+                else checkSearch=true;
+                checkFilter();
                 return false;
             }
         });
@@ -218,7 +237,6 @@ public class HomeFragment extends Fragment {
                 Intent intent = new Intent(getActivity(), MovieDetailsActivity.class);
                 intent.putExtra("movieID", MovieList.get(position).getMovie_id());
                 intent.putExtra("distance", seekBar.getProgress());
-                MainActivity mainActivity = (MainActivity)getActivity();
                 intent.putExtra("location", mainActivity._location);
                 intent.putExtra("usingLocationService", mainActivity.usingLocationService);
                 startActivity(intent);
@@ -230,36 +248,35 @@ public class HomeFragment extends Fragment {
         categoryClickListener = new CategoryAdapter.CategoryClickListener() {
             @Override
             public void onClick(View v, int position) {
+
                 if (selectedView == v) {
                     selectedView.setBackgroundResource(R.drawable.category_background);
                     selectedView = null;
                     movieAdapter.categoryFilter.filter("All");
+                    movieRecyclerView.setAdapter(movieAdapter);
                 } else if (selectedView == null) {
                     selectedView = v;
+                    movieAdapter.getItemCount();
                     selectedView.setBackgroundResource(R.drawable.category_background_light);
                     movieAdapter.categoryFilter.filter(CategoryList.get(position).getName());
+                    movieRecyclerView.setAdapter(movieAdapter);
+
                 } else if (selectedView != v && selectedView != null) {
                     v.setBackgroundResource(R.drawable.category_background_light);
                     selectedView.setBackgroundResource(R.drawable.category_background);
                     selectedView = v;
                     movieAdapter.categoryFilter.filter(CategoryList.get(position).getName());
+                    movieRecyclerView.setAdapter(movieAdapter);
+
                 }
+                if(selectedView==null) checkCategory=false;
+                else checkCategory=true;
+                checkFilter();
+
             }
         };
     }
 
-
-    /*void LoadCategoryImages()
-            {
-                imageView=root.findViewById(R.id.romanceButton);
-                Picasso.get().load("https://thoughtcatalog.com/wp-content/uploads/2013/09/istock_000015777770medium2.jpg").placeholder(R.drawable.category_icons).into(imageView);
-                imageView=root.findViewById(R.id.comedyButton);
-                Picasso.get().load("https://i.pinimg.com/originals/ef/f8/b9/eff8b9e41133bd9b2b8b733c56b2cbea.jpg").placeholder(R.drawable.category_icons).into(imageView);
-                imageView=root.findViewById(R.id.dramaButton);
-                Picasso.get().load("https://miro.medium.com/max/1000/1*T-544XBLkxSr4y_aAo5OfQ.jpeg").placeholder(R.drawable.category_icons).into(imageView);
-                imageView=root.findViewById(R.id.horrorButton);
-                Picasso.get().load("https://i.insider.com/5e5036b5a9f40c18895e8d88?width=700").placeholder(R.drawable.category_icons).into(imageView);
-            }*/
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -280,17 +297,23 @@ public class HomeFragment extends Fragment {
         movieRecyclerView.setVisibility(View.VISIBLE);
     }
 
+    public void checkFilter()
+    {
+        if (!checkCategory && !checkSearch)
+            loadMoviesWithLocation(_location);
+    }
+
     public void loadMoviesWithLocation(Location loc) {
-        ArrayList<Movie> newMovies = DataAcessor.getMoviesFromLocation(getActivity(), loc, seekBar.getProgress());
-        movieRecyclerView.setAdapter(new MovieAdapter(newMovies, getActivity(), movieClickListener));
-        MovieList = newMovies;
+        MovieList = DataAcessor.getMoviesFromLocation(getActivity(), loc, seekBar.getProgress());
+        movieAdapter = new MovieAdapter(MovieList, getActivity(), movieClickListener);
+        movieRecyclerView.setAdapter(movieAdapter);
         _location = loc;
     }
 
      public void loadMoviesWithoutLocation() {
-        ArrayList<Movie> newMovies = DataAcessor.getMovies(getActivity(), "", "");
-        movieRecyclerView.setAdapter(new MovieAdapter(newMovies, getActivity(), movieClickListener));
-        MovieList = newMovies;
+        MovieList = DataAcessor.getMovies(getActivity(), "", "");
+         movieAdapter = new MovieAdapter(MovieList, getActivity(), movieClickListener);
+         movieRecyclerView.setAdapter(movieAdapter);
     }
 
 

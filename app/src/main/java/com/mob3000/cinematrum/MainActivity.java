@@ -25,6 +25,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
     private static int LOCATION_CHANGED_MIN_DISTANCE = 10; // 10 meters
     private static int LOCATION_CHANGED_MIN_TIME = 1000 * 60; // 1 minute
     public Location _location;
+    public int distance;
     public boolean usingLocationService;
     private ActivityMainBinding binding;
     private User loggedUser;

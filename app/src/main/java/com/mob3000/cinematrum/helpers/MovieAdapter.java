@@ -22,6 +22,7 @@ import com.mob3000.cinematrum.dataModels.Category;
 import com.mob3000.cinematrum.dataModels.Movie;
 import com.mob3000.cinematrum.dataModels.MoviesCinemas;
 import com.mob3000.cinematrum.R;
+import com.mob3000.cinematrum.sqlite.DataAcessor;
 import com.squareup.picasso.Picasso;
 
 import java.lang.reflect.Array;
@@ -33,7 +34,7 @@ import java.util.Locale;
 public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> implements Filterable
 {
 
-    private ArrayList<Movie> MovieList;
+    public ArrayList<Movie> MovieList;
     private MovieClickListener listener;
     private ArrayList<Movie> MovieListAll;
 
@@ -90,6 +91,10 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
             }
             FilterResults results = new FilterResults();
             results.values = filteredList;
+            MovieList.clear();
+            MovieList.addAll((List) results.values);
+            MovieListAll = MovieList;
+            notifyDataSetChanged();
             return results;
         }
 
@@ -123,6 +128,16 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
             }
             FilterResults results = new FilterResults();
             results.values = filteredList;
+            MovieList.clear();
+            if(constraint!="All") {
+                MovieList.addAll((List) results.values);
+                MovieListAll = MovieList;
+            }
+            else {
+                MovieList.addAll(MovieListAll);
+                MovieListAll = MovieList;
+            }
+            notifyDataSetChanged();
             return results;
         }
 

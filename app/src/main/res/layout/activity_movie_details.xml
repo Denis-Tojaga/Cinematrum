@@ -17,7 +17,7 @@
         android:fontFamily="@font/trenda_regular"
         android:text="Categories"
         android:textColor="#C6BCBC"
-        android:textSize="15sp"
+        android:textSize="@dimen/movie_details_screen_categories"
         app:layout_constraintStart_toStartOf="@+id/guideline13"
         app:layout_constraintTop_toBottomOf="@+id/txtRating" />
 
@@ -49,7 +49,7 @@
         android:text="Movie Details"
         android:textAlignment="center"
         android:textColor="@color/white"
-        android:textSize="17sp"
+        android:textSize="@dimen/movie_details_screen_title"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -86,7 +86,7 @@
                 android:justificationMode="inter_word"
                 android:text="Description"
                 android:textColor="@color/white"
-                android:textSize="15sp" />
+                android:textSize="@dimen/movie_details_screen_description_text" />
 
         </LinearLayout>
 
@@ -125,7 +125,7 @@
         android:text="Description:"
         android:textAlignment="center"
         android:textColor="@color/white"
-        android:textSize="20sp"
+        android:textSize="@dimen/movie_details_screen_description"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="@+id/guideline13"
         app:layout_constraintTop_toBottomOf="@+id/txtMovieTitle" />
@@ -175,7 +175,7 @@
         android:text="WATCH\nTRAILER"
         android:textAlignment="center"
         android:textColor="@color/white"
-        android:textSize="8sp"
+        android:textSize="@dimen/movie_details_screen_button_text"
         app:backgroundTint="@color/tint"
         app:layout_constraintDimensionRatio="3:1"
         app:layout_constraintEnd_toEndOf="parent"
@@ -195,7 +195,7 @@
         android:text="ADD TO\nWISHLIST"
         android:textAlignment="center"
         android:textColor="@color/white"
-        android:textSize="8sp"
+        android:textSize="@dimen/movie_details_screen_button_text"
         app:backgroundTint="@color/tint"
         app:layout_constraintDimensionRatio="3:1"
         app:layout_constraintEnd_toEndOf="parent"
@@ -210,7 +210,7 @@
         android:fontFamily="@font/trenda_regular"
         android:text="Rating"
         android:textColor="#C6BCBC"
-        android:textSize="15sp"
+        android:textSize="@dimen/movie_details_screen_rating"
         app:layout_constraintStart_toStartOf="@+id/guideline13"
         app:layout_constraintTop_toBottomOf="@+id/moviePoster" />
 
@@ -223,7 +223,7 @@
         android:fontFamily="@font/trenda_regular"
         android:text="Duration"
         android:textColor="#C6BCBC"
-        android:textSize="15sp"
+        android:textSize="@dimen/movie_details_screen_duration"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/moviePoster" />
 
@@ -263,38 +263,4 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         app:layout_constraintGuide_percent="0.9" />
-    <!--
-          <TextView
-          android:id="@+id/txtCategory"
-          android:layout_width="147dp"
-          android:layout_height="wrap_content"
-          android:layout_alignParentStart="true"
-          android:layout_alignParentTop="true"
-          android:layout_alignParentEnd="true"
-          android:layout_alignParentBottom="true"
-          android:layout_marginStart="47dp"
-          android:layout_marginTop="368dp"
-          android:layout_marginEnd="217dp"
-          android:layout_marginBottom="334dp"
-          android:text="Genre: Comedy"
-          android:textColor="@android:color/darker_gray"
-          android:textSize="20dp" />
-
-          <TextView
-          android:id="@+id/txtRating"
-          android:layout_width="wrap_content"
-          android:layout_height="34dp"
-          android:layout_alignParentStart="true"
-          android:layout_alignParentTop="true"
-          android:layout_alignParentEnd="true"
-          android:layout_alignParentBottom="true"
-          android:layout_marginStart="226dp"
-          android:layout_marginTop="368dp"
-          android:layout_marginEnd="43dp"
-          android:layout_marginBottom="328dp"
-          android:text="Rating: 8.7 / 10"
-          android:textColor="@android:color/darker_gray"
-          android:textSize="20dp" />
-
-               -->
 </androidx.constraintlayout.widget.ConstraintLayout>

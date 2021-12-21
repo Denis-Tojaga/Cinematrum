@@ -24,8 +24,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
     private ArrayList<Category> CategoryList;
     private CategoryAdapter.CategoryClickListener listener;
 
-    public CategoryAdapter(ArrayList<Category> CategoryList, Context context, CategoryClickListener listener)
-    {
+    public CategoryAdapter(ArrayList<Category> CategoryList, Context context, CategoryClickListener listener) {
         this.CategoryList = CategoryList;
         this.listener = listener;
     }
@@ -33,6 +32,11 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
     @Override
     public Filter getFilter() {
         return null;
+    }
+
+    public Category getItem(int position)
+    {
+        return CategoryList.get(position);
     }
 
     @NonNull

@@ -16,6 +16,7 @@
         android:layout_height="0dp"
         app:layout_constraintDimensionRatio="8:1"
         android:layout_marginTop="10dp"
+        app:flow_verticalAlign="center"
         android:background="@drawable/searchviewbackground"
         android:iconifiedByDefault="false"
         android:queryBackground="@android:color/transparent"
@@ -32,7 +33,7 @@
         android:fontFamily="@font/trenda_regular"
         android:text="Welcome, pick a movie"
         android:textColor="#FFFFFF"
-        android:textSize="15sp"
+        android:textSize="@dimen/home_screen_all_texts"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -45,7 +46,7 @@
         android:fontFamily="@font/trenda_regular"
         android:text="Airing this month:"
         android:textColor="#FFFFFF"
-        android:textSize="15sp"
+        android:textSize="@dimen/home_screen_all_texts"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/recyclerViewCategories" />
@@ -60,7 +61,7 @@
         android:text="Choose the Distance"
         android:textAlignment="center"
         android:textColor="#FFFFFF"
-        android:textSize="15sp"
+        android:textSize="@dimen/home_screen_all_texts"
         app:layout_constraintEnd_toStartOf="@+id/seekBar"
         app:layout_constraintStart_toStartOf="@+id/guidelineLeft"
         app:layout_constraintTop_toBottomOf="@+id/searchbar" />
@@ -98,7 +99,7 @@
         android:fontFamily="@font/trenda_regular"
         android:text="TextView"
         android:textColor="@color/white"
-        android:textSize="15sp"
+        android:textSize="@dimen/home_screen_all_texts"
         app:layout_constraintEnd_toStartOf="@+id/guidelineRight"
         app:layout_constraintStart_toEndOf="@+id/seekBar"
         app:layout_constraintTop_toBottomOf="@+id/searchbar" />
@@ -131,6 +132,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
         android:text="Loading..."
+        android:textSize="@dimen/home_screen_all_texts"
         app:layout_constraintEnd_toEndOf="@+id/progressBarLoading"
         app:layout_constraintStart_toStartOf="@+id/progressBarLoading"
         app:layout_constraintTop_toBottomOf="@+id/progressBarLoading" />

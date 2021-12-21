@@ -106,4 +106,20 @@
     <dimen name="reservation_fontSize_main">20sp</dimen>
     <dimen name="reservation_fontSize_labels">12sp</dimen>
 
+
+
+    <!-- homescreen dimensions -->
+    <dimen name="home_screen_all_texts">15sp</dimen>
+
+    <!-- movie details screen dimensions -->
+    <dimen name="movie_details_screen_title">17sp</dimen>
+    <dimen name="movie_details_screen_rating">15sp</dimen>
+    <dimen name="movie_details_screen_categories">15sp</dimen>
+    <dimen name="movie_details_screen_duration">15sp</dimen>
+    <dimen name="movie_details_screen_description">20sp</dimen>
+    <dimen name="movie_details_screen_movie_title">20sp</dimen>
+    <dimen name="movie_details_screen_description_text">15sp</dimen>
+    <dimen name="movie_details_screen_button_text">15sp</dimen>
+
+
 </resources>

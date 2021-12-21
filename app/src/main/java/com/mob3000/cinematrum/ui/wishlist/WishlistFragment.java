@@ -35,7 +35,8 @@ public class WishlistFragment extends Fragment {
     private ArrayList<Wishlist> _wishlist; //
     private ArrayList<Wishlist> _fullWishlist; // All wishlist items copied once cause _wishlist gets passed to adapter and possibly cleared.
     private User _currentUser;
-
+    private int distance;
+    private MainActivity mainActivity;
     private SearchView _searchTextInput;
     private ListView _wishlistListView;
 
@@ -56,6 +57,8 @@ public class WishlistFragment extends Fragment {
 
         sp = getActivity().getSharedPreferences("login", MODE_PRIVATE);
 
+        mainActivity =(MainActivity) getActivity();
+        distance = mainActivity.distance;
 
         // INIT VIEW
         _searchTextInput = view.findViewById(R.id.search_textInput);
@@ -68,7 +71,7 @@ public class WishlistFragment extends Fragment {
                 Intent intent = new Intent(getActivity(), MovieDetailsActivity.class);
                 intent.putExtra("movieID", currentEntry.getMovie_id());
                 intent.putExtra("AddOrRemove", 0);
-                MainActivity mainActivity = (MainActivity)getActivity();
+                intent.putExtra("distance", distance);
                 intent.putExtra("location", mainActivity._location);
                 intent.putExtra("usingLocationService", mainActivity.usingLocationService);
                 startActivity(intent);

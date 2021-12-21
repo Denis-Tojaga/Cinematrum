@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="230dp"
+    android:layout_height="150dp"
     android:layout_margin="10dp"
     app:cardCornerRadius="20dp"
     app:cardElevation="10dp"
@@ -31,8 +31,9 @@
 
         <ImageView
             android:id="@+id/imgMovieWallpaper"
-            android:layout_width="@dimen/ticket_movie_img_width"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
+            app:layout_constraintDimensionRatio="3:4"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -46,7 +47,7 @@
             android:fontFamily="@font/trenda_semibold"
             android:text="Movie title"
             android:textColor="@color/black"
-            android:textSize="@dimen/ticket_movie_title_label"
+            android:textSize="15sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.17"
             app:layout_constraintStart_toEndOf="@+id/imgMovieWallpaper"
@@ -60,7 +61,7 @@
             android:fontFamily="@font/trenda_semibold"
             android:text="Movie price"
             android:textColor="@color/black"
-            android:textSize="@dimen/ticket_movie_price_label"
+            android:textSize="15sp"
             app:layout_constraintStart_toStartOf="@+id/txtMovieTitle"
             app:layout_constraintTop_toBottomOf="@+id/txtMovieTitle" />
 
@@ -72,7 +73,7 @@
             android:fontFamily="@font/trenda_regular"
             android:text="@string/ticket_row"
             android:textColor="@color/black"
-            android:textSize="@dimen/ticket_movie_row_seat_label"
+            android:textSize="13sp"
             app:layout_constraintStart_toStartOf="@+id/txtMoviePrice"
             app:layout_constraintTop_toBottomOf="@+id/txtMoviePrice" />
 
@@ -97,7 +98,7 @@
             android:fontFamily="@font/trenda_regular"
             android:text="@string/ticket_seat"
             android:textColor="@color/black"
-            android:textSize="@dimen/ticket_movie_row_seat_label"
+            android:textSize="13sp"
             app:layout_constraintBottom_toBottomOf="@+id/txtMovieRowNumber"
             app:layout_constraintStart_toEndOf="@+id/txtMovieRowNumber"
             app:layout_constraintTop_toTopOf="@+id/txtMovieRowNumber" />
@@ -110,7 +111,7 @@
             android:fontFamily="@font/trenda_semibold"
             android:text="2a"
             android:textColor="@color/black"
-            android:textSize="@dimen/ticket_movie_row_seat_label"
+            android:textSize="15sp"
             app:layout_constraintBottom_toBottomOf="@+id/textView5"
             app:layout_constraintStart_toEndOf="@+id/textView5"
             app:layout_constraintTop_toTopOf="@+id/textView5" />
@@ -123,7 +124,7 @@
             android:fontFamily="@font/trenda_regular"
             android:text="Cinema"
             android:textColor="@color/black"
-            android:textSize="@dimen/ticket_movie_row_seat_label"
+            android:textSize="13sp"
             app:layout_constraintStart_toStartOf="@+id/textView3"
             app:layout_constraintTop_toBottomOf="@+id/textView3" />
 
