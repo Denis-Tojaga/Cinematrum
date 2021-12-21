@@ -119,7 +119,7 @@
     <dimen name="movie_details_screen_description">20sp</dimen>
     <dimen name="movie_details_screen_movie_title">20sp</dimen>
     <dimen name="movie_details_screen_description_text">15sp</dimen>
-    <dimen name="movie_details_screen_button_text">15sp</dimen>
+    <dimen name="movie_details_screen_button_text">8sp</dimen>
 
 
 </resources>
