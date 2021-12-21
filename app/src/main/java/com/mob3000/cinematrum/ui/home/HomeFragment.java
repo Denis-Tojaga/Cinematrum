@@ -72,7 +72,6 @@ public class HomeFragment extends Fragment {
     private MainActivity mainActivity;
     private boolean checkSearch;
     private boolean checkCategory;
-    private int categoryPosition;
 
     public static HomeFragment newInstance() {
         return new HomeFragment();
@@ -252,12 +251,14 @@ public class HomeFragment extends Fragment {
                 if (selectedView == v) {
                     selectedView.setBackgroundResource(R.drawable.category_background);
                     selectedView = null;
+                    loadMoviesWithLocation(_location);
                     movieAdapter.categoryFilter.filter("All");
                     movieRecyclerView.setAdapter(movieAdapter);
                 } else if (selectedView == null) {
                     selectedView = v;
                     movieAdapter.getItemCount();
                     selectedView.setBackgroundResource(R.drawable.category_background_light);
+                    loadMoviesWithLocation(_location);
                     movieAdapter.categoryFilter.filter(CategoryList.get(position).getName());
                     movieRecyclerView.setAdapter(movieAdapter);
 
@@ -265,6 +266,7 @@ public class HomeFragment extends Fragment {
                     v.setBackgroundResource(R.drawable.category_background_light);
                     selectedView.setBackgroundResource(R.drawable.category_background);
                     selectedView = v;
+                    loadMoviesWithLocation(_location);
                     movieAdapter.categoryFilter.filter(CategoryList.get(position).getName());
                     movieRecyclerView.setAdapter(movieAdapter);
 
@@ -281,7 +283,6 @@ public class HomeFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         homeViewModel = new ViewModelProvider(this).get(HomeViewModel.class);
-        // TODO: Use the ViewModel
     }
 
 
