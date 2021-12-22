@@ -97,7 +97,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
             results.values = filteredList;
             MovieList.clear();
             MovieList.addAll((List) results.values);
-            MovieListAll = MovieList;
+            MovieListAll = new ArrayList<>(MovieList);
             notifyDataSetChanged();
             return results;
         }
@@ -147,11 +147,11 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
             MovieList.clear();
             if(constraint!="All") {
                 MovieList.addAll((List) results.values);
-                MovieListAll = MovieList;
+                MovieListAll = new ArrayList<>(MovieList);
             }
             else {
                 MovieList.addAll(MovieListAll);
-                MovieListAll = MovieList;
+                MovieListAll = new ArrayList<>(MovieList);
             }
             notifyDataSetChanged();
             return results;
